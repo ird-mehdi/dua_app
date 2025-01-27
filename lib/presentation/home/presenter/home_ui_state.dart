@@ -5,6 +5,7 @@ class HomeUiState extends BaseUiState {
   const HomeUiState({
     required super.isLoading,
     required super.userMessage,
+    required this.count,
     this.context,
   });
 
@@ -13,27 +14,32 @@ class HomeUiState extends BaseUiState {
       isLoading: false,
       userMessage: '',
       context: null,
+      count: 0,
     );
   }
 
   final BuildContext? context;
+  final int count;
 
   @override
   List<Object?> get props => [
         isLoading,
         userMessage,
         context,
+        count,
       ];
 
   HomeUiState copyWith({
     bool? isLoading,
     String? userMessage,
     BuildContext? context,
+    int? count,
   }) {
     return HomeUiState(
       isLoading: isLoading ?? this.isLoading,
       userMessage: userMessage ?? this.userMessage,
       context: context ?? this.context,
+      count: count ?? this.count,
     );
   }
 }

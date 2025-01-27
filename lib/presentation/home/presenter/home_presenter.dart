@@ -10,6 +10,14 @@ class HomePresenter extends BasePresenter<HomeUiState> {
 
   HomeUiState get currentUiState => uiState.value;
 
+  void incrementCount() {
+    uiState.value = currentUiState.copyWith(count: currentUiState.count + 1);
+  }
+
+  void decrementCount() {
+    uiState.value = currentUiState.copyWith(count: currentUiState.count - 1);
+  }
+
   updateContext(BuildContext context) {
     uiState.value = currentUiState.copyWith(context: context);
   }
