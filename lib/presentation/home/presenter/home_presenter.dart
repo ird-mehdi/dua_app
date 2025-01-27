@@ -1,13 +1,14 @@
 import 'package:dua/core/base/base_presenter.dart';
 import 'package:dua/core/utility/utility.dart';
-import 'package:dua/presentation/last_read/presenter/last_read_ui_state.dart';
+import 'package:dua/presentation/home/presenter/home_ui_state.dart';
+
 import 'package:flutter/widgets.dart';
 
-class LastReadPresenter extends BasePresenter<LastReadUiState> {
-  LastReadPresenter();
-  final Obs<LastReadUiState> uiState = Obs(LastReadUiState.empty());
+class HomePresenter extends BasePresenter<HomeUiState> {
+  HomePresenter();
+  final Obs<HomeUiState> uiState = Obs(HomeUiState.empty());
 
-  LastReadUiState get currentUiState => uiState.value;
+  HomeUiState get currentUiState => uiState.value;
 
   updateContext(BuildContext context) {
     uiState.value = currentUiState.copyWith(context: context);

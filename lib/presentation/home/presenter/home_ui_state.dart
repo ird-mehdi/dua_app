@@ -1,17 +1,17 @@
 import 'package:dua/core/base/base_ui_state.dart';
 import 'package:flutter/material.dart';
 
-class LastReadUiState extends BaseUiState {
-  const LastReadUiState({
+class HomeUiState extends BaseUiState {
+  const HomeUiState({
     required super.isLoading,
     required super.userMessage,
-    required this.context,
+    this.context,
   });
 
-  factory LastReadUiState.empty() {
-    return const LastReadUiState(
-      isLoading: true,
-      userMessage: null,
+  factory HomeUiState.empty() {
+    return HomeUiState(
+      isLoading: false,
+      userMessage: '',
       context: null,
     );
   }
@@ -25,15 +25,15 @@ class LastReadUiState extends BaseUiState {
         context,
       ];
 
-  LastReadUiState copyWith({
+  HomeUiState copyWith({
     bool? isLoading,
-    String? errorMessage,
+    String? userMessage,
     BuildContext? context,
   }) {
-    return LastReadUiState(
+    return HomeUiState(
       isLoading: isLoading ?? this.isLoading,
-      userMessage: errorMessage ?? userMessage,
-      context: context,
+      userMessage: userMessage ?? this.userMessage,
+      context: context ?? this.context,
     );
   }
 }

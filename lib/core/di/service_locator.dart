@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:dua/core/base/base_presenter.dart';
 import 'package:dua/data/error_message_handler_impl.dart';
 import 'package:dua/domain/service/error_message_handler.dart';
-import 'package:dua/presentation/last_read/presenter/last_read_presenter.dart';
+import 'package:dua/presentation/home/presenter/home_presenter.dart';
 import 'package:get_it/get_it.dart';
 
 // Implementation Note:
@@ -81,8 +81,7 @@ class ServiceLocator {
   }
 
   Future<void> _setUpPresenters() async {
-    _serviceLocator
-        .registerLazySingleton(() => loadPresenter(LastReadPresenter()));
+    _serviceLocator.registerLazySingleton(() => loadPresenter(HomePresenter()));
   }
 
   Future<void> _setUpUseCase() async {

@@ -21,11 +21,8 @@ class DuaApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         onInit: () => DuaScreen.setUp(context),
         onReady: () => DuaScreen.setUp(context),
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          useMaterial3: true,
-        ),
-        home: const HomePage(),
+        title: 'Dua App',
+        home: HomePage(),
       );
     });
   }
