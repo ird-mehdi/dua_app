@@ -13,9 +13,6 @@ class DuaApp extends StatelessWidget {
   static final GlobalKey<NavigatorState> navigatorKey =
       GlobalKey<NavigatorState>();
 
-  static BuildContext get globalContext =>
-      navigatorKey.currentContext ?? Get.context!;
-
   @override
   Widget build(BuildContext context) {
     return ResponsiveSizer(builder: (context, orientation, deviceType) {
@@ -30,4 +27,7 @@ class DuaApp extends StatelessWidget {
       );
     });
   }
+
+  static BuildContext get globalContext =>
+      Get.context ?? navigatorKey.currentContext!;
 }
