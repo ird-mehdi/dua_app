@@ -32,10 +32,11 @@ class HomePage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
               PrayerCard(),
+              const SizedBox(height: 16),
               TimestampCard(
                 leftTime: '12:27 Pm',
                 rightTime: '12:27 Pm',

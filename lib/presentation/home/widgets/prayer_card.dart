@@ -11,7 +11,6 @@ class PrayerCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
       padding: const EdgeInsets.all(18),
       //decoration: _buildDecoration(),
       decoration: BoxDecoration(
@@ -29,7 +28,7 @@ class PrayerCard extends StatelessWidget {
           _buildPrayerTimeInfo(),
           const SizedBox(height: 8),
           _buildProgressBar(context),
-          const SizedBox(height: 8),
+          const SizedBox(height: 4),
           _buildRemainingTime(),
           const SizedBox(height: 22),
           _buildBottomRow(),
@@ -81,7 +80,7 @@ class PrayerCard extends StatelessWidget {
                 ),
               ),
               TextSpan(
-                text: 'Pm',
+                text: 'Pm ',
                 style: TextStyle(
                   fontSize: thirteenPx,
                   fontWeight: FontWeight.w800,
@@ -96,7 +95,7 @@ class PrayerCard extends StatelessWidget {
                 ),
               ),
               TextSpan(
-                text: '3:54pm',
+                text: ' 3:54pm',
                 style: TextStyle(
                   fontSize: twelvePx,
                   fontWeight: FontWeight.w800,
