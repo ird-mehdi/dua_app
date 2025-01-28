@@ -10,8 +10,8 @@ import 'package:dua/presentation/dua_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class QuranTheme {
-  QuranTheme._();
+class DuaTheme {
+  DuaTheme._();
 
   static ThemeData getTheme(
       String themeName, String fontFamily, double fontSize) {
@@ -31,7 +31,7 @@ class QuranTheme {
     visualDensity: VisualDensity.adaptivePlatformDensity,
     fontFamily: FontFamily.kalpurush,
     bannerTheme:
-        const MaterialBannerThemeData(backgroundColor: DuaColor.bannerColor),
+        MaterialBannerThemeData(backgroundColor: DuaColor.bannerColor),
     dialogTheme: const DialogTheme(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(12)),
@@ -560,3 +560,5 @@ Future<SystemUiOverlayStyle?> getSystemUiOverlayStyle({
   );
   return uiOverlayStyle;
 }
+
+

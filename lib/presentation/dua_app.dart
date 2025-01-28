@@ -1,5 +1,7 @@
 import 'package:dua/core/config/dua_screen.dart';
-import 'package:dua/presentation/home/ui/home_page.dart';
+import 'package:dua/core/config/themes.dart';
+import 'package:dua/core/static/font_family.dart';
+import 'package:dua/presentation/prayer_time/ui/prayer_time_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -22,7 +24,9 @@ class DuaApp extends StatelessWidget {
         onInit: () => DuaScreen.setUp(context),
         onReady: () => DuaScreen.setUp(context),
         title: 'Dua App',
-        home: HomePage(),
+        theme: DuaTheme.getTheme('Light', FontFamily.kalpurush, 16),
+        // home: HomePage(),
+        home: PrayerTimePage(),
       );
     });
   }

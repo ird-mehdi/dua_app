@@ -40,4 +40,5 @@ class FontFamily {
   static const String nooreHidayat = 'NooreHidayat';
   static const String nooreHira = 'NooreHira';
   static const String nooreHuda = 'NooreHuda';
+  static const String poppins = 'Poppins';
 }
