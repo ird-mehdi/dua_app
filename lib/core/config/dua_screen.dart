@@ -472,6 +472,20 @@ double get twentyFivePx {
   return _twentyFivePx!;
 }
 
+double? _twentySixPx;
+
+double get twentySixPx {
+  _twentySixPx ??= 26.px;
+  return _twentySixPx!;
+}
+
+double? _twentyEightPx;
+
+double get twentyEightPx {
+  _twentyEightPx ??= 28.px;
+  return _twentyEightPx!;
+}
+
 double? _elevenPx;
 
 double get elevenPx {
@@ -668,11 +682,11 @@ double get thirtyPx {
   return _thirtyPx!;
 }
 
-double? _twentySixPx;
+double? _twentyNinePx;
 
-double get twentySixPx {
-  _twentySixPx ??= 26.px;
-  return _twentySixPx!;
+double get twentyNinePx {
+  _twentyNinePx ??= 29.px;
+  return _twentyNinePx!;
 }
 
 double? _twentySevenPx;
