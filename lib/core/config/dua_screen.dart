@@ -388,6 +388,13 @@ double get seventyPx {
   return _seventyPx!;
 }
 
+double? _eightyEightPx;
+
+double get eightyEightPx {
+  _eightyEightPx ??= 88.px;
+  return _eightyEightPx!;
+}
+
 double? _hundredPx;
 
 double get hundredPx {
@@ -472,6 +479,20 @@ double get twentyFivePx {
   return _twentyFivePx!;
 }
 
+double? _twentySixPx;
+
+double get twentySixPx {
+  _twentySixPx ??= 26.px;
+  return _twentySixPx!;
+}
+
+double? _twentyEightPx;
+
+double get twentyEightPx {
+  _twentyEightPx ??= 28.px;
+  return _twentyEightPx!;
+}
+
 double? _elevenPx;
 
 double get elevenPx {
@@ -554,6 +575,13 @@ double? _thirtyTwoPx;
 double get thirtyTwoPx {
   _thirtyTwoPx ??= 32.px;
   return _thirtyTwoPx!;
+}
+
+double? _thirtyFourPx;
+
+double get thirtyFourPx {
+  _thirtyFourPx ??= 34.px;
+  return _thirtyFourPx!;
 }
 
 double? _thirtyFivePx;
@@ -675,11 +703,11 @@ double get thirtyPx {
   return _thirtyPx!;
 }
 
-double? _twentySixPx;
+double? _twentyNinePx;
 
-double get twentySixPx {
-  _twentySixPx ??= 26.px;
-  return _twentySixPx!;
+double get twentyNinePx {
+  _twentyNinePx ??= 29.px;
+  return _twentyNinePx!;
 }
 
 double? _twentySevenPx;

@@ -56,77 +56,77 @@ class DuaCustomTextTheme extends ThemeExtension<DuaCustomTextTheme> {
 class QuranTextTheme {
   static TextTheme baseTextTheme = TextTheme(
     displayLarge: TextStyle(
-      fontFamily: FontFamily.inter,
+      fontFamily: FontFamily.poppins,
       fontSize: displayLargeFontSize,
       fontWeight: FontWeight.w400,
     ),
     displayMedium: TextStyle(
-      fontFamily: FontFamily.inter,
+      fontFamily: FontFamily.poppins,
       fontSize: displayMediumFontSize,
       fontWeight: FontWeight.w400,
     ),
     displaySmall: TextStyle(
-      fontFamily: FontFamily.inter,
+      fontFamily: FontFamily.poppins,
       fontSize: displaySmallFontSize,
       fontWeight: FontWeight.w400,
     ),
     headlineLarge: TextStyle(
-      fontFamily: FontFamily.inter,
+      fontFamily: FontFamily.poppins,
       fontSize: headlineLargeFontSize,
       fontWeight: FontWeight.w700,
     ),
     headlineMedium: TextStyle(
-      fontFamily: FontFamily.inter,
+      fontFamily: FontFamily.poppins,
       fontSize: headlineMediumFontSize,
       fontWeight: FontWeight.bold,
     ),
     headlineSmall: TextStyle(
-      fontFamily: FontFamily.inter,
+      fontFamily: FontFamily.poppins,
       fontSize: headingSmallFontSize,
       fontWeight: FontWeight.w700,
     ),
     titleLarge: TextStyle(
-      fontFamily: FontFamily.inter,
+      fontFamily: FontFamily.poppins,
       fontSize: titleLargeFontSize,
       fontWeight: FontWeight.w600,
     ),
     titleMedium: TextStyle(
-      fontFamily: FontFamily.inter,
+      fontFamily: FontFamily.poppins,
       fontSize: titleMediumFontSize,
       fontWeight: FontWeight.w600,
     ),
     titleSmall: TextStyle(
-      fontFamily: FontFamily.inter,
+      fontFamily: FontFamily.poppins,
       fontSize: titleSmallFontSize,
       fontWeight: FontWeight.w600,
     ),
     bodyLarge: TextStyle(
-      fontFamily: FontFamily.inter,
+      fontFamily: FontFamily.poppins,
       fontSize: bodyLargeFontSize,
       fontWeight: FontWeight.w400,
     ),
     bodyMedium: TextStyle(
-      fontFamily: FontFamily.inter,
+      fontFamily: FontFamily.poppins,
       fontSize: bodyMediumFontSize,
       fontWeight: FontWeight.w400,
     ),
     bodySmall: TextStyle(
-      fontFamily: FontFamily.inter,
+      fontFamily: FontFamily.poppins,
       fontSize: bodySmallFontSize,
       fontWeight: FontWeight.w400,
     ),
     labelLarge: TextStyle(
-      fontFamily: FontFamily.inter,
+      fontFamily: FontFamily.poppins,
       fontSize: labelLargeFontSize,
       fontWeight: FontWeight.w500,
     ),
     labelMedium: TextStyle(
-      fontFamily: FontFamily.inter,
+      fontFamily: FontFamily.poppins,
       fontSize: labelMediumFontSize,
       fontWeight: FontWeight.w500,
     ),
     labelSmall: TextStyle(
-      fontFamily: FontFamily.inter,
+      fontFamily: FontFamily.poppins,
       fontSize: labelSmallFontSize,
       fontWeight: FontWeight.w500,
     ),

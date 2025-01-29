@@ -311,6 +311,7 @@ Future<void> openUrl({
         if (!validUri) {
           await showMessage(
             message: errorMessage,
+            // ignore: use_build_context_synchronously
             context: context,
           );
           return;
@@ -320,6 +321,7 @@ Future<void> openUrl({
             ? await launchUrl(fallbackUri, mode: LaunchMode.externalApplication)
             : await showMessage(
                 message: errorMessage,
+                // ignore: use_build_context_synchronously
                 context: context,
               );
       } catch (e) {
@@ -328,6 +330,7 @@ Future<void> openUrl({
             ? await launchUrl(fallbackUri)
             : await showMessage(
                 message: errorMessage,
+                // ignore: use_build_context_synchronously
                 context: context,
               );
       }

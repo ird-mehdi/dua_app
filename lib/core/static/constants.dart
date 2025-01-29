@@ -31,7 +31,7 @@ const String quranMajeedUrl = "https://quranmazid.com/";
 const Duration defaultPageTransitionDuration = Duration(milliseconds: 370);
 
 /* ========================== */
-const String quranTitle = 'Quran Majid';
+const String duaTitle = 'Dua & Ruqyah';
 const String scanForWebsite = 'Scan for visit website';
 
 const String updateNotice =
