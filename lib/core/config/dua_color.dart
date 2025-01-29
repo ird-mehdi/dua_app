@@ -35,7 +35,15 @@ class DuaColor {
   static const Color titleColorLight = Color(0xFF000000);
   static const Color titleTextColorLight = Color(0xFF282E29);
   static const Color subTitleColorLight = Color(0xFF000000);
-  static const Color subTitleTextColorLight = Color(0xFF686D69);
+  static const Color quickAccessColorLight1 = Color(0x264989E9);
+  static const Color quickAccessColorLight2 = Color(0x26FF9F00);
+  static const Color quickAccessColorLight3 = Color(0x262C9E4B);
+  static const Color quickAccessColorLight4 = Color(0x26C36839);
+  static const Color quickAccessColorLight5 = Color(0x263E9D81);
+  static const Color quickAccessColorLight6 = Color(0x268459EC);
+  static const Color quickAccessColorLight7 = Color(0x26277BC0);
+  static const Color quickAccessColorLight8 = Color(0x26E0144C);
+
   static const LinearGradient prayerCardGradient = LinearGradient(
     colors: [
       Color(0xFFFAFFF5),
@@ -47,11 +55,11 @@ class DuaColor {
 
   // Primary Colors (Day & Night) - Using the provided hex values for each level
 
-  static const Color primary100Color = Color(0xFF417360);
-  static const Color primary90Color = Color(0xFF4A7765);
-  static const Color primary80Color = Color(0xFF5D8675);
-  static const Color primary70Color = Color(0xFF709484);
-  static const Color primary60Color = Color(0xFF83A394);
+  static const Color primary100ColorLight = Color(0xFF417360);
+  static const Color primary90ColorLight = Color(0xFF4A7765);
+  static const Color primary80ColorLight = Color(0xFF5D8675);
+  static const Color primary70ColorLight = Color(0xFF709484);
+  static const Color primary60ColorLight = Color(0xFF83A394);
   static const Color primary50Color = Color(0xFF95B1A3);
   static const Color primary40Color = Color(0xFFA8C0B2);
   static const Color primary30Color = Color(0xFFBBCEC2);

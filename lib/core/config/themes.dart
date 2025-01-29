@@ -37,7 +37,7 @@ class DuaThemes {
               return TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
-                color: DuaColor.primary100Color,
+                color: DuaColor.primary100ColorLight,
                 overflow: TextOverflow.ellipsis,
               );
             }
@@ -51,7 +51,7 @@ class DuaThemes {
           iconTheme: WidgetStateProperty.resolveWith<IconThemeData?>((states) {
             if (states.contains(MaterialState.selected)) {
               return IconThemeData(
-                color: DuaColor.primary100Color,
+                color: DuaColor.primary100ColorLight,
               );
             }
             return IconThemeData(

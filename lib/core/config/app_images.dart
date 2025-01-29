@@ -21,4 +21,20 @@ class AppImages {
   static const String banner = "assets/images/png/banner.png";
 
   static const String icPrayer = "assets/images/svg/prayer.svg";
+
+  static const String icMosque = "assets/images/svg/99Names.svg";
+
+  static const String icCup = "assets/images/svg/cup.svg";
+
+  static const String icBolt = "assets/images/svg/flash.svg";
+
+  static const String icBook = "assets/images/svg/Group.svg";
+
+  static const String icPerson = "assets/images/svg/image.svg";
+
+  static const String icApps = "assets/images/svg/Layer2.svg";
+
+  static const String icLovely = "assets/images/svg/lovely.svg";
+
+  static const String icTimer = "assets/images/svg/timer.svg";
 }

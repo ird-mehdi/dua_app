@@ -32,7 +32,7 @@ class TabBarSection extends StatelessWidget {
                 borderRadius: radius24,
               ),
               unselectedLabelColor: DuaColor.textPrimaryColorLight,
-              labelColor: DuaColor.primary100Color,
+              labelColor: DuaColor.primary100ColorLight,
               labelStyle: TextStyle(
                 fontSize: sixteenPx,
                 fontWeight: FontWeight.bold,

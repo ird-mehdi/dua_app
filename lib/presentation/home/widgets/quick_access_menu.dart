@@ -1,6 +1,11 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:dua/core/config/app_images.dart';
+import 'package:dua/core/config/dua_color.dart';
+import 'package:dua/core/config/dua_screen.dart';
+import 'package:dua/core/static/ui_const.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class QuickAccessMenu extends StatelessWidget {
   const QuickAccessMenu({super.key});
@@ -28,7 +33,7 @@ class QuickAccessMenu extends StatelessWidget {
   }
 
   Widget _buildQuickAccessItem({
-    required IconData icon,
+    required String icon,
     required String label,
     required Color color,
   }) {
@@ -39,22 +44,21 @@ class QuickAccessMenu extends StatelessWidget {
           color: Colors.transparent,
           shape: const CircleBorder(),
           child: InkWell(
-            borderRadius: BorderRadius.circular(50), // Circular ripple effect
+            borderRadius: radius50, // Circular ripple effect
             onTap: () {},
             child: Container(
-              padding: const EdgeInsets.all(12.0), // Reduced padding
-              decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
-                shape: BoxShape.circle,
-                border: Border.all(color: color.withOpacity(0.5), width: 2),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0), // Adjust padding as needed
-                child: Icon(
-                  icon,
-                  color: color,
-                  size: 22.0,
+              padding: padding14, // Reduced padding
+              decoration: ShapeDecoration(
+                color: color,
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(width: 2, color: color),
+                  borderRadius: BorderRadius.circular(35),
                 ),
+              ),
+              child: SvgPicture.asset(
+                icon,
+                height: twentyFourPx,
+                width: twentyFourPx,
               ),
             ),
           ),
@@ -76,7 +80,7 @@ class QuickAccessMenu extends StatelessWidget {
 }
 
 class QuickAccessItem {
-  final IconData icon;
+  final String icon;
   final String label;
   final Color color;
 
@@ -89,43 +93,43 @@ class QuickAccessItem {
 
 final List<QuickAccessItem> quickAccessItems = [
   QuickAccessItem(
-    icon: Icons.access_time,
+    icon: AppImages.icTimer,
     label: 'Last Read',
-    color: Colors.blue,
+    color: DuaColor.quickAccessColorLight1,
   ),
   QuickAccessItem(
-    icon: Icons.star,
+    icon: AppImages.icCup,
     label: 'Challanges',
-    color: Colors.orange,
+    color: DuaColor.quickAccessColorLight2,
   ),
   QuickAccessItem(
-    icon: Icons.bolt,
+    icon: AppImages.icBolt,
     label: 'Self Ruqyah',
-    color: Colors.green,
+    color: DuaColor.quickAccessColorLight3,
   ),
   QuickAccessItem(
-    icon: Icons.book,
+    icon: AppImages.icBook,
     label: "Dua's Books",
-    color: Colors.brown,
+    color: DuaColor.quickAccessColorLight4,
   ),
   QuickAccessItem(
-    icon: Icons.person,
+    icon: AppImages.icPerson,
     label: 'Dhikr',
-    color: Colors.green,
+    color: DuaColor.quickAccessColorLight5,
   ),
   QuickAccessItem(
-    icon: Icons.mosque,
+    icon: AppImages.icMosque,
     label: 'Prayer Time',
-    color: Colors.purple,
+    color: DuaColor.quickAccessColorLight6,
   ),
   QuickAccessItem(
-    icon: Icons.apps,
+    icon: AppImages.icApps,
     label: 'Other Apps',
-    color: Colors.blue,
+    color: DuaColor.quickAccessColorLight7,
   ),
   QuickAccessItem(
-    icon: Icons.favorite,
+    icon: AppImages.icLovely,
     label: 'Support Us',
-    color: Colors.pink,
+    color: DuaColor.quickAccessColorLight8,
   ),
 ];
