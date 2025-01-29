@@ -1,4 +1,4 @@
-import 'package:dua/presentation/prayer_time/ui/prayer_time_page.dart';
+import 'package:dua/presentation/common/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 
 class PrayerTime3rdCard extends StatelessWidget {
@@ -6,10 +6,11 @@ class PrayerTime3rdCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFF0F7F0), // Light green background
+        color: const Color(0xFFE5F3DC), // Light green background
         borderRadius: BorderRadius.circular(16), // Rounded corners
       ),
       child: Column(
@@ -20,6 +21,7 @@ class PrayerTime3rdCard extends StatelessWidget {
             text: 'Remaining Iftar',
             fontSize: 14,
             color: Colors.black.withOpacity(0.6),
+            theme: theme,
           ),
           const SizedBox(height: 8),
           // Timer Text
@@ -28,6 +30,7 @@ class PrayerTime3rdCard extends StatelessWidget {
             fontSize: 36,
             fontWeight: FontWeight.w900,
             color: Colors.black.withOpacity(0.9),
+            theme: theme,
           ),
           const SizedBox(height: 16),
           // Divider
@@ -46,6 +49,7 @@ class PrayerTime3rdCard extends StatelessWidget {
                     text: 'Suhoor',
                     fontSize: 14,
                     color: Colors.black.withOpacity(0.6),
+                    theme: theme,
                   ),
                   const SizedBox(height: 4),
                   CustomText(
@@ -53,10 +57,12 @@ class PrayerTime3rdCard extends StatelessWidget {
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
                     color: Colors.black.withOpacity(0.9),
+                    theme: theme,
                   ),
                 ],
               ),
               // SizedBox(width: 20),
+
               Container(
                 margin: const EdgeInsets.symmetric(
                     horizontal: 20), // Add margin for spacing
@@ -70,6 +76,7 @@ class PrayerTime3rdCard extends StatelessWidget {
                     text: 'Iftar',
                     fontSize: 14,
                     color: Colors.black.withOpacity(0.6),
+                    theme: theme,
                   ),
                   const SizedBox(height: 4),
                   CustomText(
@@ -77,6 +84,7 @@ class PrayerTime3rdCard extends StatelessWidget {
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
                     color: Colors.black.withOpacity(0.9),
+                    theme: theme,
                   ),
                 ],
               ),

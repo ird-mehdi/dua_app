@@ -13,13 +13,13 @@
 class SvgPath {
   SvgPath._();
   static const String imgTop = "assets/images/non_svg/top.png";
-  static const String prayertimeimgBackground = "assets/images/svg/prayer_bg.svg";
+  static const String prayertimeimgBackground =
+      "assets/images/svg/prayer_bg.svg";
   static const String prayertimeIconFazr = "assets/images/svg/fazr.svg";
-  static const String prayertimeIconDhuhr = "assets/images/svg/Dhur.svg";
+  static const String icSun = "assets/images/svg/ic_dhur.svg";
   static const String prayertimeIconAsr = "assets/images/svg/Asr.svg";
   static const String prayertimeIconMagrib = "assets/images/svg/Magrib.svg";
   static const String prayertimeIconEsha = "assets/images/svg/Isha.svg";
-
   static const String volumeHhigh = "assets/images/svg/volume-high.svg";
   static const String volumeSlash = "assets/images/svg/volume-slash.svg";
 }

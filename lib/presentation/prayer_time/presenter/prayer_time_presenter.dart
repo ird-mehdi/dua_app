@@ -14,6 +14,33 @@ class PrayerTimePresenter extends BasePresenter<PrayerTimeUiState> {
     uiState.value = currentUiState.copyWith(count: currentUiState.count + 1);
   }
 
+  void toggleShowArabic() {
+    uiState.value =
+        currentUiState.copyWith(showArabic: !currentUiState.showArabic);
+  }
+
+  void toggleShowTranslation() {
+    uiState.value = currentUiState.copyWith(
+        showTranslation: !currentUiState.showTranslation);
+  }
+
+  void toggleShowReference() {
+    uiState.value =
+        currentUiState.copyWith(showReference: !currentUiState.showReference);
+  }
+
+  void updateTranslationFontSize(double value) {
+    uiState.value = currentUiState.copyWith(translationFontSize: value);
+  }
+
+  void updateArabicFontSize(double value) {
+    uiState.value = currentUiState.copyWith(arabicFontSize: value);
+  }
+
+  void updateSelectedFont(String value) {
+    uiState.value = currentUiState.copyWith(selectedFont: value);
+  }
+
   void decrementCount() {
     uiState.value = currentUiState.copyWith(count: currentUiState.count - 1);
   }
@@ -21,8 +48,6 @@ class PrayerTimePresenter extends BasePresenter<PrayerTimeUiState> {
   updateContext(BuildContext context) {
     uiState.value = currentUiState.copyWith(context: context);
   }
-
-  
 
   @override
   Future<void> addUserMessage(String message) {

@@ -1,148 +1,102 @@
 import 'package:flutter/material.dart';
 
 class DuaCustomThemeColors extends ThemeExtension<DuaCustomThemeColors> {
-  final Color primaryColor;
-  final Color secondary;
-  final Color cardShade;
-  final Color topShapeBg;
-  final Color navInactive;
-  final Color topIconHome;
-  final Color backgroundColor;
-  final Color whiteColor;
-  final Color navBgAc;
-  final Color blackColor;
+  final Color primaryColor100;
+  final Color primaryColor90;
+  final Color primaryColor80;
+  final Color primaryColor70;
+  final Color primaryColor60;
+  final Color primaryColor50;
+  final Color primaryColor40;
+  final Color primaryColor30;
+  final Color primaryColor20;
+  final Color primaryColor10;
+  final Color primaryColor05;
+  final Color primaryColor01;
   final Color subtitleColor;
-  final Color shade1;
-  final Color gdTop;
-  final Color gdMiddle;
-  final Color gdBottom;
-  final Color iconDisabledColor;
-  final Color iconActiveColor;
-  final Color primaryButtonColor;
-  final Color primaryButtonTextColor;
-  final Color secondaryButtonColor;
-  final Color inputFieldColor;
-  final Color bottomSheetHeader;
-  final Color thumbInactive;
-  final Color thumbActive;
-  final Color switchInactive;
-  final Color switchActive;
-  final Color secondaryButtonTextColor;
+  final Color titleColor;
+  final Color logoTextColor;
   final Color gradientTop;
-  final Color gradientBottom;
-  final Color iconBgColor;
-  final Color tabBarShade;
-  final Color tabActive;
-  final Color chartShade; // Added chartShade
+  final Color gradientBottom1;
+  final Color gradientBottom3;
+  final Color gradientBottom2;
+  final Color backgroundColor;
+  final Color mosqueTop;
+  final Color cloud;
 
   const DuaCustomThemeColors({
-    required this.primaryColor,
-    required this.secondary,
-    required this.cardShade,
-    required this.topShapeBg,
-    required this.navInactive,
-    required this.topIconHome,
-    required this.backgroundColor,
-    required this.whiteColor,
-    required this.navBgAc,
-    required this.blackColor,
+    required this.primaryColor100,
+    required this.primaryColor90,
+    required this.primaryColor80,
+    required this.primaryColor70,
+    required this.primaryColor60,
+    required this.primaryColor50,
+    required this.primaryColor40,
+    required this.primaryColor30,
+    required this.primaryColor20,
+    required this.primaryColor10,
+    required this.primaryColor05,
+    required this.primaryColor01,
     required this.subtitleColor,
-    required this.shade1,
-    required this.gdTop,
-    required this.gdMiddle,
-    required this.gdBottom,
-    required this.iconDisabledColor,
-    required this.iconActiveColor,
-    required this.primaryButtonColor,
-    required this.primaryButtonTextColor,
-    required this.secondaryButtonColor,
-    required this.inputFieldColor,
-    required this.bottomSheetHeader,
-    required this.thumbInactive,
-    required this.thumbActive,
-    required this.switchInactive,
-    required this.switchActive,
-    required this.secondaryButtonTextColor,
+    required this.titleColor,
+    required this.logoTextColor,
     required this.gradientTop,
-    required this.gradientBottom,
-    required this.iconBgColor,
-    required this.tabBarShade,
-    required this.tabActive,
-    required this.chartShade, // Added chartShade
+    required this.gradientBottom1,
+    required this.gradientBottom3,
+    required this.gradientBottom2,
+    required this.backgroundColor,
+    required this.mosqueTop,
+    required this.cloud,
   });
 
   @override
   ThemeExtension<DuaCustomThemeColors> copyWith({
-    Color? primaryColor,
-    Color? secondary,
-    Color? cardShade,
-    Color? topShapeBg,
-    Color? navInactive,
-    Color? topIconHome,
-    Color? backgroundColor,
-    Color? whiteColor,
-    Color? navBgAc,
-    Color? blackColor,
+    Color? primaryColor100,
+    Color? primaryColor90,
+    Color? primaryColor80,
+    Color? primaryColor70,
+    Color? primaryColor60,
+    Color? primaryColor50,
+    Color? primaryColor40,
+    Color? primaryColor30,
+    Color? primaryColor20,
+    Color? primaryColor10,
+    Color? primaryColor05,
+    Color? primaryColor01,
     Color? subtitleColor,
-    Color? homeDashboardBgColor,
-    Color? gdTop,
-    Color? gdMiddle,
-    Color? gdBottom,
-    Color? iconDisabledColor,
-    Color? iconActiveColor,
-    Color? primaryButtonColor,
-    Color? primaryButtonTextColor,
-    Color? secondaryButtonColor,
-    Color? inputFieldColor,
-    Color? bottomSheetHeader,
-    Color? thumbInactive,
-    Color? thumbActive,
-    Color? switchInactive,
-    Color? switchActive,
-    Color? secondaryButtonTextColor,
+    Color? titleColor,
+    Color? logoTextColor,
     Color? gradientTop,
-    Color? gradientBottom,
-    Color? iconBgColor,
-    Color? tabBarShade,
-    Color? tabActive,
-    Color? chartShade, // Added chartShade
+    Color? gradientBottom1,
+    Color? gradientBottom3,
+    Color? gradientBottom2,
+    Color? backgroundColor,
+    Color? mosqueTop,
+    Color? cloud,
   }) {
     return DuaCustomThemeColors(
-      primaryColor: primaryColor ?? this.primaryColor,
-      secondary: secondary ?? this.secondary,
-      cardShade: cardShade ?? this.cardShade,
-      topShapeBg: topShapeBg ?? this.topShapeBg,
-      navInactive: navInactive ?? this.navInactive,
-      topIconHome: topIconHome ?? this.topIconHome,
-      backgroundColor: backgroundColor ?? this.backgroundColor,
-      whiteColor: whiteColor ?? this.whiteColor,
-      navBgAc: navBgAc ?? this.navBgAc,
-      blackColor: blackColor ?? this.blackColor,
+      primaryColor100: primaryColor100 ?? this.primaryColor100,
+      primaryColor90: primaryColor90 ?? this.primaryColor90,
+      primaryColor80: primaryColor80 ?? this.primaryColor80,
+      primaryColor70: primaryColor70 ?? this.primaryColor70,
+      primaryColor60: primaryColor60 ?? this.primaryColor60,
+      primaryColor50: primaryColor50 ?? this.primaryColor50,
+      primaryColor40: primaryColor40 ?? this.primaryColor40,
+      primaryColor30: primaryColor30 ?? this.primaryColor30,
+      primaryColor20: primaryColor20 ?? this.primaryColor20,
+      primaryColor10: primaryColor10 ?? this.primaryColor10,
+      primaryColor05: primaryColor05 ?? this.primaryColor05,
+      primaryColor01: primaryColor01 ?? this.primaryColor01,
       subtitleColor: subtitleColor ?? this.subtitleColor,
-      shade1: homeDashboardBgColor ?? shade1,
-      gdTop: gdTop ?? this.gdTop,
-      gdMiddle: gdMiddle ?? this.gdMiddle,
-      gdBottom: gdBottom ?? this.gdBottom,
-      iconDisabledColor: iconDisabledColor ?? this.iconDisabledColor,
-      iconActiveColor: iconActiveColor ?? this.iconActiveColor,
-      primaryButtonColor: primaryButtonColor ?? this.primaryButtonColor,
-      primaryButtonTextColor:
-          primaryButtonTextColor ?? this.primaryButtonTextColor,
-      secondaryButtonColor: secondaryButtonColor ?? this.secondaryButtonColor,
-      inputFieldColor: inputFieldColor ?? this.inputFieldColor,
-      bottomSheetHeader: bottomSheetHeader ?? this.bottomSheetHeader,
-      thumbInactive: thumbInactive ?? this.thumbInactive,
-      thumbActive: thumbActive ?? this.thumbActive,
-      switchInactive: switchInactive ?? this.switchInactive,
-      switchActive: switchActive ?? this.switchActive,
-      secondaryButtonTextColor:
-          secondaryButtonTextColor ?? this.secondaryButtonTextColor,
+      titleColor: titleColor ?? this.titleColor,
+      logoTextColor: logoTextColor ?? this.logoTextColor,
       gradientTop: gradientTop ?? this.gradientTop,
-      gradientBottom: gradientBottom ?? this.gradientBottom,
-      iconBgColor: iconBgColor ?? this.iconBgColor,
-      tabBarShade: tabBarShade ?? this.tabBarShade,
-      tabActive: tabActive ?? this.tabActive,
-      chartShade: chartShade ?? this.chartShade, // Added chartShade
+      gradientBottom1: gradientBottom1 ?? this.gradientBottom1,
+      gradientBottom3: gradientBottom3 ?? this.gradientBottom3,
+      gradientBottom2: gradientBottom2 ?? this.gradientBottom2,
+      backgroundColor: backgroundColor ?? this.backgroundColor,
+      mosqueTop: mosqueTop ?? this.mosqueTop,
+      cloud: cloud ?? this.cloud,
     );
   }
 
@@ -153,46 +107,28 @@ class DuaCustomThemeColors extends ThemeExtension<DuaCustomThemeColors> {
       return this;
     }
     return DuaCustomThemeColors(
-      primaryColor: Color.lerp(primaryColor, other.primaryColor, t)!,
-      secondary: Color.lerp(secondary, other.secondary, t)!,
-      cardShade: Color.lerp(cardShade, other.cardShade, t)!,
-      topShapeBg: Color.lerp(topShapeBg, other.topShapeBg, t)!,
-      navInactive: Color.lerp(navInactive, other.navInactive, t)!,
-      topIconHome: Color.lerp(topIconHome, other.topIconHome, t)!,
-      backgroundColor: Color.lerp(backgroundColor, other.backgroundColor, t)!,
-      whiteColor: Color.lerp(whiteColor, other.whiteColor, t)!,
-      navBgAc: Color.lerp(navBgAc, other.navBgAc, t)!,
-      blackColor: Color.lerp(blackColor, other.blackColor, t)!,
+      primaryColor100: Color.lerp(primaryColor100, other.primaryColor100, t)!,
+      primaryColor90: Color.lerp(primaryColor90, other.primaryColor90, t)!,
+      primaryColor80: Color.lerp(primaryColor80, other.primaryColor80, t)!,
+      primaryColor70: Color.lerp(primaryColor70, other.primaryColor70, t)!,
+      primaryColor60: Color.lerp(primaryColor60, other.primaryColor60, t)!,
+      primaryColor50: Color.lerp(primaryColor50, other.primaryColor50, t)!,
+      primaryColor40: Color.lerp(primaryColor40, other.primaryColor40, t)!,
+      primaryColor30: Color.lerp(primaryColor30, other.primaryColor30, t)!,
+      primaryColor20: Color.lerp(primaryColor20, other.primaryColor20, t)!,
+      primaryColor10: Color.lerp(primaryColor10, other.primaryColor10, t)!,
+      primaryColor05: Color.lerp(primaryColor05, other.primaryColor05, t)!,
+      primaryColor01: Color.lerp(primaryColor01, other.primaryColor01, t)!,
       subtitleColor: Color.lerp(subtitleColor, other.subtitleColor, t)!,
-      shade1: Color.lerp(shade1, other.shade1, t)!,
-      gdTop: Color.lerp(gdTop, other.gdTop, t)!,
-      gdMiddle: Color.lerp(gdMiddle, other.gdMiddle, t)!,
-      gdBottom: Color.lerp(gdBottom, other.gdBottom, t)!,
-      iconDisabledColor:
-          Color.lerp(iconDisabledColor, other.iconDisabledColor, t)!,
-      iconActiveColor: Color.lerp(iconActiveColor, other.iconActiveColor, t)!,
-      primaryButtonColor:
-          Color.lerp(primaryButtonColor, other.primaryButtonColor, t)!,
-      primaryButtonTextColor:
-          Color.lerp(primaryButtonTextColor, other.primaryButtonTextColor, t)!,
-      secondaryButtonColor:
-          Color.lerp(secondaryButtonColor, other.secondaryButtonColor, t)!,
-      inputFieldColor: Color.lerp(inputFieldColor, other.inputFieldColor, t)!,
-      bottomSheetHeader:
-          Color.lerp(bottomSheetHeader, other.bottomSheetHeader, t)!,
-      thumbInactive: Color.lerp(thumbInactive, other.thumbInactive, t)!,
-      thumbActive: Color.lerp(thumbActive, other.thumbActive, t)!,
-      switchInactive: Color.lerp(switchInactive, other.switchInactive, t)!,
-      switchActive: Color.lerp(switchActive, other.switchActive, t)!,
-      secondaryButtonTextColor: Color.lerp(
-          secondaryButtonTextColor, other.secondaryButtonTextColor, t)!,
+      titleColor: Color.lerp(titleColor, other.titleColor, t)!,
+      logoTextColor: Color.lerp(logoTextColor, other.logoTextColor, t)!,
       gradientTop: Color.lerp(gradientTop, other.gradientTop, t)!,
-      gradientBottom: Color.lerp(gradientBottom, other.gradientBottom, t)!,
-      iconBgColor: Color.lerp(iconBgColor, other.iconBgColor, t)!,
-      tabBarShade: Color.lerp(tabBarShade, other.tabBarShade, t)!,
-      tabActive: Color.lerp(tabActive, other.tabActive, t)!,
-      chartShade:
-          Color.lerp(chartShade, other.chartShade, t)!, // Added chartShade
+      gradientBottom1: Color.lerp(gradientBottom1, other.gradientBottom1, t)!,
+      gradientBottom3: Color.lerp(gradientBottom3, other.gradientBottom3, t)!,
+      gradientBottom2: Color.lerp(gradientBottom2, other.gradientBottom2, t)!,
+      backgroundColor: Color.lerp(backgroundColor, other.backgroundColor, t)!,
+      mosqueTop: Color.lerp(mosqueTop, other.mosqueTop, t)!,
+      cloud: Color.lerp(cloud, other.cloud, t)!,
     );
   }
 }

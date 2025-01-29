@@ -1,7 +1,6 @@
-
 import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/static/svg_path.dart';
-import 'package:dua/presentation/prayer_time/ui/prayer_time_page.dart';
+import 'package:dua/presentation/common/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -11,6 +10,7 @@ class PrayerTime2ndCard extends StatelessWidget {
   final bool notification;
   final String? offset;
   final String? leadingIcon;
+  final FontWeight? fontWeight;
 
   const PrayerTime2ndCard({
     super.key,
@@ -19,18 +19,19 @@ class PrayerTime2ndCard extends StatelessWidget {
     required this.notification,
     this.offset,
     this.leadingIcon,
+    this.fontWeight,
   });
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        
+        borderRadius: BorderRadius.circular(14),
+        color: Colors.black.withOpacity(0.05),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -47,14 +48,16 @@ class PrayerTime2ndCard extends StatelessWidget {
                   children: [
                     CustomText(
                       text: name,
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
+                      fontSize: fourteenPx,
+                      fontWeight: fontWeight ?? FontWeight.normal,
+                      theme: theme,
                     ),
                     if (offset != null)
                       CustomText(
                         text: offset!,
                         fontSize: 14.0,
                         color: Colors.grey[600],
+                        theme: theme,
                       )
                   ],
                 ),
@@ -66,6 +69,7 @@ class PrayerTime2ndCard extends StatelessWidget {
                   text: time,
                   fontSize: 16.0,
                   fontWeight: FontWeight.w500,
+                  theme: theme,
                 ),
                 const SizedBox(width: 8.0),
                 SvgPicture.asset(

@@ -1,6 +1,5 @@
 // custom_toast.dart
 import 'package:dua/core/config/dua_screen.dart';
-import 'package:dua/core/utility/utility.dart';
 import 'package:flutter/material.dart';
 
 class CustomToast extends StatefulWidget {
@@ -106,7 +105,7 @@ class CustomToastState extends State<CustomToast>
                 child: Text(
                   widget.message,
                   style: TextStyle(
-                    color: context.color.whiteColor,
+                    color: Colors.white,
                   ),
                 ),
               ),

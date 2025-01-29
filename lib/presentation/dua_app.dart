@@ -24,7 +24,9 @@ class DuaApp extends StatelessWidget {
         onInit: () => DuaScreen.setUp(context),
         onReady: () => DuaScreen.setUp(context),
         title: 'Dua App',
+
         theme: DuaTheme.getTheme('Light', FontFamily.kalpurush, 16),
+        themeMode: ThemeMode.light,
         // home: HomePage(),
         home: PrayerTimePage(),
       );
