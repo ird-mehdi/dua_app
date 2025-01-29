@@ -4,18 +4,16 @@ import 'package:dua/core/config/dua_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class TimestampCard extends StatelessWidget {
+class NotificationsRojaTimeCard extends StatelessWidget {
   final String leftTime;
   final String rightTime;
   final bool notification;
-  final bool rightNotification;
 
-  const TimestampCard({
+  const NotificationsRojaTimeCard({
     super.key,
     required this.leftTime,
     required this.rightTime,
     required this.notification,
-    required this.rightNotification,
   });
 
   @override
@@ -38,7 +36,7 @@ class TimestampCard extends StatelessWidget {
           _buildTimeWithIcon(
             title: 'Ifter',
             time: rightTime,
-            hasNotification: rightNotification,
+            hasNotification: notification,
             alignment: MainAxisAlignment.end,
           ),
         ],

@@ -119,9 +119,10 @@ class PrayerCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(3),
           ),
         ),
-        Container(
+        AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
           height: 6,
-          width: MediaQuery.of(context).size.width * 0.5,
+          width: MediaQuery.of(context).size.width * 0.57,
           decoration: BoxDecoration(
             color: const Color(0xFF6E833F),
             borderRadius: BorderRadius.circular(3),

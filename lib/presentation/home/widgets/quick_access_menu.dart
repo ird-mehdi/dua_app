@@ -7,26 +7,23 @@ class QuickAccessMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      child: GridView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 4,
-          crossAxisSpacing: 16.0,
-          mainAxisSpacing: 16.0,
-          childAspectRatio: 0.85, // Adjusted to prevent overflow
-        ),
-        itemCount: quickAccessItems.length,
-        itemBuilder: (context, index) {
-          return _buildQuickAccessItem(
-            icon: quickAccessItems[index].icon,
-            label: quickAccessItems[index].label,
-            color: quickAccessItems[index].color,
-          );
-        },
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 4,
+        crossAxisSpacing: 16.0,
+        mainAxisSpacing: 16.0,
+        childAspectRatio: 0.85, // Adjusted to prevent overflow
       ),
+      itemCount: quickAccessItems.length,
+      itemBuilder: (context, index) {
+        return _buildQuickAccessItem(
+          icon: quickAccessItems[index].icon,
+          label: quickAccessItems[index].label,
+          color: quickAccessItems[index].color,
+        );
+      },
     );
   }
 
@@ -38,32 +35,40 @@ class QuickAccessMenu extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
-          padding: const EdgeInsets.all(12.0), // Reduced padding
-          decoration: BoxDecoration(
-            color: color.withOpacity(0.1),
-            shape: BoxShape.circle,
-            border: Border.all(color: color.withOpacity(0.5), width: 2),
-          ),
-          child: Icon(
-            icon,
-            color: color,
-            size: 22.0, // Slightly reduced icon size
+        Material(
+          color: Colors.transparent,
+          shape: const CircleBorder(),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(50), // Circular ripple effect
+            onTap: () {},
+            child: Container(
+              padding: const EdgeInsets.all(12.0), // Reduced padding
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.1),
+                shape: BoxShape.circle,
+                border: Border.all(color: color.withOpacity(0.5), width: 2),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0), // Adjust padding as needed
+                child: Icon(
+                  icon,
+                  color: color,
+                  size: 22.0,
+                ),
+              ),
+            ),
           ),
         ),
         const SizedBox(height: 8.0), // Reduced spacing
-        Flexible(
-          // Added Flexible
-          child: Text(
-            label,
-            style: const TextStyle(
-              fontSize: 11.0, // Slightly reduced font size
-              fontWeight: FontWeight.w500,
-            ),
-            textAlign: TextAlign.center,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 11.0, // Slightly reduced font size
+            fontWeight: FontWeight.w500,
           ),
+          textAlign: TextAlign.center,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
       ],
     );

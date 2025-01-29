@@ -9,6 +9,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double? titleSpacing;
   final bool? centerTitle;
   final String? icon;
+  final Color? backgroundColor;
   const CustomAppBar({
     super.key,
     required this.title,
@@ -17,11 +18,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.titleSpacing = 0,
     this.centerTitle = false,
     this.icon,
+    this.backgroundColor,
   });
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      backgroundColor: backgroundColor,
       titleSpacing: titleSpacing,
       title: Text(
         title,

@@ -19,4 +19,6 @@ class AppImages {
   static const String icNotification = "assets/images/svg/notification.svg";
 
   static const String banner = "assets/images/png/banner.png";
+
+  static const String icPrayer = "assets/images/svg/prayer.svg";
 }

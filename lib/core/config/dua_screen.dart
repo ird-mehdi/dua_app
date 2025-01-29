@@ -388,6 +388,13 @@ double get seventyPx {
   return _seventyPx!;
 }
 
+double? _eightyEightPx;
+
+double get eightyEightPx {
+  _eightyEightPx ??= 88.px;
+  return _eightyEightPx!;
+}
+
 double? _hundredPx;
 
 double get hundredPx {
@@ -568,6 +575,13 @@ double? _thirtyTwoPx;
 double get thirtyTwoPx {
   _thirtyTwoPx ??= 32.px;
   return _thirtyTwoPx!;
+}
+
+double? _thirtyFourPx;
+
+double get thirtyFourPx {
+  _thirtyFourPx ??= 34.px;
+  return _thirtyFourPx!;
 }
 
 double? _thirtyFivePx;
