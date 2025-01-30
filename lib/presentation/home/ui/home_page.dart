@@ -8,7 +8,7 @@ import 'package:dua/presentation/home/widgets/tab_content.dart';
 import 'package:dua/presentation/home/widgets/prayer_card.dart';
 import 'package:dua/presentation/home/widgets/quick_access_menu.dart';
 import 'package:dua/presentation/home/widgets/tab_bar.dart';
-import 'package:dua/presentation/home/widgets/notifications_roja_time_card.dart';
+import 'package:dua/presentation/home/widgets/ramadan_timing_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -19,6 +19,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -41,9 +42,9 @@ class HomePage extends StatelessWidget {
                   padding: paddingH16,
                   child: Column(
                     children: [
-                      PrayerCard(),
+                      PrayerCard(theme: theme),
                       gapH16,
-                      NotificationsRojaTimeCard(
+                      RamadanTimingCard(
                         leftTime: '12:27 Pm',
                         rightTime: '12:27 Pm',
                         notification: true,

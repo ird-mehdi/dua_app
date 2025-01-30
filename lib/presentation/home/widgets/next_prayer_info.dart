@@ -1,7 +1,10 @@
+import 'package:dua/core/config/dua_screen.dart';
+import 'package:dua/core/static/ui_const.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class NextPrayerInfo extends StatelessWidget {
-  final IconData icon;
+  final String icon;
   final String title;
   final String time;
 
@@ -17,7 +20,7 @@ class NextPrayerInfo extends StatelessWidget {
     return Row(
       children: [
         _buildIcon(),
-        const SizedBox(width: 12),
+        gapW12,
         _buildInfo(),
       ],
     );
@@ -25,12 +28,20 @@ class NextPrayerInfo extends StatelessWidget {
 
   Widget _buildIcon() {
     return Container(
-      padding: const EdgeInsets.all(5),
+      padding: padding5,
       decoration: BoxDecoration(
         color: const Color(0xFFD0E4A3),
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: radius14,
       ),
-      child: Icon(icon, size: 14, color: const Color(0xFF417360)),
+      child: SvgPicture.asset(
+        icon,
+        height: fourteenPx,
+        width: fourteenPx,
+        colorFilter: const ColorFilter.mode(
+          Color(0xFF417360),
+          BlendMode.srcIn,
+        ),
+      ),
     );
   }
 
@@ -40,17 +51,17 @@ class NextPrayerInfo extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(
-            fontSize: 12,
+          style: TextStyle(
+            fontSize: twelvePx,
             fontWeight: FontWeight.bold,
-            color: Color(0xFF282E29),
+            color: const Color(0xFF282E29),
           ),
         ),
         RichText(
           text: TextSpan(
-            style: const TextStyle(
-              fontSize: 12,
-              color: Color(0xFF282E29),
+            style: TextStyle(
+              fontSize: twelvePx,
+              color: const Color(0xFF282E29),
             ),
             children: [
               const TextSpan(text: 'Start - '),

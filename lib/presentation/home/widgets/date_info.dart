@@ -1,7 +1,18 @@
+import 'package:dua/core/config/dua_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class DateInfo extends StatelessWidget {
-  const DateInfo({super.key});
+  final String icon;
+  final String date;
+  final String title;
+
+  const DateInfo({
+    super.key,
+    required this.icon,
+    required this.date,
+    required this.title,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +32,10 @@ class DateInfo extends StatelessWidget {
         color: const Color(0xFFD0E4A3),
         borderRadius: BorderRadius.circular(14),
       ),
-      child: const Icon(
-        Icons.calendar_today,
-        size: 14,
-        color: Color(0xFF417360),
+      child: SvgPicture.asset(
+        icon,
+        height: sixteenPx,
+        width: sixteenPx,
       ),
     );
   }
@@ -33,16 +44,16 @@ class DateInfo extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Dhuʻl-Hijjah 26, 1445 AH',
-          style: TextStyle(
+        Text(
+          title,
+          style: const TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.bold,
             color: Color(0xFF282E29),
           ),
         ),
         Text(
-          'Tuesday, July 2, 2024',
+          date,
           style: TextStyle(
             fontSize: 12,
             color: Colors.grey[700],

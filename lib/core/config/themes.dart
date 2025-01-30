@@ -128,12 +128,14 @@ class DuaTheme {
         ),
         checkboxTheme: CheckboxThemeData(
           checkColor: const WidgetStatePropertyAll(Colors.white),
-          fillColor: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.selected)) {
-              return DuaColor.primaryColorLight01;
-            }
-            return Colors.transparent;
-          }),
+          fillColor: WidgetStateProperty.resolveWith(
+            (states) {
+              if (states.contains(WidgetState.selected)) {
+                return DuaColor.primaryColorLight01;
+              }
+              return Colors.transparent;
+            },
+          ),
           side: BorderSide(
             color: DuaColor.primaryColorLight01.withAlpha((0.4 * 255).toInt()),
             width: 1.5,
@@ -144,12 +146,15 @@ class DuaTheme {
         radioTheme: RadioThemeData(
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           visualDensity: const VisualDensity(horizontal: -4),
-          fillColor: WidgetStateProperty.resolveWith<Color>((states) {
-            if (states.contains(WidgetState.selected)) {
-              return DuaColor.primaryColorLight01;
-            }
-            return DuaColor.primaryColorLight01.withAlpha((0.38 * 255).toInt());
-          }),
+          fillColor: WidgetStateProperty.resolveWith<Color>(
+            (states) {
+              if (states.contains(WidgetState.selected)) {
+                return DuaColor.primaryColorLight01;
+              }
+              return DuaColor.primaryColorLight01
+                  .withAlpha((0.38 * 255).toInt());
+            },
+          ),
         ),
         dialogTheme: const DialogTheme(
           backgroundColor: DuaColor.backgroundColorLight,

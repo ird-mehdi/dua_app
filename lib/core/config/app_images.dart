@@ -37,4 +37,8 @@ class AppImages {
   static const String icLovely = "assets/images/svg/lovely.svg";
 
   static const String icTimer = "assets/images/svg/timer.svg";
+
+  static const String icTime = "assets/images/svg/ic_time.svg";
+
+  static const String icDate = "assets/images/svg/ic_calender.svg";
 }

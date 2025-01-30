@@ -9,6 +9,7 @@ class TabBarSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverPersistentHeader(
+      pinned: true,
       delegate: _TabBarDelegate(
         minHeight: sixtyFivePx,
         maxHeight: sixtyFivePx,
@@ -38,15 +39,21 @@ class TabBarSection extends StatelessWidget {
                 fontSize: sixteenPx,
                 fontWeight: FontWeight.bold,
               ),
-              tabs: const [
-                SizedBox(width: double.infinity, child: Tab(text: 'Dua')),
-                SizedBox(width: double.infinity, child: Tab(text: 'Ruqyah')),
+              tabs: [
+                _buildCustomTabItem(text: 'Dua'),
+                _buildCustomTabItem(text: 'Ruqyah'),
               ],
             ),
           ),
         ),
       ),
-      pinned: true,
+    );
+  }
+
+  Widget _buildCustomTabItem({required String text}) {
+    return SizedBox(
+      width: double.infinity,
+      child: Tab(text: text),
     );
   }
 }

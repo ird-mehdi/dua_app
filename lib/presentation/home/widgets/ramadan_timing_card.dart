@@ -5,12 +5,12 @@ import 'package:dua/core/utility/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class NotificationsRojaTimeCard extends StatelessWidget {
+class RamadanTimingCard extends StatelessWidget {
   final String leftTime;
   final String rightTime;
   final bool notification;
 
-  const NotificationsRojaTimeCard({
+  const RamadanTimingCard({
     super.key,
     required this.leftTime,
     required this.rightTime,
@@ -85,7 +85,7 @@ class NotificationsRojaTimeCard extends StatelessWidget {
               time,
               style: TextStyle(
                 fontSize: eighteenPx,
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w600,
                 color: context.color.headingTextColor,
               ),
             ),

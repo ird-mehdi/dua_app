@@ -4,6 +4,7 @@ import 'package:dua/core/config/app_images.dart';
 import 'package:dua/core/config/dua_color.dart';
 import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/static/ui_const.dart';
+import 'package:dua/core/utility/utility.dart';
 import 'package:dua/presentation/prayer_time/ui/prayer_time_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -50,12 +51,7 @@ class QuickAccessMenu extends StatelessWidget {
           shape: const CircleBorder(),
           child: InkWell(
             borderRadius: radius50, // Circular ripple effect
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => page),
-              );
-            },
+            onTap: () => context.navigatorPush(page),
             child: Container(
               padding: padding14, // Reduced padding
               decoration: ShapeDecoration(
@@ -69,6 +65,7 @@ class QuickAccessMenu extends StatelessWidget {
                 icon,
                 height: twentyFourPx,
                 width: twentyFourPx,
+                colorFilter: buildColorFilter(color),
               ),
             ),
           ),

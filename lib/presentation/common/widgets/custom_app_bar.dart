@@ -1,4 +1,6 @@
+import 'package:dua/core/config/app_images.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -8,7 +10,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool? centerTitle;
   final String? icon;
   final Color? backgroundColor;
-  final Widget? leading;
+  final bool? showLeading;
   const CustomAppBar({
     super.key,
     required this.title,
@@ -18,7 +20,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.centerTitle = false,
     this.icon,
     this.backgroundColor,
-    this.leading,
+    this.showLeading = true,
   });
 
   @override
@@ -30,12 +32,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         title,
       ),
       centerTitle: centerTitle,
-      leading: leading,
-      automaticallyImplyLeading: false,
-      actions: actions ?? [],
+      leading: showLeading!
+          ? IconButton(
+              icon: SvgPicture.asset(icon ?? AppImages.icSearch),
+              onPressed: onLeadingPressed ?? () => Navigator.of(context).pop(),
+            )
+          : null,
+      actions: actions,
     );
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

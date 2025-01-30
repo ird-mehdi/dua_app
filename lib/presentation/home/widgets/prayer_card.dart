@@ -1,12 +1,13 @@
 import 'package:dua/core/config/app_images.dart';
-import 'package:dua/core/utility/utility.dart';
+import 'package:dua/core/static/ui_const.dart';
 import 'package:dua/presentation/home/widgets/date_info.dart';
 import 'package:dua/presentation/home/widgets/next_prayer_info.dart';
 import 'package:flutter/material.dart';
 import 'package:dua/core/config/dua_screen.dart';
 
 class PrayerCard extends StatelessWidget {
-  const PrayerCard({super.key});
+  final ThemeData theme;
+  const PrayerCard({super.key, required this.theme});
 
   @override
   Widget build(BuildContext context) {
@@ -18,17 +19,17 @@ class PrayerCard extends StatelessWidget {
           image: AssetImage(AppImages.banner),
           fit: BoxFit.cover,
         ),
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: radius30,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildLocationRow(context: context),
-          const SizedBox(height: 22),
+          _buildLocationRow(context: context, theme: theme),
+          gapH22,
           _buildPrayerTimeInfo(),
-          const SizedBox(height: 8),
+          gapH8,
           _buildProgressBar(context),
-          const SizedBox(height: 4),
+          gapH4,
           _buildRemainingTime(),
           const SizedBox(height: 22),
           _buildBottomRow(),
@@ -39,6 +40,7 @@ class PrayerCard extends StatelessWidget {
 
   Widget _buildLocationRow({
     required BuildContext context,
+    required ThemeData theme,
   }) {
     return Row(
       children: [
@@ -46,11 +48,13 @@ class PrayerCard extends StatelessWidget {
         const SizedBox(width: 8),
         Text(
           'Khilgaon, Dhaka',
-          style: TextStyle(
-            fontSize: twelvePx,
-            color: context.color.headingTextColor,
-            fontWeight: FontWeight.w400,
-          ),
+          // style: TextStyle(
+          //   fontSize: twelvePx,
+          //   color: context.color.headingTextColor,
+          //   fontWeight: FontWeight.w400,
+          // ),
+
+          style: theme.textTheme.bodyMedium,
         ),
       ],
     );
@@ -156,12 +160,16 @@ class PrayerCard extends StatelessWidget {
     return const Row(
       children: [
         NextPrayerInfo(
-          icon: Icons.nightlight_round,
+          icon: AppImages.icTime,
           title: 'Magrib',
           time: '3:54pm',
         ),
         SizedBox(width: 24),
-        DateInfo(),
+        DateInfo(
+          icon: AppImages.icDate,
+          title: 'Date',
+          date: 'Dhuʻl-Hijjah 26, 1445 AH',
+        ),
       ],
     );
   }
