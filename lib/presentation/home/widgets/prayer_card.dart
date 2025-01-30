@@ -3,7 +3,6 @@ import 'package:dua/core/utility/utility.dart';
 import 'package:dua/presentation/home/widgets/date_info.dart';
 import 'package:dua/presentation/home/widgets/next_prayer_info.dart';
 import 'package:flutter/material.dart';
-import 'package:dua/core/config/dua_color.dart';
 import 'package:dua/core/config/dua_screen.dart';
 
 class PrayerCard extends StatelessWidget {

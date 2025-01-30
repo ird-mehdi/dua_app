@@ -218,6 +218,7 @@ class PrayerBottomSheetPage extends StatelessWidget {
     );
   }
 
+  // ignore: unused_element
   Widget _buildDropdownRow(String title, String value, List<String> items,
       ValueChanged<String?> onChanged, ThemeData theme) {
     return Column(
