@@ -216,7 +216,7 @@ class DuaTheme {
               color: DuaColor.titleColorLight,
             );
           }),
-          indicatorColor: DuaColor.primaryColorLight01,
+          indicatorColor: DuaColor.primaryColorLight10,
           iconTheme: WidgetStateProperty.resolveWith<IconThemeData?>((states) {
             if (states.contains(WidgetState.selected)) {
               return IconThemeData(

@@ -1,5 +1,6 @@
 import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/static/svg_path.dart';
+import 'package:dua/core/utility/utility.dart';
 import 'package:dua/presentation/common/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -28,7 +29,7 @@ class PrayerTime2ndCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
-        color: Colors.black.withOpacity(0.05),
+        color: Colors.black.withOpacityInt(5),
       ),
       child: Padding(
         padding: const EdgeInsets.all(16),

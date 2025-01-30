@@ -34,8 +34,7 @@ class CategoryCard extends StatelessWidget {
       height: eightyEightPx,
       padding: padding18,
       decoration: BoxDecoration(
-        border:
-            Border.all(width: onePx, color: context.color.cardBackgroundColor),
+        border: Border.all(width: onePx, color: context.color.primaryColor10),
         borderRadius: radius20,
       ),
       child: Row(

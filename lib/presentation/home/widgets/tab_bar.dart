@@ -40,7 +40,7 @@ class TabBarSection extends StatelessWidget {
               ),
               tabs: const [
                 SizedBox(width: double.infinity, child: Tab(text: 'Dua')),
-                SizedBox(width: double.infinity, child: Tab(text: 'Juz')),
+                SizedBox(width: double.infinity, child: Tab(text: 'Ruqyah')),
               ],
             ),
           ),

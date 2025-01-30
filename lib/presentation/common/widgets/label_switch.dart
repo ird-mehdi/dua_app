@@ -1,4 +1,5 @@
 import 'package:dua/core/config/dua_color.dart';
+import 'package:dua/core/utility/utility.dart';
 import 'package:dua/presentation/common/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 
@@ -38,11 +39,11 @@ class LabeledSwitch extends StatelessWidget {
               value: value,
               onChanged: onChanged,
               activeColor: const Color(0xFF445D48), // Dark green
-              activeTrackColor: const Color(0xFF445D48).withOpacity(0.5),
+              activeTrackColor: const Color(0xFF445D48).withOpacityInt(0.5),
               inactiveThumbColor:
                   const Color(0xFF787878), // Inactive color from image
               inactiveTrackColor: const Color(0xFF787878)
-                  .withOpacity(0.3), // Inactive track color
+                  .withOpacityInt(0.3), // Inactive track color
             ),
           ),
         ],
