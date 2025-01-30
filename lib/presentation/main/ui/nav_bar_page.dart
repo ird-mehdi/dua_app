@@ -35,7 +35,7 @@ class NavBarPage extends StatelessWidget {
                 child: NavigationBar(
                   selectedIndex: controller.currentUiState.selectedIndex,
                   onDestinationSelected: controller.onItemTapped,
-                  backgroundColor: DuaColor.navbarBGColorLight,
+                  //backgroundColor: DuaColor.navbarBGColorLight,
                   height: 80,
                   destinations: [
                     NavigationDestination(

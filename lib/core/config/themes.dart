@@ -21,6 +21,7 @@ class DuaTheme {
   static final ThemeData _baseTheme = ThemeData(
     visualDensity: VisualDensity.adaptivePlatformDensity,
     fontFamily: FontFamily.poppins,
+    scaffoldBackgroundColor: DuaColor.backgroundColorLight,
     bannerTheme:
         MaterialBannerThemeData(backgroundColor: DuaColor.primaryColorLight01),
     dialogTheme: const DialogTheme(
@@ -114,6 +115,17 @@ class DuaTheme {
             ),
           )
         ],
+        appBarTheme: AppBarTheme(
+          backgroundColor: DuaColor.navbarBGColorLight,
+          elevation: 0,
+          scrolledUnderElevation: 0,
+          titleTextStyle: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: DuaColor.titleColorLight,
+            fontFamily: FontFamily.poppins,
+          ),
+        ),
         checkboxTheme: CheckboxThemeData(
           checkColor: const WidgetStatePropertyAll(Colors.white),
           fillColor: WidgetStateProperty.resolveWith((states) {
@@ -167,16 +179,6 @@ class DuaTheme {
         scrollbarTheme: ScrollbarThemeData(
           thumbColor: WidgetStateProperty.all(DuaColor.primaryColorLight01),
         ),
-        appBarTheme: const AppBarTheme(
-          shadowColor: Colors.white,
-          backgroundColor: DuaColor.primaryColorLight01,
-          foregroundColor: Color(0xff477848),
-          iconTheme: IconThemeData(
-            color: DuaColor.titleColorLight,
-          ),
-          elevation: 0,
-          scrolledUnderElevation: 0,
-        ),
         textTheme: QuranTextTheme.baseTextTheme.apply(
           bodyColor: DuaColor.titleColorLight,
           displayColor: DuaColor.titleColorLight,
@@ -196,6 +198,35 @@ class DuaTheme {
           scrim: DuaColor.primaryColorLight01,
           inverseSurface: DuaColor.backgroundColorLight,
           inversePrimary: DuaColor.primaryColorLight01,
+        ),
+        navigationBarTheme: NavigationBarThemeData(
+          backgroundColor: DuaColor.navbarBGColorLight,
+          labelTextStyle: WidgetStateProperty.resolveWith<TextStyle?>((states) {
+            if (states.contains(WidgetState.selected)) {
+              return TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: DuaColor.primaryColorLight100,
+                overflow: TextOverflow.ellipsis,
+              );
+            }
+            return TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              color: DuaColor.titleColorLight,
+            );
+          }),
+          indicatorColor: DuaColor.primaryColorLight01,
+          iconTheme: WidgetStateProperty.resolveWith<IconThemeData?>((states) {
+            if (states.contains(WidgetState.selected)) {
+              return IconThemeData(
+                color: DuaColor.primaryColorLight100,
+              );
+            }
+            return IconThemeData(
+              color: DuaColor.titleColorLight,
+            );
+          }),
         ),
       );
 }

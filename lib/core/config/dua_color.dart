@@ -30,7 +30,7 @@ class DuaColor {
   static const Color cardBackgroundColorLight = Color(0xFFFFFFFF);
   static const Color cardBackColorLight1 = Color(0xFFB0CC83);
   static const Color cardBackColorLight2 = Color(0xFF8BB462);
-  static const Color navbarBGColorLight = Color(0xFF282E29);
+  static const Color navbarBGColorLight = Color(0xFFFBFFFB);
   static const Color tabBtnColorLight = Color(0xFFF8FFF8);
   static const Color shadeColorLight = Color(0xFFEEF6EB);
   static const Color iconShadeColorLight = Color(0xFFD8E7D3);
