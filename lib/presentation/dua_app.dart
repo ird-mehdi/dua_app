@@ -1,6 +1,7 @@
 import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/config/themes.dart';
 import 'package:dua/core/static/font_family.dart';
+import 'package:dua/presentation/main/ui/nav_bar_page.dart';
 import 'package:dua/presentation/prayer_time/ui/prayer_time_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -27,8 +28,8 @@ class DuaApp extends StatelessWidget {
 
         theme: DuaTheme.getTheme('Light', FontFamily.kalpurush, 16),
         themeMode: ThemeMode.light,
-        // home: HomePage(),
-        home: PrayerTimePage(),
+        home: NavBarPage(),
+        //home: PrayerTimePage(),
       );
     });
   }

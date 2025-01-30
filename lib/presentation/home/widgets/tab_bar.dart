@@ -1,6 +1,6 @@
-import 'package:dua/core/config/dua_color.dart';
 import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/static/ui_const.dart';
+import 'package:dua/core/utility/utility.dart';
 import 'package:flutter/material.dart';
 
 class TabBarSection extends StatelessWidget {
@@ -14,25 +14,26 @@ class TabBarSection extends StatelessWidget {
         maxHeight: sixtyFivePx,
         child: Container(
           padding: paddingBottom12,
-          color: DuaColor.navbarBGColorLight,
+          color: context.color.navbarBGColor,
           child: Container(
             margin: paddingH16,
             padding: padding6,
             decoration: BoxDecoration(
-              color: DuaColor.navbarBGColorLight,
+              color: context.color.navbarBGColor,
               borderRadius: radius30,
-              border: Border.all(color: DuaColor.primary20Color, width: twoPx),
+              border:
+                  Border.all(color: context.color.primaryColor20, width: twoPx),
             ),
             child: TabBar(
               labelPadding: EdgeInsets.zero,
               isScrollable: false,
               dividerHeight: 0,
               indicator: BoxDecoration(
-                color: DuaColor.primary10Color,
+                color: context.color.primaryColor10,
                 borderRadius: radius24,
               ),
-              unselectedLabelColor: DuaColor.textPrimaryColorLight,
-              labelColor: DuaColor.primary100ColorLight,
+              unselectedLabelColor: context.color.titleColor,
+              labelColor: context.color.primaryColor100,
               labelStyle: TextStyle(
                 fontSize: sixteenPx,
                 fontWeight: FontWeight.bold,

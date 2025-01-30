@@ -23,6 +23,27 @@ class DuaCustomThemeColors extends ThemeExtension<DuaCustomThemeColors> {
   final Color backgroundColor;
   final Color mosqueTop;
   final Color cloud;
+  final Color cardBackgroundColor;
+  final Color cardBackColor1;
+  final Color cardBackColor2;
+  final Color navbarBGColor;
+  final Color tabBtnColor;
+  final Color shadeColor;
+  final Color iconShadeColor;
+  final Color whiteColor;
+  final Color secondaryColor;
+  final Color secondaryColor10;
+  final Color sectionTextColor;
+  final Color btnTextColor;
+  final Color headingTextColor;
+  final Color quickAccessColor1;
+  final Color quickAccessColor2;
+  final Color quickAccessColor3;
+  final Color quickAccessColor4;
+  final Color quickAccessColor5;
+  final Color quickAccessColor6;
+  final Color quickAccessColor7;
+  final Color quickAccessColor8;
 
   const DuaCustomThemeColors({
     required this.primaryColor100,
@@ -47,6 +68,27 @@ class DuaCustomThemeColors extends ThemeExtension<DuaCustomThemeColors> {
     required this.backgroundColor,
     required this.mosqueTop,
     required this.cloud,
+    required this.cardBackgroundColor,
+    required this.cardBackColor1,
+    required this.cardBackColor2,
+    required this.navbarBGColor,
+    required this.tabBtnColor,
+    required this.shadeColor,
+    required this.iconShadeColor,
+    required this.whiteColor,
+    required this.secondaryColor,
+    required this.secondaryColor10,
+    required this.sectionTextColor,
+    required this.btnTextColor,
+    required this.headingTextColor,
+    required this.quickAccessColor1,
+    required this.quickAccessColor2,
+    required this.quickAccessColor3,
+    required this.quickAccessColor4,
+    required this.quickAccessColor5,
+    required this.quickAccessColor6,
+    required this.quickAccessColor7,
+    required this.quickAccessColor8,
   });
 
   @override
@@ -73,6 +115,27 @@ class DuaCustomThemeColors extends ThemeExtension<DuaCustomThemeColors> {
     Color? backgroundColor,
     Color? mosqueTop,
     Color? cloud,
+    Color? cardBackgroundColor,
+    Color? cardBackColor1,
+    Color? cardBackColor2,
+    Color? navbarBGColor,
+    Color? tabBtnColor,
+    Color? shadeColor,
+    Color? iconShadeColor,
+    Color? whiteColor,
+    Color? secondaryColor,
+    Color? secondaryColor10,
+    Color? sectionTextColor,
+    Color? btnTextColor,
+    Color? headingTextColor,
+    Color? quickAccessColor1,
+    Color? quickAccessColor2,
+    Color? quickAccessColor3,
+    Color? quickAccessColor4,
+    Color? quickAccessColor5,
+    Color? quickAccessColor6,
+    Color? quickAccessColor7,
+    Color? quickAccessColor8,
   }) {
     return DuaCustomThemeColors(
       primaryColor100: primaryColor100 ?? this.primaryColor100,
@@ -97,6 +160,27 @@ class DuaCustomThemeColors extends ThemeExtension<DuaCustomThemeColors> {
       backgroundColor: backgroundColor ?? this.backgroundColor,
       mosqueTop: mosqueTop ?? this.mosqueTop,
       cloud: cloud ?? this.cloud,
+      cardBackgroundColor: cardBackgroundColor ?? this.cardBackgroundColor,
+      cardBackColor1: cardBackColor1 ?? this.cardBackColor1,
+      cardBackColor2: cardBackColor2 ?? this.cardBackColor2,
+      navbarBGColor: navbarBGColor ?? this.navbarBGColor,
+      tabBtnColor: tabBtnColor ?? this.tabBtnColor,
+      shadeColor: shadeColor ?? this.shadeColor,
+      iconShadeColor: iconShadeColor ?? this.iconShadeColor,
+      whiteColor: whiteColor ?? this.whiteColor,
+      secondaryColor: secondaryColor ?? this.secondaryColor,
+      secondaryColor10: secondaryColor10 ?? this.secondaryColor10,
+      sectionTextColor: sectionTextColor ?? this.sectionTextColor,
+      btnTextColor: btnTextColor ?? this.btnTextColor,
+      headingTextColor: headingTextColor ?? this.headingTextColor,
+      quickAccessColor1: quickAccessColor1 ?? this.quickAccessColor1,
+      quickAccessColor2: quickAccessColor2 ?? this.quickAccessColor2,
+      quickAccessColor3: quickAccessColor3 ?? this.quickAccessColor3,
+      quickAccessColor4: quickAccessColor4 ?? this.quickAccessColor4,
+      quickAccessColor5: quickAccessColor5 ?? this.quickAccessColor5,
+      quickAccessColor6: quickAccessColor6 ?? this.quickAccessColor6,
+      quickAccessColor7: quickAccessColor7 ?? this.quickAccessColor7,
+      quickAccessColor8: quickAccessColor8 ?? this.quickAccessColor8,
     );
   }
 
@@ -129,6 +213,39 @@ class DuaCustomThemeColors extends ThemeExtension<DuaCustomThemeColors> {
       backgroundColor: Color.lerp(backgroundColor, other.backgroundColor, t)!,
       mosqueTop: Color.lerp(mosqueTop, other.mosqueTop, t)!,
       cloud: Color.lerp(cloud, other.cloud, t)!,
+      cardBackgroundColor:
+          Color.lerp(cardBackgroundColor, other.cardBackgroundColor, t)!,
+      cardBackColor1: Color.lerp(cardBackColor1, other.cardBackColor1, t)!,
+      cardBackColor2: Color.lerp(cardBackColor2, other.cardBackColor2, t)!,
+      navbarBGColor: Color.lerp(navbarBGColor, other.navbarBGColor, t)!,
+      tabBtnColor: Color.lerp(tabBtnColor, other.tabBtnColor, t)!,
+      shadeColor: Color.lerp(shadeColor, other.shadeColor, t)!,
+      iconShadeColor: Color.lerp(iconShadeColor, other.iconShadeColor, t)!,
+      whiteColor: Color.lerp(whiteColor, other.whiteColor, t)!,
+      secondaryColor: Color.lerp(secondaryColor, other.secondaryColor, t)!,
+      secondaryColor10:
+          Color.lerp(secondaryColor10, other.secondaryColor10, t)!,
+      sectionTextColor:
+          Color.lerp(sectionTextColor, other.sectionTextColor, t)!,
+      btnTextColor: Color.lerp(btnTextColor, other.btnTextColor, t)!,
+      headingTextColor:
+          Color.lerp(headingTextColor, other.headingTextColor, t)!,
+      quickAccessColor1:
+          Color.lerp(quickAccessColor1, other.quickAccessColor1, t)!,
+      quickAccessColor2:
+          Color.lerp(quickAccessColor2, other.quickAccessColor2, t)!,
+      quickAccessColor3:
+          Color.lerp(quickAccessColor3, other.quickAccessColor3, t)!,
+      quickAccessColor4:
+          Color.lerp(quickAccessColor4, other.quickAccessColor4, t)!,
+      quickAccessColor5:
+          Color.lerp(quickAccessColor5, other.quickAccessColor5, t)!,
+      quickAccessColor6:
+          Color.lerp(quickAccessColor6, other.quickAccessColor6, t)!,
+      quickAccessColor7:
+          Color.lerp(quickAccessColor7, other.quickAccessColor7, t)!,
+      quickAccessColor8:
+          Color.lerp(quickAccessColor8, other.quickAccessColor8, t)!,
     );
   }
 }

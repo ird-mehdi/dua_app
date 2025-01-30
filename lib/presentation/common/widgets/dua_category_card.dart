@@ -1,6 +1,6 @@
-import 'package:dua/core/config/dua_color.dart';
 import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/static/ui_const.dart';
+import 'package:dua/core/utility/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -34,7 +34,8 @@ class CategoryCard extends StatelessWidget {
       height: eightyEightPx,
       padding: padding18,
       decoration: BoxDecoration(
-        border: Border.all(width: onePx, color: DuaColor.primary10Color),
+        border:
+            Border.all(width: onePx, color: context.color.cardBackgroundColor),
         borderRadius: radius20,
       ),
       child: Row(
@@ -63,7 +64,7 @@ class CategoryCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: fifteenPx,
                     fontWeight: FontWeight.w500,
-                    color: DuaColor.textPrimaryColorLight,
+                    color: context.color.headingTextColor,
                   ),
                 ),
                 gapH4,
@@ -72,7 +73,7 @@ class CategoryCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: twelvePx,
                     fontWeight: FontWeight.w400,
-                    color: DuaColor.subtitleColorLight,
+                    color: context.color.sectionTextColor,
                   ),
                 ),
               ],
@@ -82,7 +83,7 @@ class CategoryCard extends StatelessWidget {
             width: twoPx,
             height: thirtyFourPx,
             decoration: BoxDecoration(
-              color: DuaColor.iconShadeColorLight,
+              color: context.color.iconShadeColor,
               borderRadius: radius10,
             ),
           ),
@@ -94,7 +95,7 @@ class CategoryCard extends StatelessWidget {
                 style: TextStyle(
                   fontSize: fifteenPx,
                   fontWeight: FontWeight.w500,
-                  color: DuaColor.textPrimaryColorLight,
+                  color: context.color.headingTextColor,
                 ),
               ),
               gapH4,
@@ -103,7 +104,7 @@ class CategoryCard extends StatelessWidget {
                 style: TextStyle(
                   fontSize: twelvePx,
                   fontWeight: FontWeight.w400,
-                  color: DuaColor.subtitleColorLight,
+                  color: context.color.sectionTextColor,
                 ),
               ),
             ],

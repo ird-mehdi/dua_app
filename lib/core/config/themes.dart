@@ -20,7 +20,7 @@ class DuaTheme {
 
   static final ThemeData _baseTheme = ThemeData(
     visualDensity: VisualDensity.adaptivePlatformDensity,
-    fontFamily: FontFamily.kalpurush,
+    fontFamily: FontFamily.poppins,
     bannerTheme:
         MaterialBannerThemeData(backgroundColor: DuaColor.primaryColorLight01),
     dialogTheme: const DialogTheme(
@@ -28,37 +28,9 @@ class DuaTheme {
         borderRadius: BorderRadius.all(Radius.circular(12)),
       ),
     ),
-    inputDecorationTheme: const InputDecorationTheme(
-      enabledBorder: UnderlineInputBorder(
-        borderSide: BorderSide(color: Color(0xffDEDEDE)),
-      ),
-      focusedBorder: UnderlineInputBorder(
-        borderSide: BorderSide(color: Color(0xff17B686)),
-      ),
-      border: UnderlineInputBorder(
-        borderSide: BorderSide(color: Color(0xff17B686)),
-      ),
-      hoverColor: DuaColor.primaryColorLight01,
-    ),
     dividerTheme: const DividerThemeData(
       thickness: 1,
       space: 0,
-    ),
-    radioTheme: const RadioThemeData(
-      visualDensity: VisualDensity(horizontal: -4),
-      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-    ),
-    disabledColor: const Color(0xff7F909F),
-    dividerColor: const Color(0xffDEDEDE),
-    secondaryHeaderColor: const Color(0xff17B686),
-    floatingActionButtonTheme: const FloatingActionButtonThemeData(),
-    bottomSheetTheme: const BottomSheetThemeData(
-      backgroundColor: Colors.white,
-      modalBackgroundColor: Color(0xFFF3F3F3),
-    ),
-    appBarTheme: const AppBarTheme(
-      elevation: 0,
-      scrolledUnderElevation: 0,
     ),
   );
 
@@ -88,6 +60,27 @@ class DuaTheme {
             backgroundColor: DuaColor.backgroundColorLight,
             mosqueTop: DuaColor.mosqueTopLight,
             cloud: DuaColor.cloudLight,
+            cardBackgroundColor: DuaColor.cardBackgroundColorLight,
+            cardBackColor1: DuaColor.cardBackColorLight1,
+            cardBackColor2: DuaColor.cardBackColorLight2,
+            navbarBGColor: DuaColor.navbarBGColorLight,
+            tabBtnColor: DuaColor.tabBtnColorLight,
+            shadeColor: DuaColor.shadeColorLight,
+            iconShadeColor: DuaColor.iconShadeColorLight,
+            whiteColor: DuaColor.whiteColorLight,
+            secondaryColor: DuaColor.secondaryColorLight,
+            secondaryColor10: DuaColor.secondaryColorLight10,
+            sectionTextColor: DuaColor.sectionTextColorLight,
+            btnTextColor: DuaColor.btnTextColorLight,
+            headingTextColor: DuaColor.headingTextColorLight,
+            quickAccessColor1: DuaColor.quickAccessColorLight1,
+            quickAccessColor2: DuaColor.quickAccessColorLight2,
+            quickAccessColor3: DuaColor.quickAccessColorLight3,
+            quickAccessColor4: DuaColor.quickAccessColorLight4,
+            quickAccessColor5: DuaColor.quickAccessColorLight5,
+            quickAccessColor6: DuaColor.quickAccessColorLight6,
+            quickAccessColor7: DuaColor.quickAccessColorLight7,
+            quickAccessColor8: DuaColor.quickAccessColorLight8,
           ),
           DuaCustomTextTheme(
             lableExtraSmall: TextStyle(

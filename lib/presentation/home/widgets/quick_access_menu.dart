@@ -4,6 +4,7 @@ import 'package:dua/core/config/app_images.dart';
 import 'package:dua/core/config/dua_color.dart';
 import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/static/ui_const.dart';
+import 'package:dua/presentation/prayer_time/ui/prayer_time_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -24,9 +25,11 @@ class QuickAccessMenu extends StatelessWidget {
       itemCount: quickAccessItems.length,
       itemBuilder: (context, index) {
         return _buildQuickAccessItem(
+          context: context,
           icon: quickAccessItems[index].icon,
           label: quickAccessItems[index].label,
           color: quickAccessItems[index].color,
+          page: quickAccessItems[index].widget,
         );
       },
     );
@@ -36,6 +39,8 @@ class QuickAccessMenu extends StatelessWidget {
     required String icon,
     required String label,
     required Color color,
+    required BuildContext context,
+    required Widget page,
   }) {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -45,7 +50,12 @@ class QuickAccessMenu extends StatelessWidget {
           shape: const CircleBorder(),
           child: InkWell(
             borderRadius: radius50, // Circular ripple effect
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => page),
+              );
+            },
             child: Container(
               padding: padding14, // Reduced padding
               decoration: ShapeDecoration(
@@ -83,11 +93,13 @@ class QuickAccessItem {
   final String icon;
   final String label;
   final Color color;
+  final Widget widget;
 
   const QuickAccessItem({
     required this.icon,
     required this.label,
     required this.color,
+    required this.widget,
   });
 }
 
@@ -96,40 +108,48 @@ final List<QuickAccessItem> quickAccessItems = [
     icon: AppImages.icTimer,
     label: 'Last Read',
     color: DuaColor.quickAccessColorLight1,
+    widget: PrayerTimePage(),
   ),
   QuickAccessItem(
     icon: AppImages.icCup,
     label: 'Challanges',
     color: DuaColor.quickAccessColorLight2,
+    widget: PrayerTimePage(),
   ),
   QuickAccessItem(
     icon: AppImages.icBolt,
     label: 'Self Ruqyah',
     color: DuaColor.quickAccessColorLight3,
+    widget: PrayerTimePage(),
   ),
   QuickAccessItem(
     icon: AppImages.icBook,
     label: "Dua's Books",
     color: DuaColor.quickAccessColorLight4,
+    widget: PrayerTimePage(),
   ),
   QuickAccessItem(
     icon: AppImages.icPerson,
     label: 'Dhikr',
     color: DuaColor.quickAccessColorLight5,
+    widget: PrayerTimePage(),
   ),
   QuickAccessItem(
     icon: AppImages.icMosque,
     label: 'Prayer Time',
     color: DuaColor.quickAccessColorLight6,
+    widget: PrayerTimePage(),
   ),
   QuickAccessItem(
     icon: AppImages.icApps,
     label: 'Other Apps',
     color: DuaColor.quickAccessColorLight7,
+    widget: PrayerTimePage(),
   ),
   QuickAccessItem(
     icon: AppImages.icLovely,
     label: 'Support Us',
     color: DuaColor.quickAccessColorLight8,
+    widget: PrayerTimePage(),
   ),
 ];

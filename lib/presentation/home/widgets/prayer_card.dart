@@ -1,4 +1,5 @@
 import 'package:dua/core/config/app_images.dart';
+import 'package:dua/core/utility/utility.dart';
 import 'package:dua/presentation/home/widgets/date_info.dart';
 import 'package:dua/presentation/home/widgets/next_prayer_info.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ class PrayerCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildLocationRow(),
+          _buildLocationRow(context: context),
           const SizedBox(height: 22),
           _buildPrayerTimeInfo(),
           const SizedBox(height: 8),
@@ -37,7 +38,9 @@ class PrayerCard extends StatelessWidget {
     );
   }
 
-  Widget _buildLocationRow() {
+  Widget _buildLocationRow({
+    required BuildContext context,
+  }) {
     return Row(
       children: [
         const Icon(Icons.location_on, size: 18, color: Color(0xFF282E29)),
@@ -46,7 +49,7 @@ class PrayerCard extends StatelessWidget {
           'Khilgaon, Dhaka',
           style: TextStyle(
             fontSize: twelvePx,
-            color: DuaColor.textPrimaryColorLight,
+            color: context.color.headingTextColor,
             fontWeight: FontWeight.w400,
           ),
         ),

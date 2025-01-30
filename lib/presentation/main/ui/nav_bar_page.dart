@@ -1,6 +1,7 @@
 import 'package:dua/core/config/app_images.dart';
 import 'package:dua/core/config/dua_color.dart';
 import 'package:dua/core/external_libs/presentable_widget_builder.dart';
+import 'package:dua/core/utility/utility.dart';
 import 'package:dua/presentation/main/presenter/nav_bar_presenter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -26,7 +27,7 @@ class NavBarPage extends StatelessWidget {
                 decoration: BoxDecoration(
                   border: Border(
                     top: BorderSide(
-                      color: DuaColor.primary20Color,
+                      color: context.color.primaryColor20,
                       width: 1,
                     ),
                   ),

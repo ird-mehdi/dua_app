@@ -1,6 +1,7 @@
 import 'package:dua/core/config/app_images.dart';
 import 'package:dua/core/config/dua_color.dart';
 import 'package:dua/core/config/dua_screen.dart';
+import 'package:dua/core/utility/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -32,12 +33,14 @@ class NotificationsRojaTimeCard extends StatelessWidget {
             time: leftTime,
             hasNotification: notification,
             alignment: MainAxisAlignment.start,
+            context: context,
           ),
           _buildTimeWithIcon(
             title: 'Ifter',
             time: rightTime,
             hasNotification: notification,
             alignment: MainAxisAlignment.end,
+            context: context,
           ),
         ],
       ),
@@ -49,6 +52,7 @@ class NotificationsRojaTimeCard extends StatelessWidget {
     required String time,
     required bool hasNotification,
     required MainAxisAlignment alignment,
+    required BuildContext context,
   }) {
     return Row(
       mainAxisAlignment: alignment,
@@ -74,7 +78,7 @@ class NotificationsRojaTimeCard extends StatelessWidget {
               style: TextStyle(
                 fontSize: twelvePx,
                 fontWeight: FontWeight.w500,
-                color: DuaColor.titleTextColorLight,
+                color: context.color.headingTextColor,
               ),
             ),
             Text(
@@ -82,7 +86,7 @@ class NotificationsRojaTimeCard extends StatelessWidget {
               style: TextStyle(
                 fontSize: eighteenPx,
                 fontWeight: FontWeight.w800,
-                color: DuaColor.titleTextColorLight,
+                color: context.color.headingTextColor,
               ),
             ),
           ],
