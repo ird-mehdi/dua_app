@@ -1,5 +1,4 @@
 import 'package:dua/core/config/app_images.dart';
-import 'package:dua/core/config/dua_color.dart';
 import 'package:dua/core/external_libs/presentable_widget_builder.dart';
 import 'package:dua/core/utility/utility.dart';
 import 'package:dua/presentation/main/presenter/nav_bar_presenter.dart';
