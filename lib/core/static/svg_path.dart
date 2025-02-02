@@ -22,4 +22,6 @@ class SvgPath {
   static const String prayertimeIconEsha = "assets/images/svg/Isha.svg";
   static const String volumeHhigh = "assets/images/svg/volume-high.svg";
   static const String volumeSlash = "assets/images/svg/volume-slash.svg";
+  static const String icArrowBack = "assets/images/svg/ic_arrow_back.svg";
 }
+

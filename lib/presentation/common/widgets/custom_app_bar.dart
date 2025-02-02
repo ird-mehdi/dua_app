@@ -1,4 +1,7 @@
-import 'package:dua/core/config/app_images.dart';
+
+import 'package:dua/core/config/dua_color.dart';
+import 'package:dua/core/config/dua_screen.dart';
+import 'package:dua/core/static/svg_path.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -11,6 +14,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? icon;
   final Color? backgroundColor;
   final bool? showLeading;
+  final double? titleFontSize;
   const CustomAppBar({
     super.key,
     required this.title,
@@ -21,6 +25,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.icon,
     this.backgroundColor,
     this.showLeading = true,
+    this.titleFontSize,
   });
 
   @override
@@ -30,11 +35,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       titleSpacing: titleSpacing,
       title: Text(
         title,
+        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              fontSize: titleFontSize ?? twentyPx,
+              fontWeight: FontWeight.w600,
+              color: DuaColor.headingTextColorLight,
+            ),
       ),
       centerTitle: centerTitle,
       leading: showLeading!
           ? IconButton(
-              icon: SvgPicture.asset(icon ?? AppImages.icSearch),
+              icon: SvgPicture.asset(icon ?? SvgPath.icArrowBack),
               onPressed: onLeadingPressed ?? () => Navigator.of(context).pop(),
             )
           : null,
