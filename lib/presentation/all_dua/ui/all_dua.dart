@@ -1,5 +1,6 @@
 import 'package:dua/core/config/app_images.dart';
 import 'package:dua/core/config/dua_screen.dart';
+import 'package:dua/core/static/svg_path.dart';
 import 'package:dua/core/static/ui_const.dart';
 import 'package:dua/core/utility/utility.dart';
 import 'package:dua/presentation/common/widgets/custom_app_bar.dart';
@@ -11,16 +12,52 @@ class AllDuaPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Scaffold(
-        appBar: CustomAppBar(
-          title: 'All Dua',
-          icon: AppImages.icCategory2,
-        ),
-        body: Column(
+    final ThemeData theme = Theme.of(context);
+    return Scaffold(
+      body: Padding(
+        padding: EdgeInsets.all(eightPx),
+        child: Column(
           children: [
+            CustomAppBar(
+              title: 'All Dua',
+              icon: AppImages.icCategory2,
+              titleSpacing: eightPx,
+              titleFontSize: eighteenPx,
+            ),
             CustomSearchBar(),
+            Padding(
+              padding: EdgeInsets.only(left: eightPx),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Select Sorting Type',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontSize: twelvePx,
+                      color: context.color.titleColor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {},
+                    icon: SvgPicture.asset(
+                      SvgPath.icArrowBack,
+                      width: eighteenPx,
+                      height: eighteenPx,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                itemCount: 20, // Replace with actual data length
+                itemBuilder: (BuildContext context, int index) {
+                  return Text('data');
+                },
+              ),
+            ),
           ],
         ),
       ),
@@ -34,8 +71,10 @@ class CustomSearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: eightPx,
+      ),
       child: TextField(
         decoration: InputDecoration(
           hintText: 'Search by dua\'s name',
@@ -44,7 +83,7 @@ class CustomSearchBar extends StatelessWidget {
             fontSize: fourteenPx,
           ),
           prefixIcon: Padding(
-            padding: EdgeInsets.all(tenPx),
+            padding: EdgeInsets.only(left: sixteenPx),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -60,7 +99,7 @@ class CustomSearchBar extends StatelessWidget {
           filled: true,
           fillColor: context.color.shadeColor,
           contentPadding: EdgeInsets.symmetric(
-            vertical: sixteenPx,
+            vertical: fourteenPx,
             horizontal: sixteenPx,
           ),
           border: _buildInputBorder(context),
@@ -75,6 +114,9 @@ class CustomSearchBar extends StatelessWidget {
 OutlineInputBorder _buildInputBorder(BuildContext context) {
   return OutlineInputBorder(
     borderRadius: radius24,
-    borderSide: BorderSide.none,
+    borderSide: BorderSide(
+      color: context.color.primaryColor20, // Adjust the color as needed
+      width: 2.0, // 2px border width
+    ),
   );
 }
