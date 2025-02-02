@@ -37,6 +37,7 @@ class DuaColor {
   static const Color whiteColorLight = Color(0xFFFFFFFF);
   static const Color secondaryColorLight = Color(0xFFB5DDA8);
   static const Color secondaryColorLight10 = Color(0xFFB5DDA8);
+  static const Color titleHeadingColorLight = Color(0xFF2D2D2D);
 
   static const Color quickAccessColorLight1 = Color(0x264989E9);
   static const Color quickAccessColorLight2 = Color(0x26FF9F00);

@@ -44,6 +44,7 @@ class DuaCustomThemeColors extends ThemeExtension<DuaCustomThemeColors> {
   final Color quickAccessColor6;
   final Color quickAccessColor7;
   final Color quickAccessColor8;
+  final Color titleHeadingColorLight;
 
   const DuaCustomThemeColors({
     required this.primaryColor100,
@@ -89,6 +90,7 @@ class DuaCustomThemeColors extends ThemeExtension<DuaCustomThemeColors> {
     required this.quickAccessColor6,
     required this.quickAccessColor7,
     required this.quickAccessColor8,
+    required this.titleHeadingColorLight,
   });
 
   @override
@@ -136,6 +138,7 @@ class DuaCustomThemeColors extends ThemeExtension<DuaCustomThemeColors> {
     Color? quickAccessColor6,
     Color? quickAccessColor7,
     Color? quickAccessColor8,
+    Color? titleHeadingColorLight,
   }) {
     return DuaCustomThemeColors(
       primaryColor100: primaryColor100 ?? this.primaryColor100,
@@ -181,7 +184,9 @@ class DuaCustomThemeColors extends ThemeExtension<DuaCustomThemeColors> {
       quickAccessColor6: quickAccessColor6 ?? this.quickAccessColor6,
       quickAccessColor7: quickAccessColor7 ?? this.quickAccessColor7,
       quickAccessColor8: quickAccessColor8 ?? this.quickAccessColor8,
-    );
+      titleHeadingColorLight:
+          titleHeadingColorLight ?? this.titleHeadingColorLight,
+      );
   }
 
   @override
@@ -191,6 +196,8 @@ class DuaCustomThemeColors extends ThemeExtension<DuaCustomThemeColors> {
       return this;
     }
     return DuaCustomThemeColors(
+      titleHeadingColorLight:
+          Color.lerp(titleHeadingColorLight, other.titleHeadingColorLight, t)!,
       primaryColor100: Color.lerp(primaryColor100, other.primaryColor100, t)!,
       primaryColor90: Color.lerp(primaryColor90, other.primaryColor90, t)!,
       primaryColor80: Color.lerp(primaryColor80, other.primaryColor80, t)!,

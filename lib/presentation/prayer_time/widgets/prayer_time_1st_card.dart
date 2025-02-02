@@ -1,5 +1,6 @@
 import 'package:dua/core/config/dua_color.dart';
 import 'package:dua/core/config/dua_screen.dart';
+import 'package:dua/core/utility/utility.dart';
 import 'package:dua/presentation/common/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 
@@ -21,42 +22,47 @@ class PrayerTime1stCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: eightPx, vertical: fourPx),
+                    // padding: EdgeInsets.symmetric(
+                    //     horizontal: eightPx, vertical: fourPx),
                     decoration: BoxDecoration(
-                      color: DuaColor.primaryColorLight01,
-                      borderRadius: BorderRadius.circular(tenPx),
+                      color: context.color.primaryColor10,
+                      borderRadius: BorderRadius.circular(thirtyPx),
                     ),
-                    child: CustomText(
-                      text: 'Now',
-                      theme: theme,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: twelvePx, vertical: sixPx),
+                      child: Text(
+                        'Now',
+                        style: theme.textTheme.titleSmall?.copyWith(
+                          fontSize: tenPx,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
                     ),
                   ),
                   SizedBox(height: eightPx),
-                  CustomText(
-                    text: 'DHUHR',
-                    fontSize: twentyFourPx,
-                    fontWeight: FontWeight.w800,
-                    theme: theme,
+                  Text(
+                    'DHUHR',
+                    style: theme.textTheme.headlineLarge?.copyWith(
+                      fontSize: twentyFourPx,
+                      fontWeight: FontWeight.w800,
+                    ),
                   ),
-                  CustomText(
-                    text: 'Dhaka, Bangladesh',
-                    fontSize: twelvePx,
-                    theme: theme,
+                  Text(
+                    'Dhaka, Bangladesh',
+                    style: theme.textTheme.bodyLarge?.copyWith(
+                      fontSize: twelvePx,
+                    ),
                   ),
                   SizedBox(
-                    height: twentyPx,
+                    height: twentyFivePx,
                   ),
-                  CustomText(
-                    text: '11 Jumada Al-Akhirah, 1441',
-                    fontSize: twelvePx,
-                    color: Colors.black54,
-                    theme: theme,
-                  ),
-                  CustomText(
-                    text: '17 July, 2024',
-                    fontSize: twelvePx,
-                    theme: theme,
+                  Text(
+                    '11 Jumada Al-Akhirah, 1441',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontSize: fourteenPx,
+                      color: context.color.titleHeadingColorLight,
+                    ),
                   ),
                 ],
               ),
@@ -84,10 +90,11 @@ class PrayerTime1stCard extends StatelessWidget {
                       ),
                       Column(
                         children: [
-                          CustomText(
-                            text: '03:15:00',
-                            fontSize: 22,
-                            theme: theme,
+                          Text(
+                            '03:15:00',
+                            style: theme.textTheme.titleLarge?.copyWith(
+                              fontSize: twentyTwoPx,
+                            ),
                           ),
                           CustomText(
                             text: 'Remaining Duhr',

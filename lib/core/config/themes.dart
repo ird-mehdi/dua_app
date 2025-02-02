@@ -39,6 +39,7 @@ class DuaTheme {
         brightness: Brightness.light,
         extensions: [
           DuaCustomThemeColors(
+            titleHeadingColorLight: DuaColor.titleHeadingColorLight,
             primaryColor100: DuaColor.primaryColorLight100,
             primaryColor90: DuaColor.primaryColorLight90,
             primaryColor80: DuaColor.primaryColorLight80,
