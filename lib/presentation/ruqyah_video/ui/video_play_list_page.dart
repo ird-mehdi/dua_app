@@ -60,12 +60,12 @@ class VideoPlayListPage extends StatelessWidget {
                         _buildFeaturedLectures(controller),
                         gapH14,
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          padding: paddingH16,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const SectionTitle(title: 'Other Playlist'),
-                              const SizedBox(height: 16),
+                              gapH16,
                               _buildPlaylistSection(controller),
                             ],
                           ),

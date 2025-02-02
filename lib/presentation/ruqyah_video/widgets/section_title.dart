@@ -22,7 +22,6 @@ class SectionTitle extends StatelessWidget {
           style: TextStyle(
             color: context.color.sectionTextColor,
             fontSize: twelvePx,
-            fontFamily: 'Poppins',
             fontWeight: FontWeight.w500,
             height: 1.67,
             letterSpacing: 0.12,

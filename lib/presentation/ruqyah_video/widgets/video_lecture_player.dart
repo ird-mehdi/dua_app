@@ -34,7 +34,7 @@ class VideoLecturePlayer extends StatelessWidget {
           children: [
             // Video Thumbnail
             Container(
-              height: 240,
+              height: twoHundredFortyPx,
               width: double.infinity,
               decoration: BoxDecoration(
                 color: Colors.black,
@@ -83,11 +83,11 @@ class VideoLecturePlayer extends StatelessWidget {
                         onPressed: onPlayTap,
                         icon: SvgPicture.asset(AppImages.icPrevious),
                       ),
-                      const SizedBox(width: 40),
+                      gapW40,
                       IconButton(
                         onPressed: onPlayTap,
                         icon: Container(
-                          padding: const EdgeInsets.all(20),
+                          padding: padding20,
                           decoration: BoxDecoration(
                             color: Color(0x6696AB99),
                             shape: BoxShape.circle,
@@ -95,7 +95,7 @@ class VideoLecturePlayer extends StatelessWidget {
                           child: SvgPicture.asset(AppImages.icPlay),
                         ),
                       ),
-                      const SizedBox(width: 40),
+                      gapW40,
                       IconButton(
                         onPressed: onPlayTap,
                         icon: SvgPicture.asset(AppImages.icNext),
@@ -105,13 +105,14 @@ class VideoLecturePlayer extends StatelessWidget {
 
                   // Bottom Progress Bar
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                    margin: EdgeInsets.symmetric(
+                        horizontal: tenPx, vertical: eightPx),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: eightPx, vertical: fivePx),
                     decoration: ShapeDecoration(
                       color: Color(0x3395AB99),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(13),
+                        borderRadius: radius13,
                       ),
                     ),
                     child: Row(
@@ -123,32 +124,29 @@ class VideoLecturePlayer extends StatelessWidget {
                           currentTime,
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 10,
-                            fontFamily: 'Poppins',
+                            fontSize: tenPx,
                             fontWeight: FontWeight.w400,
                             height: 1,
                             letterSpacing: 0.10,
                           ),
                         ),
-                        const SizedBox(width: 5),
+                        gapW5,
                         Text(
                           '/',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 10,
-                            fontFamily: 'Poppins',
+                            fontSize: tenPx,
                             fontWeight: FontWeight.w400,
                             height: 1,
                             letterSpacing: 0.10,
                           ),
                         ),
-                        const SizedBox(width: 5),
+                        gapW5,
                         Text(
                           totalDuration,
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 10,
-                            fontFamily: 'Poppins',
+                            fontSize: tenPx,
                             fontWeight: FontWeight.w400,
                             height: 1,
                             letterSpacing: 0.10,

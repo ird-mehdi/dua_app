@@ -1,9 +1,9 @@
 import 'package:dua/core/config/app_images.dart';
 import 'package:dua/core/external_libs/presentable_widget_builder.dart';
 import 'package:dua/core/utility/utility.dart';
+import 'package:dua/presentation/common/widgets/svg_image.dart';
 import 'package:dua/presentation/main/presenter/nav_bar_presenter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class NavBarPage extends StatelessWidget {
@@ -38,28 +38,28 @@ class NavBarPage extends StatelessWidget {
                   height: 80,
                   destinations: [
                     NavigationDestination(
-                      icon: SvgPicture.asset(AppImages.icHome),
-                      selectedIcon: SvgPicture.asset(AppImages.icHome),
+                      icon: SvgImage(assetName: AppImages.icHome),
+                      selectedIcon: SvgImage(assetName: AppImages.icHome),
                       label: 'Home',
                     ),
                     NavigationDestination(
-                      icon: SvgPicture.asset(AppImages.icCategory),
-                      selectedIcon: SvgPicture.asset(AppImages.icCategory),
+                      icon: SvgImage(assetName: AppImages.icCategory),
+                      selectedIcon: SvgImage(assetName: AppImages.icCategory),
                       label: 'All Duas',
                     ),
                     NavigationDestination(
-                      icon: SvgPicture.asset(AppImages.icBookmark),
-                      selectedIcon: SvgPicture.asset(AppImages.icBookmark),
+                      icon: SvgImage(assetName: AppImages.icBookmark),
+                      selectedIcon: SvgImage(assetName: AppImages.icBookmark),
                       label: 'Bookmark',
                     ),
                     NavigationDestination(
-                      icon: SvgPicture.asset(AppImages.icCalendar),
-                      selectedIcon: SvgPicture.asset(AppImages.icCalendar),
+                      icon: SvgImage(assetName: AppImages.icCalendar),
+                      selectedIcon: SvgImage(assetName: AppImages.icCalendar),
                       label: 'Schedule',
                     ),
                     NavigationDestination(
-                      icon: SvgPicture.asset(AppImages.icLampCharge),
-                      selectedIcon: SvgPicture.asset(AppImages.icLampCharge),
+                      icon: SvgImage(assetName: AppImages.icLampCharge),
+                      selectedIcon: SvgImage(assetName: AppImages.icLampCharge),
                       label: 'Memorize',
                     ),
                   ],

@@ -27,7 +27,7 @@ class FeaturedLectureCard extends StatelessWidget {
           Stack(
             children: [
               ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(12)),
+                borderRadius: radius16,
                 child: Image.asset(
                   thumbnailUrl,
                   height: 172,
@@ -38,7 +38,7 @@ class FeaturedLectureCard extends StatelessWidget {
               Positioned.fill(
                 child: Container(
                   decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(Radius.circular(12)),
+                    borderRadius: radius16,
                     gradient: LinearGradient(
                       begin: Alignment(0.00, -1.00),
                       end: Alignment(0, 1),
@@ -48,23 +48,22 @@ class FeaturedLectureCard extends StatelessWidget {
                 ),
               ),
               Positioned(
-                bottom: 10,
-                left: 10,
+                bottom: tenPx,
+                left: tenPx,
                 child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: eightPx, vertical: fourPx),
                   decoration: ShapeDecoration(
                     color: Color(0x3396AB99),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(13),
+                      borderRadius: radius13,
                     ),
                   ),
                   child: Text(
                     duration,
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 10,
-                      fontFamily: 'Poppins',
+                      fontSize: tenPx,
                       fontWeight: FontWeight.w400,
                       height: 1,
                       letterSpacing: 0.10,

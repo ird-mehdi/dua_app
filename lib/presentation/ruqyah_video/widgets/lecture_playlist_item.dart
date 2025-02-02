@@ -1,3 +1,5 @@
+import 'package:dua/core/config/dua_screen.dart';
+import 'package:dua/core/static/ui_const.dart';
 import 'package:flutter/material.dart';
 
 class LecturePlaylistItem extends StatelessWidget {
@@ -16,51 +18,51 @@ class LecturePlaylistItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
+      padding: padding16,
       decoration: BoxDecoration(
         border: Border.all(color: const Color(0xFFE5E7EB)),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: radius12,
       ),
       child: Row(
         children: [
           Container(
-            width: 48,
-            height: 48,
+            width: fortyEightPx,
+            height: fortyEightPx,
             decoration: BoxDecoration(
               color: const Color(0xFFF3F4F6),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: radius8,
             ),
             child: Center(
               child: Text(
                 icon,
-                style: const TextStyle(fontSize: 24),
+                style: TextStyle(fontSize: twentyFourPx),
               ),
             ),
           ),
-          const SizedBox(width: 16),
+          gapW16,
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
-                    fontSize: 16,
+                  style: TextStyle(
+                    fontSize: sixteenPx,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                const SizedBox(height: 4),
+                gapH4,
                 Text(
                   subtitle,
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: fourteenPx,
                     color: Colors.grey[600],
                   ),
                 ),
               ],
             ),
           ),
-          const Icon(
+          Icon(
             Icons.chevron_right,
             color: Colors.grey,
           ),
