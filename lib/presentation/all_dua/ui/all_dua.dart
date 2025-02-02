@@ -1,11 +1,13 @@
 import 'package:dua/core/config/app_images.dart';
 import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/static/svg_path.dart';
-import 'package:dua/core/static/ui_const.dart';
 import 'package:dua/core/utility/utility.dart';
+import 'package:dua/presentation/all_dua/widgets/dua_sorting_bottom_sheet.dart';
 import 'package:dua/presentation/common/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
+import '../widgets/custom_search_bar.dart';
 
 class AllDuaPage extends StatelessWidget {
   const AllDuaPage({super.key});
@@ -24,7 +26,9 @@ class AllDuaPage extends StatelessWidget {
               titleSpacing: eightPx,
               titleFontSize: eighteenPx,
             ),
-            CustomSearchBar(),
+            CustomSearchBar(
+              hintText: 'Search by dua\'s name',
+            ),
             Padding(
               padding: EdgeInsets.only(left: eightPx),
               child: Row(
@@ -45,7 +49,7 @@ class AllDuaPage extends StatelessWidget {
                         builder: (context) {
                           return SizedBox(
                             height: 200,
-                            child: SortingWidget(),
+                            child: DuaSortingBottomSheet(),
                           );
                         },
                       );
@@ -64,7 +68,7 @@ class AllDuaPage extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 itemCount: 20, // Replace with actual data length
                 itemBuilder: (BuildContext context, int index) {
-                  return Text('data');
+                  return DuaListTile();
                 },
               ),
             ),
@@ -75,116 +79,98 @@ class AllDuaPage extends StatelessWidget {
   }
 }
 
-class CustomSearchBar extends StatelessWidget {
-  const CustomSearchBar({super.key});
+class DuaListTile extends StatelessWidget {
+  const DuaListTile({super.key});
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: eightPx,
+    return ExpansionTile(
+      tilePadding:
+          EdgeInsets.symmetric(horizontal: tenPx, vertical: eighteenPx),
+      backgroundColor: context.color.primaryColor10,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(thirtyPx),
       ),
-      child: TextField(
-        decoration: InputDecoration(
-          hintText: 'Search by dua\'s name',
-          hintStyle: theme.textTheme.bodyMedium?.copyWith(
-            color: context.color.titleColor.withOpacityInt(0.6),
-            fontSize: fourteenPx,
+      leading: CircleAvatar(
+        backgroundColor: const Color(0xFFE8F5E9),
+        child: Text(
+          '2',
+          style: TextStyle(
+            color: Colors.green[500],
+            fontWeight: FontWeight.w500,
           ),
-          prefixIcon: Padding(
-            padding: EdgeInsets.only(left: sixteenPx),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SvgPicture.asset(
-                  AppImages.icSearch,
-                  width: eighteenPx,
-                  height: eighteenPx,
-                ),
-                gapH10,
-              ],
-            ),
-          ),
-          filled: true,
-          fillColor: context.color.shadeColor,
-          contentPadding: EdgeInsets.symmetric(
-            vertical: fourteenPx,
-            horizontal: sixteenPx,
-          ),
-          border: _buildInputBorder(context),
-          enabledBorder: _buildInputBorder(context),
-          focusedBorder: _buildInputBorder(context),
         ),
       ),
-    );
-  }
-}
-
-OutlineInputBorder _buildInputBorder(BuildContext context) {
-  return OutlineInputBorder(
-    borderRadius: radius24,
-    borderSide: BorderSide(
-      color: context.color.primaryColor20, // Adjust the color as needed
-      width: 2.0, // 2px border width
-    ),
-  );
-}
-
-class SortingWidget extends StatelessWidget {
-  const SortingWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    return Container(
-      decoration: BoxDecoration(
-        color: context.color.backgroundColor,
-        borderRadius: radius30,
+      showTrailingIcon: false,
+      title: Text(
+        'The most important thing to ask Allah for',
+        style: theme.textTheme.titleLarge?.copyWith(
+          fontWeight: FontWeight.w500,
+          fontSize: fifteenPx,
+        ),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Padding(
-            padding: EdgeInsets.only(left: 16.0, top: 16.0, bottom: 8.0),
-            child: Text(
-              'Sorting',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          RadioListTile(
-            title: Text(
-              'by Number (1-100)',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontSize: fifteenPx,
-                color: context.color.titleColor,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            groupValue: null,
-            onChanged: (value) => null,
-            value: null,
-            activeColor: context.color.titleColor,
-          ),
-          RadioListTile(
-            title: Text(
-              'by Alphabets (A - Z)',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontSize: fifteenPx,
-                color: context.color.titleColor,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            groupValue: null,
-            onChanged: (value) => null,
-            value: null,
-            activeColor: context.color.titleColor,
-          ),
-        ],
+      subtitle: Text(
+        'Total 15 Duas',
+        style: theme.textTheme.titleSmall?.copyWith(
+          fontSize: tenPx,
+          color: context.color.subtitleColor,
+        ),
       ),
+      children: [
+        Container(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ListTile(
+                leading: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFE8F5E9),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(Icons.check, color: Colors.green),
+                ),
+                title: const Text('Sincerity'),
+              ),
+              ListTile(
+                leading: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFE8F5E9),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(Icons.check, color: Colors.green),
+                ),
+                title: const Text('Eating Lawful Food'),
+              ),
+              ListTile(
+                leading: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFE8F5E9),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(Icons.check, color: Colors.green),
+                ),
+                title: const Text("The Consciousness of One's Heart"),
+              ),
+              ListTile(
+                leading: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFE8F5E9),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(Icons.check, color: Colors.green),
+                ),
+                title: const Text('Supplicate for Good Only'),
+              ),
+            ],
+          ),
+        )
+      ],
     );
   }
 }
