@@ -10,7 +10,7 @@ import 'package:dua/presentation/home/widgets/quick_access_menu.dart';
 import 'package:dua/presentation/home/widgets/tab_bar.dart';
 import 'package:dua/presentation/home/widgets/ramadan_timing_card.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
