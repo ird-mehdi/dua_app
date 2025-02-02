@@ -23,5 +23,6 @@ class SvgPath {
   static const String volumeHhigh = "assets/images/svg/volume-high.svg";
   static const String volumeSlash = "assets/images/svg/volume-slash.svg";
   static const String icArrowBack = "assets/images/svg/ic_arrow_back.svg";
+  static const String icSort = "assets/images/svg/ic_sort.svg";
 }
 

@@ -87,6 +87,7 @@ BorderRadius radius15 = BorderRadius.circular(fifteenPx);
 BorderRadius radius20 = BorderRadius.circular(twentyPx);
 BorderRadius radius24 = BorderRadius.circular(twentyFourPx);
 BorderRadius radius30 = BorderRadius.circular(thirtyPx);
+BorderRadius radius40 = BorderRadius.circular(fortyPx);
 BorderRadius radius50 = BorderRadius.circular(fiftyPx);
 
 BorderRadius radiusTop10 = BorderRadius.only(
