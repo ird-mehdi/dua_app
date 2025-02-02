@@ -46,8 +46,8 @@ class DateInfo extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(
-            fontSize: 12,
+          style: TextStyle(
+            fontSize: twelvePx,
             fontWeight: FontWeight.bold,
             color: Color(0xFF282E29),
           ),
@@ -55,7 +55,7 @@ class DateInfo extends StatelessWidget {
         Text(
           date,
           style: TextStyle(
-            fontSize: 12,
+            fontSize: twelvePx,
             color: Colors.grey[700],
           ),
         ),

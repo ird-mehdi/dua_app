@@ -717,6 +717,34 @@ double get twentySevenPx {
   return _twentySevenPx!;
 }
 
+double? _threeHundredPx;
+
+double get threeHundredPx {
+  _threeHundredPx ??= 300.px;
+  return _threeHundredPx!;
+}
+
+double? _twoHundredSixtyPx;
+
+double get twoHundredSixtyPx {
+  _twoHundredSixtyPx ??= 260.px;
+  return _twoHundredSixtyPx!;
+}
+
+double? _twoHundredSixtyFivePx;
+
+double get twoHundredSixtyFivePx {
+  _twoHundredSixtyFivePx ??= 265.px;
+  return _twoHundredSixtyFivePx!;
+}
+
+double? _twoHundredSeventyPx;
+
+double get twoHundredSeventyPx {
+  _twoHundredSeventyPx ??= 272.px;
+  return _twoHundredSeventyPx!;
+}
+
 double get displayLargeFontSize {
   return 57;
 }

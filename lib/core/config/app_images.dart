@@ -41,4 +41,34 @@ class AppImages {
   static const String icTime = "assets/images/svg/ic_time.svg";
 
   static const String icDate = "assets/images/svg/ic_calender.svg";
+
+  static const String icPlay = "assets/images/svg/ic_play.svg";
+
+  static const String icNext = "assets/images/svg/ic_next.svg";
+
+  static const String icPrevious = "assets/images/svg/ic_previous.svg";
+
+  static const String icKaaba = "assets/images/svg/ic_kaaba.svg";
+
+  static const String icLantern = "assets/images/svg/ic_lantern.svg";
+
+  static const String icMedicine = "assets/images/svg/ic_medicine.svg";
+
+  static const String icSetting2 = "assets/images/svg/ic_setting2.svg";
+
+  static const String icArrowDown = "assets/images/svg/ic_arrow_down.svg";
+
+  static const String icInstantRuqyah =
+      "assets/images/svg/ic_instant_ruqyah.svg";
+
+  static const String videoThumbnail = "assets/images/png/video_thumbnail.png";
+
+  static const String videoThumbnail2 =
+      "assets/images/png/video_thumbnail2.png";
+
+  static const String videoThumbnail3 =
+      "assets/images/png/video_thumbnail3.png";
+
+  static const String videoThumbnail4 =
+      "assets/images/png/video_thumbnail4.png";
 }

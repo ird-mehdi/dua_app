@@ -10,6 +10,7 @@ SizedBox gapH6 = SizedBox(height: sixPx);
 SizedBox gapH8 = SizedBox(height: eightPx);
 SizedBox gapH10 = SizedBox(height: tenPx);
 SizedBox gapH12 = SizedBox(height: twelvePx);
+SizedBox gapH14 = SizedBox(height: fourteenPx);
 SizedBox gapH15 = SizedBox(height: fifteenPx);
 SizedBox gapH16 = SizedBox(height: sixteenPx);
 SizedBox gapH18 = SizedBox(height: eighteenPx);
@@ -65,6 +66,7 @@ EdgeInsets paddingBottom12 = EdgeInsets.only(bottom: twelvePx);
 
 EdgeInsets paddingH6 = EdgeInsets.symmetric(horizontal: sixPx);
 EdgeInsets paddingH10 = EdgeInsets.symmetric(horizontal: tenPx);
+EdgeInsets paddingH8 = EdgeInsets.symmetric(horizontal: eightPx);
 EdgeInsets paddingH14 = EdgeInsets.symmetric(horizontal: fourteenPx);
 EdgeInsets paddingH16 = EdgeInsets.symmetric(horizontal: sixteenPx);
 EdgeInsets paddingH20 = EdgeInsets.symmetric(horizontal: twentyPx);
@@ -73,6 +75,7 @@ EdgeInsets paddingH22 = EdgeInsets.symmetric(horizontal: twentyTwoPx);
 EdgeInsets paddingV5 = EdgeInsets.symmetric(vertical: fivePx);
 EdgeInsets paddingV8 = EdgeInsets.symmetric(vertical: eightPx);
 EdgeInsets paddingV10 = EdgeInsets.symmetric(vertical: tenPx);
+EdgeInsets paddingV12 = EdgeInsets.symmetric(vertical: twelvePx);
 EdgeInsets paddingV14 = EdgeInsets.symmetric(vertical: fourteenPx);
 
 BorderRadius radius3 = BorderRadius.circular(threePx);

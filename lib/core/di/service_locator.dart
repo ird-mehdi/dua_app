@@ -83,7 +83,10 @@ class ServiceLocator {
 
   Future<void> _setUpPresenters() async {
     _serviceLocator.registerLazySingleton(() => loadPresenter(HomePresenter()));
-    _serviceLocator.registerLazySingleton(() => loadPresenter(PrayerTimePresenter()));
+    _serviceLocator
+        .registerLazySingleton(() => loadPresenter(PrayerTimePresenter()));
+    // _serviceLocator
+    //     .registerLazySingleton(() => loadPresenter<VideoPlayListPresenter>());
   }
 
   Future<void> _setUpUseCase() async {

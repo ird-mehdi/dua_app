@@ -157,15 +157,15 @@ class PrayerCard extends StatelessWidget {
   }
 
   Widget _buildBottomRow() {
-    return const Row(
+    return Row(
       children: [
-        NextPrayerInfo(
+        const NextPrayerInfo(
           icon: AppImages.icTime,
           title: 'Magrib',
           time: '3:54pm',
         ),
-        SizedBox(width: 24),
-        DateInfo(
+        SizedBox(width: twentyFourPx),
+        const DateInfo(
           icon: AppImages.icDate,
           title: 'Date',
           date: 'Dhuʻl-Hijjah 26, 1445 AH',

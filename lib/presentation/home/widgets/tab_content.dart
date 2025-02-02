@@ -1,5 +1,6 @@
 import 'package:dua/core/config/app_images.dart';
 import 'package:dua/core/static/ui_const.dart';
+import 'package:dua/domain/entities/category_data_entity.dart';
 import 'package:dua/presentation/common/widgets/dua_category_card.dart';
 import 'package:flutter/material.dart';
 
@@ -43,7 +44,7 @@ class TabContent extends StatelessWidget {
           return Padding(
             padding:
                 EdgeInsets.only(bottom: index < categories.length - 1 ? 12 : 0),
-            child: CategoryCard(category: categories[index]),
+            child: DuaCategoryCard(category: categories[index]),
           );
         },
       ),
