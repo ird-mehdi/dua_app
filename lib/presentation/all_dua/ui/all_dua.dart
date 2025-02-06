@@ -7,7 +7,7 @@ import 'package:dua/presentation/common/widgets/custom_app_bar.dart';
 import 'package:dua/presentation/common/widgets/svg_image.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/custom_search_bar.dart';
+import '../../common/widgets/custom_search_bar.dart';
 
 class AllDuaPage extends StatelessWidget {
   const AllDuaPage({super.key});

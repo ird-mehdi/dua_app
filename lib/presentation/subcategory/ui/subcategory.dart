@@ -1,5 +1,5 @@
 import 'package:dua/core/config/dua_screen.dart';
-import 'package:dua/presentation/all_dua/widgets/custom_search_bar.dart';
+import 'package:dua/presentation/common/widgets/custom_search_bar.dart';
 import 'package:dua/presentation/common/widgets/custom_app_bar.dart';
 import 'package:dua/presentation/subcategory/widget/dua_list_tile.dart';
 import 'package:flutter/material.dart';
