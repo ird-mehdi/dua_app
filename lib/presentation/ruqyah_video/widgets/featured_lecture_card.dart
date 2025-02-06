@@ -3,6 +3,7 @@
 import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/static/ui_const.dart';
 import 'package:dua/core/utility/utility.dart';
+import 'package:dua/presentation/ruqyah_video/widgets/duration_display.dart';
 import 'package:flutter/material.dart';
 
 class FeaturedLectureCard extends StatelessWidget {
@@ -19,7 +20,7 @@ class FeaturedLectureCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: threeHundredPx,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,7 +39,14 @@ class FeaturedLectureCard extends StatelessWidget {
       children: [
         _buildThumbnailImage(),
         _buildGradientOverlay(context),
-        _buildDurationBadge(context),
+        Positioned(
+          bottom: tenPx,
+          left: tenPx,
+          child: DurationDisplay(
+            totalDuration: duration,
+            margin: EdgeInsets.zero,
+          ),
+        ),
       ],
     );
   }
@@ -61,35 +69,6 @@ class FeaturedLectureCard extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: radius16,
           gradient: context.color.blackFadeGradient,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDurationBadge(BuildContext context) {
-    return Positioned(
-      bottom: tenPx,
-      left: tenPx,
-      child: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: eightPx,
-          vertical: fourPx,
-        ),
-        decoration: ShapeDecoration(
-          color: context.color.durationBackground,
-          shape: RoundedRectangleBorder(
-            borderRadius: radius13,
-          ),
-        ),
-        child: Text(
-          duration,
-          style: TextStyle(
-            color: context.color.white,
-            fontSize: 10,
-            fontWeight: FontWeight.w400,
-            height: 1,
-            letterSpacing: 0.10,
-          ),
         ),
       ),
     );

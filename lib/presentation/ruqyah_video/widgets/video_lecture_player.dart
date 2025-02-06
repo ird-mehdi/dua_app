@@ -1,4 +1,5 @@
 import 'package:dua/core/static/font_family.dart';
+import 'package:dua/presentation/ruqyah_video/widgets/duration_display.dart';
 import 'package:dua/presentation/ruqyah_video/widgets/video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -71,7 +72,10 @@ class VideoLecturePlayer extends StatelessWidget {
         children: [
           _buildTopControls(),
           _buildPlayControls(context),
-          _buildDurationDisplay(context),
+          DurationDisplay(
+            currentTime: currentTime,
+            totalDuration: totalDuration,
+          ),
         ],
       ),
     );
@@ -129,42 +133,6 @@ class VideoLecturePlayer extends StatelessWidget {
           shape: BoxShape.circle,
         ),
         child: SvgPicture.asset(AppImages.icPlay),
-      ),
-    );
-  }
-
-  Widget _buildDurationDisplay(BuildContext context) {
-    final textStyle = TextStyle(
-      fontSize: tenPx,
-      color: context.color.white,
-      fontFamily: FontFamily.poppins,
-      fontWeight: FontWeight.w400,
-      height: 1,
-      letterSpacing: 0.10,
-    );
-
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: tenPx, vertical: eightPx),
-      padding: EdgeInsets.symmetric(horizontal: eightPx, vertical: fivePx),
-      decoration: ShapeDecoration(
-        color: context.color.durationBackground,
-        shape: RoundedRectangleBorder(borderRadius: radius13),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            currentTime,
-            style: textStyle,
-          ),
-          gapW5,
-          Text(
-            '/',
-            style: textStyle,
-          ),
-          gapW5,
-          Text(totalDuration, style: textStyle),
-        ],
       ),
     );
   }
