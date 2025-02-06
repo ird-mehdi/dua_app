@@ -18,7 +18,7 @@ class CustomSearchBar extends StatelessWidget {
         horizontal: eightPx,
       ),
       child: TextField(
-        controller: controller ?? null,
+        controller: controller,
         decoration: InputDecoration(
           hintText: hintText,
           hintStyle: theme.textTheme.bodyMedium?.copyWith(
