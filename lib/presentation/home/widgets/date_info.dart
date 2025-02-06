@@ -55,7 +55,7 @@ class DateInfo extends StatelessWidget {
         Text(
           date,
           style: TextStyle(
-            fontSize: twelvePx,
+            fontSize: tenPx,
             color: Colors.grey[700],
           ),
         ),

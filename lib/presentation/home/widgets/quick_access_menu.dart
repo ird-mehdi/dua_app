@@ -6,6 +6,7 @@ import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/static/ui_const.dart';
 import 'package:dua/core/utility/utility.dart';
 import 'package:dua/presentation/prayer_time/ui/prayer_time_page.dart';
+import 'package:dua/presentation/ruqyah_video/ui/video_play_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -141,7 +142,7 @@ final List<QuickAccessItem> quickAccessItems = [
     icon: AppImages.icApps,
     label: 'Other Apps',
     color: DuaColor.quickAccessColorLight7,
-    widget: PrayerTimePage(),
+    widget: VideoPlayListPage(),
   ),
   QuickAccessItem(
     icon: AppImages.icLovely,
