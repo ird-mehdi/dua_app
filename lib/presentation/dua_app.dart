@@ -3,6 +3,7 @@ import 'package:dua/core/config/themes.dart';
 import 'package:dua/core/static/font_family.dart';
 import 'package:dua/presentation/ruqyah_video/ui/video_play_list_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -17,6 +18,11 @@ class DuaApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.black,
+      statusBarBrightness: Brightness.dark,
+    ));
+
     return ResponsiveSizer(builder: (context, orientation, deviceType) {
       return GetMaterialApp(
         navigatorKey: navigatorKey,

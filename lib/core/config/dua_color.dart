@@ -1,3 +1,4 @@
+import 'package:dua/core/utility/utility.dart';
 import 'package:flutter/material.dart';
 
 class DuaColor {
@@ -38,7 +39,10 @@ class DuaColor {
   static const Color secondaryColorLight = Color(0xFFB5DDA8);
   static const Color secondaryColorLight10 = Color(0xFFB5DDA8);
   static const Color titleHeadingColorLight = Color(0xFF2D2D2D);
-
+  static const Color progressBarBackground = Color(0xFF616460);
+  static const Color progressBarForeground = Color(0xFF417360);
+  static const Color controlsOverlay = Color(0x6696AB99);
+  static const Color durationBackground = Color(0x3395AB99);
   static const Color quickAccessColorLight1 = Color(0x264989E9);
   static const Color quickAccessColorLight2 = Color(0x26FF9F00);
   static const Color quickAccessColorLight3 = Color(0x262C9E4B);
@@ -47,4 +51,13 @@ class DuaColor {
   static const Color quickAccessColorLight6 = Color(0x268459EC);
   static const Color quickAccessColorLight7 = Color(0x26277BC0);
   static const Color quickAccessColorLight8 = Color(0x26E0144C);
+  static const Color cardDurationBackground = Color(0x3396AB99);
+
+  static const Color black = Colors.black;
+  static const Color white = Colors.white;
+  static final LinearGradient blackFadeGradient = LinearGradient(
+    begin: const Alignment(0.00, -1.00),
+    end: const Alignment(0, 1),
+    colors: [black.withOpacityInt(0), black],
+  );
 }

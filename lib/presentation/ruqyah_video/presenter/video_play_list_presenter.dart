@@ -1,13 +1,15 @@
+import 'package:dua/core/base/base_presenter.dart';
 import 'package:dua/core/config/app_images.dart';
 import 'package:dua/core/utility/utility.dart';
-import 'package:dua/domain/entities/category_data_entity.dart';
+import 'package:dua/presentation/ruqyah_video/presenter/video_play_list_ui_state.dart';
 import 'package:get/get.dart';
 
-class VideoPlayListPresenter extends GetxController {
-  var videoTitle =
-      'THIS LECTURE IS CAPABLE OF CHANGING ANY MUSLIM - MOHAMMAD HOBLOS'.obs;
-  var currentTime = '00:03:59'.obs;
-  var totalDuration = '00:43:59'.obs;
+class VideoPlayListPresenter extends BasePresenter<VideoPlayListUiState> {
+  VideoPlayListPresenter();
+
+  final Obs<VideoPlayListUiState> uiState = Obs(VideoPlayListUiState.empty());
+
+  VideoPlayListUiState get currentUiState => uiState.value;
 
   void playVideo() {
     // Handle play button tap
@@ -46,48 +48,13 @@ class VideoPlayListPresenter extends GetxController {
         },
       ];
 
-  final categories = <CategoryData>[
-    CategoryData(
-      icon: AppImages.icMedicine,
-      bgColor: Get.context!.color.quickAccessColor1,
-      title: 'Introduction to Ruqyah',
-      subtitle: '7 Subcategories',
-    ),
-    CategoryData(
-      icon: AppImages.icInstantRuqyah,
-      bgColor: Get.context!.color.quickAccessColor2,
-      title: 'Instant Ruqyah',
-      subtitle: '10 Subcategories',
-    ),
-    CategoryData(
-      icon: AppImages.icLantern,
-      bgColor: Get.context!.color.quickAccessColor3,
-      title: 'Time of Dua',
-      subtitle: '5 Subcategories',
-    ),
-    CategoryData(
-      icon: AppImages.icKaaba,
-      bgColor: Get.context!.color.quickAccessColor4,
-      title: 'Hazz & Umrah',
-      subtitle: '9 Subcategories',
-    ),
-    CategoryData(
-      icon: AppImages.icKaaba,
-      bgColor: Get.context!.color.quickAccessColor5,
-      title: 'Witr & Other',
-      subtitle: '30 Subcategories',
-    ),
-    CategoryData(
-      icon: AppImages.icMedicine,
-      bgColor: Get.context!.color.quickAccessColor6,
-      title: 'Fasting',
-      subtitle: '12 Subcategories',
-    ),
-    CategoryData(
-      icon: AppImages.icMedicine,
-      bgColor: Get.context!.color.quickAccessColor6,
-      title: 'Ablution & Bath',
-      subtitle: '15 Subcategories',
-    ),
-  ].obs;
+  @override
+  Future<void> addUserMessage(String message) {
+    return showMessage(message: message, context: currentUiState.context);
+  }
+
+  @override
+  Future<void> toggleLoading({required bool loading}) async {
+    uiState.value = currentUiState.copyWith(isLoading: loading);
+  }
 }

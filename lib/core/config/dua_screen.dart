@@ -807,6 +807,10 @@ double get titleSmallFontSize {
   return 12;
 }
 
+double get videoDurationFontSize {
+  return 10;
+}
+
 double get labelSmallFontSize {
   return 12;
 }

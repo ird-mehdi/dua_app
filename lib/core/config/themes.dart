@@ -83,16 +83,32 @@ class DuaTheme {
             quickAccessColor6: DuaColor.quickAccessColorLight6,
             quickAccessColor7: DuaColor.quickAccessColorLight7,
             quickAccessColor8: DuaColor.quickAccessColorLight8,
+            progressBarBackground: DuaColor.progressBarBackground,
+            progressBarForeground: DuaColor.progressBarForeground,
+            controlsOverlay: DuaColor.controlsOverlay,
+            durationBackground: DuaColor.durationBackground,
+            white: DuaColor.white,
+            black: DuaColor.black,
+            blackFadeGradient: DuaColor.blackFadeGradient,
+            cardDurationBackground: DuaColor.cardDurationBackground,
           ),
           DuaCustomTextTheme(
+            videoDurationStyle: TextStyle(
+              fontSize: videoDurationFontSize,
+              color: DuaColor.white,
+              fontFamily: FontFamily.poppins,
+              fontWeight: FontWeight.w400,
+              height: 1,
+              letterSpacing: 0.10,
+            ),
             lableExtraSmall: TextStyle(
               fontSize: lableExtraSmallFontSize,
               color: DuaColor.titleColorLight,
-              fontFamily: FontFamily.inter,
+              fontFamily: FontFamily.poppins,
             ),
             surahName: TextStyle(
               fontSize: surahNameFontSize,
-              fontFamily: FontFamily.suraNames,
+              fontFamily: FontFamily.poppins,
               fontWeight: FontWeight.w400,
               color: DuaColor.titleColorLight,
             ),
@@ -107,12 +123,12 @@ class DuaTheme {
               fontSize: buttonTexFontSize,
               fontWeight: FontWeight.bold,
               color: DuaColor.backgroundColorLight,
-              fontFamily: fontFamily,
+              fontFamily: FontFamily.poppins,
             ),
             aText: TextStyle(
               fontSize: aFontSize,
               color: DuaColor.titleColorLight,
-              fontFamily: fontFamily,
+              fontFamily: FontFamily.poppins,
             ),
           )
         ],
@@ -188,7 +204,7 @@ class DuaTheme {
         textTheme: QuranTextTheme.baseTextTheme.apply(
           bodyColor: DuaColor.titleColorLight,
           displayColor: DuaColor.titleColorLight,
-          fontFamily: fontFamily,
+          fontFamily: FontFamily.poppins,
         ),
         colorScheme: const ColorScheme(
           brightness: Brightness.light,

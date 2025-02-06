@@ -45,6 +45,14 @@ class DuaCustomThemeColors extends ThemeExtension<DuaCustomThemeColors> {
   final Color quickAccessColor7;
   final Color quickAccessColor8;
   final Color titleHeadingColorLight;
+  final Color progressBarBackground;
+  final Color progressBarForeground;
+  final Color controlsOverlay;
+  final Color durationBackground;
+  final Color white;
+  final Color black;
+  final LinearGradient blackFadeGradient;
+  final Color cardDurationBackground;
 
   const DuaCustomThemeColors({
     required this.primaryColor100,
@@ -91,6 +99,14 @@ class DuaCustomThemeColors extends ThemeExtension<DuaCustomThemeColors> {
     required this.quickAccessColor7,
     required this.quickAccessColor8,
     required this.titleHeadingColorLight,
+    required this.progressBarBackground,
+    required this.progressBarForeground,
+    required this.controlsOverlay,
+    required this.durationBackground,
+    required this.white,
+    required this.black,
+    required this.blackFadeGradient,
+    required this.cardDurationBackground,
   });
 
   @override
@@ -139,6 +155,14 @@ class DuaCustomThemeColors extends ThemeExtension<DuaCustomThemeColors> {
     Color? quickAccessColor7,
     Color? quickAccessColor8,
     Color? titleHeadingColorLight,
+    Color? progressBarBackground,
+    Color? progressBarForeground,
+    Color? controlsOverlay,
+    Color? durationBackground,
+    Color? white,
+    Color? black,
+    LinearGradient? blackFadeGradient,
+    Color? cardDurationBackground,
   }) {
     return DuaCustomThemeColors(
       primaryColor100: primaryColor100 ?? this.primaryColor100,
@@ -186,7 +210,18 @@ class DuaCustomThemeColors extends ThemeExtension<DuaCustomThemeColors> {
       quickAccessColor8: quickAccessColor8 ?? this.quickAccessColor8,
       titleHeadingColorLight:
           titleHeadingColorLight ?? this.titleHeadingColorLight,
-      );
+      progressBarBackground:
+          progressBarBackground ?? this.progressBarBackground,
+      progressBarForeground:
+          progressBarForeground ?? this.progressBarForeground,
+      controlsOverlay: controlsOverlay ?? this.controlsOverlay,
+      durationBackground: durationBackground ?? this.durationBackground,
+      white: white ?? this.white,
+      black: black ?? this.black,
+      blackFadeGradient: blackFadeGradient ?? this.blackFadeGradient,
+      cardDurationBackground:
+          cardDurationBackground ?? this.cardDurationBackground,
+    );
   }
 
   @override
@@ -253,6 +288,19 @@ class DuaCustomThemeColors extends ThemeExtension<DuaCustomThemeColors> {
           Color.lerp(quickAccessColor7, other.quickAccessColor7, t)!,
       quickAccessColor8:
           Color.lerp(quickAccessColor8, other.quickAccessColor8, t)!,
+      progressBarBackground:
+          Color.lerp(progressBarBackground, other.progressBarBackground, t)!,
+      progressBarForeground:
+          Color.lerp(progressBarForeground, other.progressBarForeground, t)!,
+      controlsOverlay: Color.lerp(controlsOverlay, other.controlsOverlay, t)!,
+      durationBackground:
+          Color.lerp(durationBackground, other.durationBackground, t)!,
+      white: Color.lerp(white, other.white, t)!,
+      black: Color.lerp(black, other.black, t)!,
+      blackFadeGradient:
+          LinearGradient.lerp(blackFadeGradient, other.blackFadeGradient, t)!,
+      cardDurationBackground:
+          Color.lerp(cardDurationBackground, other.cardDurationBackground, t)!,
     );
   }
 }

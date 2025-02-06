@@ -73,6 +73,7 @@ class DuaCategoryCard extends StatelessWidget {
         Text(
           category.subtitle,
           style: TextStyle(
+            fontFamily: 'Poppins',
             fontSize: twelvePx,
             fontWeight: FontWeight.w400,
             color: context.color.sectionTextColor,

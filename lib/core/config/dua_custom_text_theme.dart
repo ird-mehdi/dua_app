@@ -8,14 +8,15 @@ class DuaCustomTextTheme extends ThemeExtension<DuaCustomTextTheme> {
   final TextStyle? arabicAyah;
   final TextStyle? buttonText;
   final TextStyle? aText; // Added new property
+  final TextStyle? videoDurationStyle;
 
-  const DuaCustomTextTheme({
-    this.lableExtraSmall,
-    this.surahName,
-    this.arabicAyah,
-    this.buttonText,
-    this.aText, // Added to constructor
-  });
+  const DuaCustomTextTheme(
+      {this.lableExtraSmall,
+      this.surahName,
+      this.arabicAyah,
+      this.buttonText,
+      this.aText, // Added to constructor
+      this.videoDurationStyle});
 
   @override
   ThemeExtension<DuaCustomTextTheme> copyWith({
@@ -24,6 +25,7 @@ class DuaCustomTextTheme extends ThemeExtension<DuaCustomTextTheme> {
     TextStyle? arabicAyah,
     TextStyle? buttonText,
     TextStyle? aText, // Added to copyWith parameters
+    TextStyle? videoDurationStyle,
   }) {
     return DuaCustomTextTheme(
       lableExtraSmall: lableExtraSmall ?? this.lableExtraSmall,
@@ -31,6 +33,7 @@ class DuaCustomTextTheme extends ThemeExtension<DuaCustomTextTheme> {
       arabicAyah: arabicAyah ?? this.arabicAyah,
       buttonText: buttonText ?? this.buttonText,
       aText: aText ?? this.aText, // Added to copyWith return
+      videoDurationStyle: videoDurationStyle ?? this.videoDurationStyle,
     );
   }
 
@@ -49,6 +52,8 @@ class DuaCustomTextTheme extends ThemeExtension<DuaCustomTextTheme> {
       arabicAyah: TextStyle.lerp(arabicAyah, other.arabicAyah, t),
       buttonText: TextStyle.lerp(buttonText, other.buttonText, t),
       aText: TextStyle.lerp(aText, other.aText, t), // Added to lerp
+      videoDurationStyle:
+          TextStyle.lerp(videoDurationStyle, other.videoDurationStyle, t),
     );
   }
 }
