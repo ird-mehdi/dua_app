@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:dua/core/config/dua_custom_text_theme.dart';
 
 class VideoPlayListPage extends StatelessWidget {
+  static const _otherPlaylistTitle = 'Other Playlist';
+
   const VideoPlayListPage({super.key});
 
   @override
@@ -23,50 +25,52 @@ class VideoPlayListPage extends StatelessWidget {
         body: SafeArea(
           child: Column(
             children: [
-              VideoLecturePlayer(
-                thumbnailUrl: presenter.currentUiState.imageUrl,
-                currentTime: presenter.currentUiState.currentTime,
-                totalDuration: presenter.currentUiState.totalDuration,
-                onPlayTap: presenter.playVideo,
-              ),
+              _buildVideoPlayer(presenter),
               Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: twentyFourPx,
-                          vertical: twelvePx,
-                        ),
-                        child: Text(
-                          presenter.currentUiState.videoTitle,
-                          style: Theme.of(context)
-                              .extension<DuaCustomTextTheme>()
-                              ?.videoTitle,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      _buildFeaturedLectures(presenter),
-                      gapH14,
-                      Padding(
-                        padding: paddingH16,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SectionTitle(title: 'Other Playlist'),
-                            gapH16,
-                            _buildPlaylistSection(presenter),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                child: _buildVideoContent(context, presenter),
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildVideoPlayer(VideoPlayListPresenter presenter) {
+    return VideoLecturePlayer(
+      thumbnailUrl: presenter.currentUiState.imageUrl,
+      currentTime: presenter.currentUiState.currentTime,
+      totalDuration: presenter.currentUiState.totalDuration,
+      onPlayTap: presenter.playVideo,
+    );
+  }
+
+  Widget _buildVideoContent(
+      BuildContext context, VideoPlayListPresenter presenter) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          _buildVideoTitle(context, presenter),
+          _buildFeaturedLectures(presenter),
+          gapH14,
+          _buildOtherPlaylists(presenter),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildVideoTitle(
+      BuildContext context, VideoPlayListPresenter presenter) {
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: twentyFourPx,
+        vertical: twelvePx,
+      ),
+      child: Text(
+        presenter.currentUiState.videoTitle,
+        style: Theme.of(context).extension<DuaCustomTextTheme>()?.videoTitle,
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }
@@ -77,17 +81,35 @@ class VideoPlayListPage extends StatelessWidget {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
-          children: presenter.featuredLectures
-              .map((lecture) => Padding(
-                    padding: EdgeInsets.only(left: sixteenPx),
-                    child: FeaturedLectureCard(
-                      thumbnailUrl: lecture['thumbnailUrl'] ?? '',
-                      duration: lecture['duration'] ?? '00:00:00',
-                      title: lecture['title'] ?? 'Untitled Lecture',
-                    ),
-                  ))
-              .toList(),
+          children: _buildFeaturedLectureCards(presenter),
         ),
+      ),
+    );
+  }
+
+  List<Widget> _buildFeaturedLectureCards(VideoPlayListPresenter presenter) {
+    return presenter.featuredLectures.map((lecture) {
+      return Padding(
+        padding: EdgeInsets.only(left: sixteenPx),
+        child: FeaturedLectureCard(
+          thumbnailUrl: lecture['thumbnailUrl'] ?? '',
+          duration: lecture['duration'] ?? '00:00:00',
+          title: lecture['title'] ?? 'Untitled Lecture',
+        ),
+      );
+    }).toList();
+  }
+
+  Widget _buildOtherPlaylists(VideoPlayListPresenter presenter) {
+    return Padding(
+      padding: paddingH16,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SectionTitle(title: _otherPlaylistTitle),
+          gapH16,
+          _buildPlaylistSection(presenter),
+        ],
       ),
     );
   }
@@ -95,8 +117,10 @@ class VideoPlayListPage extends StatelessWidget {
   Widget _buildPlaylistSection(VideoPlayListPresenter presenter) {
     return Column(
       children: presenter.currentUiState.categories
-          .map((category) =>
-              DuaCategoryCard(category: category, showDetails: false))
+          .map((category) => DuaCategoryCard(
+                category: category,
+                showDetails: false,
+              ))
           .toList(),
     );
   }
