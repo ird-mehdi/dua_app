@@ -7,16 +7,35 @@ class DuaCustomTextTheme extends ThemeExtension<DuaCustomTextTheme> {
   final TextStyle? surahName;
   final TextStyle? arabicAyah;
   final TextStyle? buttonText;
-  final TextStyle? aText; // Added new property
+  final TextStyle? aText;
   final TextStyle? videoDurationStyle;
+  final TextStyle? sectionTitle;
+  final TextStyle? videoTitle;
+  final TextStyle? categoryTitle;
+  final TextStyle? categorySubtitle;
+  final TextStyle? duaCount;
+  final TextStyle? prayerTitle;
+  final TextStyle? prayerTime;
+  final TextStyle? prayerLocation;
+  final TextStyle? nextPrayerText;
 
-  const DuaCustomTextTheme(
-      {this.lableExtraSmall,
-      this.surahName,
-      this.arabicAyah,
-      this.buttonText,
-      this.aText, // Added to constructor
-      this.videoDurationStyle});
+  const DuaCustomTextTheme({
+    this.lableExtraSmall,
+    this.surahName,
+    this.arabicAyah,
+    this.buttonText,
+    this.aText,
+    this.videoDurationStyle,
+    this.sectionTitle,
+    this.videoTitle,
+    this.categoryTitle,
+    this.categorySubtitle,
+    this.duaCount,
+    this.prayerTitle,
+    this.prayerTime,
+    this.prayerLocation,
+    this.nextPrayerText,
+  });
 
   @override
   ThemeExtension<DuaCustomTextTheme> copyWith({
@@ -24,16 +43,34 @@ class DuaCustomTextTheme extends ThemeExtension<DuaCustomTextTheme> {
     TextStyle? surahName,
     TextStyle? arabicAyah,
     TextStyle? buttonText,
-    TextStyle? aText, // Added to copyWith parameters
+    TextStyle? aText,
     TextStyle? videoDurationStyle,
+    TextStyle? sectionTitle,
+    TextStyle? videoTitle,
+    TextStyle? categoryTitle,
+    TextStyle? categorySubtitle,
+    TextStyle? duaCount,
+    TextStyle? prayerTitle,
+    TextStyle? prayerTime,
+    TextStyle? prayerLocation,
+    TextStyle? nextPrayerText,
   }) {
     return DuaCustomTextTheme(
       lableExtraSmall: lableExtraSmall ?? this.lableExtraSmall,
       surahName: surahName ?? this.surahName,
       arabicAyah: arabicAyah ?? this.arabicAyah,
       buttonText: buttonText ?? this.buttonText,
-      aText: aText ?? this.aText, // Added to copyWith return
+      aText: aText ?? this.aText,
       videoDurationStyle: videoDurationStyle ?? this.videoDurationStyle,
+      sectionTitle: sectionTitle ?? this.sectionTitle,
+      videoTitle: videoTitle ?? this.videoTitle,
+      categoryTitle: categoryTitle ?? this.categoryTitle,
+      categorySubtitle: categorySubtitle ?? this.categorySubtitle,
+      duaCount: duaCount ?? this.duaCount,
+      prayerTitle: prayerTitle ?? this.prayerTitle,
+      prayerTime: prayerTime ?? this.prayerTime,
+      prayerLocation: prayerLocation ?? this.prayerLocation,
+      nextPrayerText: nextPrayerText ?? this.nextPrayerText,
     );
   }
 
@@ -51,9 +88,19 @@ class DuaCustomTextTheme extends ThemeExtension<DuaCustomTextTheme> {
       surahName: TextStyle.lerp(surahName, other.surahName, t),
       arabicAyah: TextStyle.lerp(arabicAyah, other.arabicAyah, t),
       buttonText: TextStyle.lerp(buttonText, other.buttonText, t),
-      aText: TextStyle.lerp(aText, other.aText, t), // Added to lerp
+      aText: TextStyle.lerp(aText, other.aText, t),
       videoDurationStyle:
           TextStyle.lerp(videoDurationStyle, other.videoDurationStyle, t),
+      sectionTitle: TextStyle.lerp(sectionTitle, other.sectionTitle, t),
+      videoTitle: TextStyle.lerp(videoTitle, other.videoTitle, t),
+      categoryTitle: TextStyle.lerp(categoryTitle, other.categoryTitle, t),
+      categorySubtitle:
+          TextStyle.lerp(categorySubtitle, other.categorySubtitle, t),
+      duaCount: TextStyle.lerp(duaCount, other.duaCount, t),
+      prayerTitle: TextStyle.lerp(prayerTitle, other.prayerTitle, t),
+      prayerTime: TextStyle.lerp(prayerTime, other.prayerTime, t),
+      prayerLocation: TextStyle.lerp(prayerLocation, other.prayerLocation, t),
+      nextPrayerText: TextStyle.lerp(nextPrayerText, other.nextPrayerText, t),
     );
   }
 }

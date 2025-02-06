@@ -1,4 +1,3 @@
-import 'package:dua/core/static/font_family.dart';
 import 'package:dua/presentation/ruqyah_video/widgets/duration_display.dart';
 import 'package:dua/presentation/ruqyah_video/widgets/video_progress_bar.dart';
 import 'package:flutter/material.dart';

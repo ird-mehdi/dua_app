@@ -5,6 +5,7 @@ import 'package:dua/core/static/ui_const.dart';
 import 'package:dua/core/utility/utility.dart';
 import 'package:dua/presentation/ruqyah_video/widgets/duration_display.dart';
 import 'package:flutter/material.dart';
+import 'package:dua/core/config/dua_custom_text_theme.dart';
 
 class FeaturedLectureCard extends StatelessWidget {
   const FeaturedLectureCard({
@@ -79,9 +80,7 @@ class FeaturedLectureCard extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: eightPx),
       child: Text(
         title,
-        style: Theme.of(context).textTheme.labelMedium?.copyWith(
-              fontSize: thirteenPx,
-            ),
+        style: Theme.of(context).extension<DuaCustomTextTheme>()?.videoTitle,
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
       ),

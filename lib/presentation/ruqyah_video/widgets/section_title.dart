@@ -1,6 +1,5 @@
-import 'package:dua/core/config/dua_screen.dart';
+import 'package:dua/core/config/dua_custom_text_theme.dart';
 import 'package:dua/core/static/ui_const.dart';
-import 'package:dua/core/utility/utility.dart';
 import 'package:flutter/material.dart';
 
 class SectionTitle extends StatelessWidget {
@@ -19,13 +18,8 @@ class SectionTitle extends StatelessWidget {
         opacity: 0.70,
         child: Text(
           title,
-          style: TextStyle(
-            color: context.color.sectionTextColor,
-            fontSize: twelvePx,
-            fontWeight: FontWeight.w500,
-            height: 1.67,
-            letterSpacing: 0.12,
-          ),
+          style:
+              Theme.of(context).extension<DuaCustomTextTheme>()?.sectionTitle,
         ),
       ),
     );

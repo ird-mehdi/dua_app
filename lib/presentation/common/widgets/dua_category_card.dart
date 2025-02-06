@@ -4,6 +4,7 @@ import 'package:dua/core/utility/utility.dart';
 import 'package:dua/domain/entities/category_data_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:dua/core/config/dua_custom_text_theme.dart';
 
 class DuaCategoryCard extends StatelessWidget {
   final CategoryData category;
@@ -63,21 +64,15 @@ class DuaCategoryCard extends StatelessWidget {
       children: [
         Text(
           category.title,
-          style: TextStyle(
-            fontSize: fifteenPx,
-            fontWeight: FontWeight.w500,
-            color: context.color.headingTextColor,
-          ),
+          style:
+              Theme.of(context).extension<DuaCustomTextTheme>()?.categoryTitle,
         ),
         gapH4,
         Text(
           category.subtitle,
-          style: TextStyle(
-            fontFamily: 'Poppins',
-            fontSize: twelvePx,
-            fontWeight: FontWeight.w400,
-            color: context.color.sectionTextColor,
-          ),
+          style: Theme.of(context)
+              .extension<DuaCustomTextTheme>()
+              ?.categorySubtitle,
         ),
       ],
     );
@@ -99,20 +94,12 @@ class DuaCategoryCard extends StatelessWidget {
       children: [
         Text(
           '${category.duaCount}',
-          style: TextStyle(
-            fontSize: fifteenPx,
-            fontWeight: FontWeight.w500,
-            color: context.color.headingTextColor,
-          ),
+          style: Theme.of(context).extension<DuaCustomTextTheme>()?.duaCount,
         ),
         gapH4,
         Text(
           'Duas',
-          style: TextStyle(
-            fontSize: twelvePx,
-            fontWeight: FontWeight.w400,
-            color: context.color.sectionTextColor,
-          ),
+          style: Theme.of(context).extension<DuaCustomTextTheme>()?.duaCount,
         ),
       ],
     );

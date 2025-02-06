@@ -839,8 +839,12 @@ double get arabicAyahFontSize {
   return 22;
 }
 
-double get aFontSize {
-  return 13;
+double get categoryTitleFontSize {
+  return 14;
+}
+
+double get categorySubtitleFontSize {
+  return 11;
 }
 
 double? _heightPercent;
@@ -848,6 +852,7 @@ double? _widthPercent;
 double? _quranScreenWidthQuarterPercentage;
 
 /// A set of extensions for numerical types that provide convenience methods for
+
 /// converting values to specific units based on the device's screen dimensions.
 ///
 ///

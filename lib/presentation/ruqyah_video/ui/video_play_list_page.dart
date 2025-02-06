@@ -1,26 +1,25 @@
 import 'package:dua/core/config/dua_screen.dart';
+import 'package:dua/core/di/service_locator.dart';
 import 'package:dua/core/external_libs/presentable_widget_builder.dart';
-import 'package:dua/core/static/font_family.dart';
 import 'package:dua/core/static/ui_const.dart';
-import 'package:dua/core/utility/utility.dart';
 import 'package:dua/presentation/common/widgets/dua_category_card.dart';
 import 'package:dua/presentation/ruqyah_video/presenter/video_play_list_presenter.dart';
 import 'package:dua/presentation/ruqyah_video/widgets/featured_lecture_card.dart';
 import 'package:dua/presentation/ruqyah_video/widgets/section_title.dart';
 import 'package:dua/presentation/ruqyah_video/widgets/video_lecture_player.dart';
 import 'package:flutter/material.dart';
+import 'package:dua/core/config/dua_custom_text_theme.dart';
 
 class VideoPlayListPage extends StatelessWidget {
   const VideoPlayListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final presenter = VideoPlayListPresenter();
+    final presenter = locate<VideoPlayListPresenter>();
 
     return PresentableWidgetBuilder<VideoPlayListPresenter>(
       presenter: presenter,
       builder: () => Scaffold(
-        backgroundColor: Colors.white,
         body: SafeArea(
           child: Column(
             children: [
@@ -41,13 +40,9 @@ class VideoPlayListPage extends StatelessWidget {
                         ),
                         child: Text(
                           presenter.currentUiState.videoTitle,
-                          style: TextStyle(
-                            fontSize: thirteenPx,
-                            fontFamily: FontFamily.poppins,
-                            fontWeight: FontWeight.w600,
-                            color: context.color.headingTextColor,
-                            height: 1.4,
-                          ),
+                          style: Theme.of(context)
+                              .extension<DuaCustomTextTheme>()
+                              ?.videoTitle,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
