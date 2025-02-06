@@ -9,6 +9,7 @@ class SubCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final SubCategoryPresenter presenter = locate<SubCategoryPresenter>();
     // final ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: CustomAppBar(

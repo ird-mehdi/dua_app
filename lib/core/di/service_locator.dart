@@ -5,6 +5,7 @@ import 'package:dua/data/error_message_handler_impl.dart';
 import 'package:dua/domain/service/error_message_handler.dart';
 import 'package:dua/presentation/home/presenter/home_presenter.dart';
 import 'package:dua/presentation/prayer_time/presenter/prayer_time_presenter.dart';
+import 'package:dua/presentation/subcategory/presenter/sub_category_presenter.dart';
 import 'package:get_it/get_it.dart';
 
 // Implementation Note:
@@ -76,6 +77,8 @@ class ServiceLocator {
         ErrorMessageHandlerImpl.new);
   }
 
+
+
   Future<void> _setUpDataSources() async {
     // _serviceLocator
     //   .registerLazySingleton(() => SurahLocalDataSource(locate()))
@@ -85,8 +88,11 @@ class ServiceLocator {
     _serviceLocator.registerLazySingleton(() => loadPresenter(HomePresenter()));
     _serviceLocator
         .registerLazySingleton(() => loadPresenter(PrayerTimePresenter()));
+    _serviceLocator
+        .registerLazySingleton(() => loadPresenter(SubCategoryPresenter()));
     // _serviceLocator
     //     .registerLazySingleton(() => loadPresenter<VideoPlayListPresenter>());
+
   }
 
   Future<void> _setUpUseCase() async {
