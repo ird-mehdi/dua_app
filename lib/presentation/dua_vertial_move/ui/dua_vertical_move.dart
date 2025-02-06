@@ -30,7 +30,7 @@ class DuaVerticalMove extends StatelessWidget {
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(sixteenPx),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
