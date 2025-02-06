@@ -1,7 +1,7 @@
 import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/config/themes.dart';
 import 'package:dua/core/static/font_family.dart';
-import 'package:dua/presentation/subcategory/ui/subcategory.dart';
+import 'package:dua/presentation/dua_vertial_move/ui/dua_vertical_move.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -29,7 +29,8 @@ class DuaApp extends StatelessWidget {
         themeMode: ThemeMode.light,
         // home: VideoPlayListPage(),
         // home: AllDuaPage(),
-        home: SubCategory(),
+        // home: SubCategory(),
+        home: DuaVerticalMove(),
         //home: NavBarPage(),
         //home: PrayerTimePage(),
 

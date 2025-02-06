@@ -195,6 +195,7 @@ class _DuaListTileState extends State<DuaListTile> {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return ExpansionTile(
+      
       tilePadding: EdgeInsets.zero,
       childrenPadding: EdgeInsets.zero,
       backgroundColor: context.color.shadeColor,
