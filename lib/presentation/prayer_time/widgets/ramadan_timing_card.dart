@@ -2,8 +2,8 @@ import 'package:dua/core/utility/utility.dart';
 import 'package:dua/presentation/common/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 
-class PrayerTime3rdCard extends StatelessWidget {
-  const PrayerTime3rdCard({super.key});
+class RamadanTimingCard extends StatelessWidget {
+  const RamadanTimingCard({super.key});
 
   @override
   Widget build(BuildContext context) {

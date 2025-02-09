@@ -4,6 +4,7 @@ import 'package:dua/core/static/ui_const.dart';
 import 'package:dua/core/utility/utility.dart';
 import 'package:dua/presentation/common/widgets/custom_app_bar.dart';
 import 'package:dua/presentation/common/widgets/svg_image.dart';
+import 'package:dua/presentation/dua_vertial_move/widget/model.dart';
 import 'package:dua/presentation/dua_vertial_move/widget/single_dua_card.dart';
 import 'package:flutter/material.dart';
 
@@ -55,33 +56,44 @@ class DuaVerticalMove extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Section header
-            SingleDuaCard(
-              theme: theme,
+            ListView.builder(
+              itemCount: duaCardModelList.length,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                return SingleDuaCard(
+                  theme: theme,
+                  duaCardModel: duaCardModelList[index],
+                );
+              },
             ),
-            gapH10,
-            SingleDuaCard(
-              theme: theme,
-              isFirst: false,
-              isArabicTopTitleShown: true,
-            ),
-            gapH10,
-            SingleDuaCard(
-              theme: theme,
-              isReferenceShown: false,
-              isFooterShown: false,
-            ),
-            gapH10,
-            SingleDuaCard(
-              theme: theme,
-              isDuaNumberShown: false,
-              isFirst: false,
-            ),
-            gapH10,
-            SingleDuaCard(
-              theme: theme,
-              isArabicTopTitleShown: true,
-              isLast: false,
-            ),
+            // SingleDuaCard(
+            //   theme: theme,
+            // ),
+            // gapH10,
+            // SingleDuaCard(
+            //   theme: theme,
+            //   isFirst: false,
+            //   isArabicTopTitleShown: true,
+            // ),
+            // gapH10,
+            // SingleDuaCard(
+            //   theme: theme,
+            //   isReferenceShown: false,
+            //   isFooterShown: false,
+            // ),
+            // gapH10,
+            // SingleDuaCard(
+            //   theme: theme,
+            //   isDuaNumberShown: false,
+            //   isFirst: false,
+            // ),
+            // gapH10,
+            // SingleDuaCard(
+            //   theme: theme,
+            //   isArabicTopTitleShown: true,
+            //   isLast: false,
+            // ),
           ],
         ),
       ),

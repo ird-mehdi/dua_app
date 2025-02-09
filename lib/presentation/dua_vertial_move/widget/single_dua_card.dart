@@ -2,26 +2,17 @@ import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/static/ui_const.dart';
 import 'package:dua/core/utility/utility.dart';
 import 'package:dua/presentation/dua_vertial_move/widget/dua_card_footer.dart';
+import 'package:dua/presentation/dua_vertial_move/widget/model.dart';
 import 'package:flutter/material.dart';
 
 class SingleDuaCard extends StatelessWidget {
   final ThemeData theme;
-  final bool isLast;
-  final bool isFooterShown;
-  final bool isFirst;
-  final bool isArabicTopTitleShown;
-  final bool isReferenceShown;
-  final bool isDuaNumberShown;
+  final DuaCardModel duaCardModel;
 
   const SingleDuaCard({
     super.key,
     required this.theme,
-    this.isLast = true,
-    this.isFooterShown = true,
-    this.isFirst = true,
-    this.isArabicTopTitleShown = false,
-    this.isReferenceShown = true,
-    this.isDuaNumberShown = true,
+    required this.duaCardModel,
   });
 
   @override
@@ -32,7 +23,7 @@ class SingleDuaCard extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (isFirst)
+            if (duaCardModel.isFirst!)
               Container(
                 height: eightyFivePx,
                 padding: EdgeInsets.all(sixteenPx),
@@ -71,7 +62,7 @@ class SingleDuaCard extends StatelessWidget {
               ),
             gapH16,
 
-            if (isDuaNumberShown)
+            if (duaCardModel.isDuaNumberShown!)
               Padding(
                 padding: EdgeInsets.all(eightPx),
                 child: Row(
@@ -109,7 +100,7 @@ class SingleDuaCard extends StatelessWidget {
               ),
             gapH12,
 
-            if (isArabicTopTitleShown)
+            if (duaCardModel.isArabicTopTitleShown!)
               Text(
                 'The Messenger of Allah (ﷺ) commenced the prayer when he got up at night. Then he said:',
                 style: theme.textTheme.titleSmall?.copyWith(
@@ -130,10 +121,11 @@ class SingleDuaCard extends StatelessWidget {
                 child: Text(
                   'إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ',
                   style: context.textStyle.arabicAyah?.copyWith(
-                      fontSize: twentyEightPx,
-                      color: context.color.headingTextColor,
-                      fontWeight: FontWeight.w400,
-                      height: 1.5),
+                    fontSize: twentyEightPx,
+                    color: context.color.headingTextColor,
+                    fontWeight: FontWeight.w400,
+                    height: 1.5,
+                  ),
                   textAlign: TextAlign.right,
                 ),
               ),
@@ -166,7 +158,7 @@ He whom Allah guides is the [rightly] guided, but he whom He leaves astray - nev
             gapH20,
 
             // Reference
-            if (isReferenceShown)
+            if (duaCardModel.isReferenceShown!)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -198,9 +190,9 @@ He whom Allah guides is the [rightly] guided, but he whom He leaves astray - nev
             // Action buttons
           ],
         ),
-        if (isFooterShown) DuaCardFooter.DuaCardFooter(),
+        if (duaCardModel.isFooterShown!) const DuaCardFooter(),
         gapH10,
-        if (isLast)
+        if (duaCardModel.isLast!)
           Divider(
             color: context.color.primaryColor10,
             height: 1,

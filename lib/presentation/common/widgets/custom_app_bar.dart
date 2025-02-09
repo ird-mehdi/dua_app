@@ -14,6 +14,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color? backgroundColor;
   final bool? showLeading;
   final double? titleFontSize;
+  final double? iconSize;
   const CustomAppBar({
     super.key,
     required this.title,
@@ -25,6 +26,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.backgroundColor,
     this.showLeading = true,
     this.titleFontSize,
+    this.iconSize,
   });
 
   @override
@@ -44,6 +46,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: showLeading!
           ? IconButton(
               icon: SvgPicture.asset(icon ?? SvgPath.icArrowBack),
+              iconSize: iconSize ?? twentyFourPx,
               onPressed: onLeadingPressed ?? () => Navigator.of(context).pop(),
             )
           : null,

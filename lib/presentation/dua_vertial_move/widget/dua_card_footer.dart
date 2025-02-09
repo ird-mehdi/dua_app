@@ -6,7 +6,7 @@ import 'package:dua/presentation/common/widgets/svg_image.dart';
 import 'package:flutter/material.dart';
 
 class DuaCardFooter extends StatelessWidget {
-  const DuaCardFooter.DuaCardFooter({
+  const DuaCardFooter({
     super.key,
   });
 
