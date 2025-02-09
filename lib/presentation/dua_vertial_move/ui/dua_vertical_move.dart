@@ -35,57 +35,52 @@ class DuaVerticalMove extends StatelessWidget {
           )
         ],
       ),
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(
+          bottom: fiftySixPx,
+        ),
+        child: Container(
+          width: seventyTwoPx,
+          height: fiftySixPx,
+          decoration: BoxDecoration(
+            color: context.color.primaryColor100,
+            borderRadius: BorderRadius.circular(fortyPx),
+          ),
+          child: Center(child: SvgImage(assetName: AppImages.icPlay)),
+        ),
+      ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(sixteenPx),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Section header
-            Container(
-              height: eightyFivePx,
-              padding: EdgeInsets.all(sixteenPx),
-              decoration: BoxDecoration(
-                color: context.color.shadeColor,
-                borderRadius: BorderRadius.circular(twelvePx),
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: 'Section: ',
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              fontWeight: FontWeight.w700,
-                              color: context.color.primaryColor100,
-                              fontSize: fifteenPx,
-                            ),
-                          ),
-                          TextSpan(
-                            text: 'The most important thing to ask Allah for',
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              fontSize: fifteenPx,
-                              color: context.color.headingTextColor,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+            SingleDuaCard(
+              theme: theme,
             ),
-            gapH16,
-
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 4,
-              itemBuilder: (context, index) {
-                return SingleDuaCard(theme: theme);
-              },
+            gapH10,
+            SingleDuaCard(
+              theme: theme,
+              isFirst: false,
+              isArabicTopTitleShown: true,
+            ),
+            gapH10,
+            SingleDuaCard(
+              theme: theme,
+              isReferenceShown: false,
+              isFooterShown: false,
+            ),
+            gapH10,
+            SingleDuaCard(
+              theme: theme,
+              isDuaNumberShown: false,
+              isFirst: false,
+            ),
+            gapH10,
+            SingleDuaCard(
+              theme: theme,
+              isArabicTopTitleShown: true,
+              isLast: false,
             ),
           ],
         ),
