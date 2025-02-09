@@ -13,8 +13,6 @@ class SubCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final SubCategoryPresenter presenter = locate<SubCategoryPresenter>();
-    // final ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: CustomAppBar(
         title: 'Dua Importance',
@@ -34,7 +32,6 @@ class SubCategory extends StatelessWidget {
                 padding: EdgeInsets.only(top: eightPx, left: tenPx),
                 child: ListView.builder(
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
                   itemCount: 10,
                   itemBuilder: (context, index) {
                     return DuaListTile(

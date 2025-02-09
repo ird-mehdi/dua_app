@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:dua/core/config/dua_custom_text_theme.dart';
 import 'package:dua/core/config/dua_custom_theme_colors.dart';
 import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/external_libs/flutter_toast/toast_utility.dart';
@@ -107,6 +108,11 @@ extension ThemeContextExtension on BuildContext {
   }
 }
 
+extension ThemeTextStyleExtension on BuildContext {
+  DuaCustomTextTheme get textStyle {
+    return Theme.of(this).extension<DuaCustomTextTheme>()!;
+  }
+}
 /// Helper extension that allows to use color with opacity like:
 /// `context.color.primary.withOpacityInt(0.1)`
 extension ColorOpacityExtension on Color {

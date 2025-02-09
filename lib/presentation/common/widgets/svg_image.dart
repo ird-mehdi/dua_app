@@ -10,6 +10,7 @@ class SvgImage extends StatelessWidget {
     this.height,
     this.fit = BoxFit.contain,
     this.color,
+    this.onTap,
   });
 
   final String assetName;
@@ -17,15 +18,20 @@ class SvgImage extends StatelessWidget {
   final double? height;
   final BoxFit fit;
   final Color? color;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return SvgPicture.asset(
-      assetName,
-      fit: fit,
-      height: height,
-      width: width,
-      colorFilter: color == null ? null : buildColorFilterToChangeColor(color),
+    return GestureDetector(
+      onTap: onTap,
+      child: SvgPicture.asset(
+        assetName,
+        fit: fit,
+        height: height,
+        width: width,
+        colorFilter: color == null ? null : buildColorFilterToChangeColor(color),
+      ),
     );
   }
 }
+

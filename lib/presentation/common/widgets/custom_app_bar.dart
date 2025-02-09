@@ -1,4 +1,3 @@
-
 import 'package:dua/core/config/dua_color.dart';
 import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/static/svg_path.dart';
