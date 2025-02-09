@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 
 class SubCategoryUiState extends BaseUiState {
   const SubCategoryUiState({
-    this.isExtend = false,
     required super.isLoading,
     required super.userMessage,
+    required this.expandedIndices,
     this.context,
-
   });
 
   factory SubCategoryUiState.empty() {
@@ -15,36 +14,32 @@ class SubCategoryUiState extends BaseUiState {
       isLoading: false,
       userMessage: '',
       context: null,
-      isExtend: false,
+      expandedIndices: {},
     );
   }
 
   final BuildContext? context;
-  final bool isExtend;
+  final Set<int> expandedIndices;
 
   @override
   List<Object?> get props => [
         isLoading,
         userMessage,
         context,
-        isExtend,
+        expandedIndices,
       ];
 
   SubCategoryUiState copyWith({
-    bool? isExtend,
     bool? isLoading,
     String? userMessage,
     BuildContext? context,
+    Set<int>? expandedIndices,
   }) {
     return SubCategoryUiState(
-      isExtend: isExtend ?? this.isExtend,
       isLoading: isLoading ?? this.isLoading,
       userMessage: userMessage ?? this.userMessage,
       context: context ?? this.context,
+      expandedIndices: expandedIndices ?? this.expandedIndices,
     );
   }
-
-
-
-  }
-
+}

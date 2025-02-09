@@ -1,11 +1,15 @@
 import 'package:dua/core/config/dua_screen.dart';
+import 'package:dua/core/di/service_locator.dart';
 import 'package:dua/presentation/common/widgets/custom_search_bar.dart';
 import 'package:dua/presentation/common/widgets/custom_app_bar.dart';
+import 'package:dua/presentation/subcategory/presenter/sub_category_presenter.dart';
 import 'package:dua/presentation/subcategory/widget/dua_list_tile.dart';
 import 'package:flutter/material.dart';
 
 class SubCategory extends StatelessWidget {
-  const SubCategory({super.key});
+  final SubCategoryPresenter presenter = locate<SubCategoryPresenter>();
+
+  SubCategory({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +37,10 @@ class SubCategory extends StatelessWidget {
                   physics: NeverScrollableScrollPhysics(),
                   itemCount: 10,
                   itemBuilder: (context, index) {
-                    return DuaListTile();
+                    return DuaListTile(
+                      index: index,
+                      presenter: presenter,
+                    );
                   },
                 ),
               ),
