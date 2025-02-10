@@ -31,121 +31,124 @@ class MemorizationPlanCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    return Container(
-      // margin: EdgeInsets.only(bottom: 16),
-      padding: EdgeInsets.only(left: 12, right: 12, top: 8, bottom: 12),
-      decoration: BoxDecoration(
-        color: context.color.btnTextColor,
-        borderRadius: BorderRadius.circular(fourteenPx),
-        border: Border.all(color: context.color.primaryColor10),
-      ),
+    return Padding(
+      padding: EdgeInsets.only(bottom: tenPx),
+      child: Container(
+        // margin: EdgeInsets.only(bottom: 16),
+        padding: EdgeInsets.all(twelvePx),
+        decoration: BoxDecoration(
+          color: context.color.btnTextColor,
+          borderRadius: BorderRadius.circular(fourteenPx),
+          border: Border.all(color: context.color.primaryColor10),
+        ),
 
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          MemorizationPlanCardHeader(title: title, theme: theme),
-          SizedBox(height: 16),
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: '$daysLeft ',
-                                style: theme.textTheme.titleMedium?.copyWith(
-                                  fontSize: twentyTwoPx,
-                                  fontWeight: FontWeight.w700,
-                                  color: context.color.titleColor,
-                                ),
-                              ),
-                              TextSpan(
-                                text: 'Days Left',
-                                style: theme.textTheme.titleMedium?.copyWith(
-                                  color: context.color.subtitleColor,
-                                  fontSize: thirteenPx,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    gapH12,
-                    MemorizationPlanCardRow(
-                      title: 'Turned Of',
-                      icon: SvgPath.icVolumeTurnedOf,
-                      theme: theme,
-                    ),
-                    gapH8,
-                    MemorizationPlanCardRow(
-                      title: 'Completed: $completedTasks/$totalTasks',
-                      icon: SvgPath.icAyah,
-                      theme: theme,
-                    ),
-                    gapH8,
-                    MemorizationPlanCardRow(
-                      title: 'Remaining: $remainingDays',
-                      icon: SvgPath.icTeacher,
-                      theme: theme,
-                    ),
-                    gapH8,
-                    MemorizationPlanCardRow(
-                      title: 'End Date: $endDate',
-                      icon: SvgPath.icClock,
-                      theme: theme,
-                    ),
-                  ],
-                ),
-              ),
-              CircularSeekBar(
-                progress: progress,
-                width: oneHundredPx,
-                height: oneHundredPx,
-                minProgress: 0,
-                maxProgress: 1,
-                barWidth: 5,
-                progressColor: context.color.primaryColor100,
-                trackColor: context.color.shadeColor,
-                strokeCap: StrokeCap.round,
-                dashGap: 0,
-                dashWidth: 8,
-                child: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            MemorizationPlanCardHeader(title: title, theme: theme),
+            SizedBox(height: 16),
+            Row(
+              children: [
+                Expanded(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        '${(progress * 100).toInt()}%',
-                        style: TextStyle(
-                          fontSize: sixteenPx,
-                          fontWeight: FontWeight.w500,
-                          color: context.color.titleColor,
-                        ),
-                        textAlign: TextAlign.center,
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: '$daysLeft ',
+                                  style: theme.textTheme.titleMedium?.copyWith(
+                                    fontSize: twentyTwoPx,
+                                    fontWeight: FontWeight.w700,
+                                    color: context.color.titleColor,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: 'Days Left',
+                                  style: theme.textTheme.titleMedium?.copyWith(
+                                    color: context.color.subtitleColor,
+                                    fontSize: thirteenPx,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                      Text(
-                        'Completed',
-                        style: TextStyle(
-                          fontSize: elevenPx,
-                          fontWeight: FontWeight.w400,
-                          color: context.color.subtitleColor,
-                        ),
-                        textAlign: TextAlign.center,
+                      gapH12,
+                      MemorizationPlanCardRow(
+                        title: 'Turned Of',
+                        icon: SvgPath.icVolumeTurnedOf,
+                        theme: theme,
+                      ),
+                      gapH8,
+                      MemorizationPlanCardRow(
+                        title: 'Completed: $completedTasks/$totalTasks',
+                        icon: SvgPath.icAyah,
+                        theme: theme,
+                      ),
+                      gapH8,
+                      MemorizationPlanCardRow(
+                        title: 'Remaining: $remainingDays',
+                        icon: SvgPath.icTeacher,
+                        theme: theme,
+                      ),
+                      gapH8,
+                      MemorizationPlanCardRow(
+                        title: 'End Date: $endDate',
+                        icon: SvgPath.icClock,
+                        theme: theme,
                       ),
                     ],
                   ),
                 ),
-              ),
-            ],
-          ),
-        ],
+                CircularSeekBar(
+                  progress: progress,
+                  width: oneHundredPx,
+                  height: oneHundredPx,
+                  minProgress: 0,
+                  maxProgress: 1,
+                  barWidth: 5,
+                  progressColor: context.color.primaryColor100,
+                  trackColor: context.color.shadeColor,
+                  strokeCap: StrokeCap.round,
+                  dashGap: 0,
+                  dashWidth: 8,
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          '${(progress * 100).toInt()}%',
+                          style: TextStyle(
+                            fontSize: sixteenPx,
+                            fontWeight: FontWeight.w500,
+                            color: context.color.titleColor,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        Text(
+                          'Completed',
+                          style: TextStyle(
+                            fontSize: elevenPx,
+                            fontWeight: FontWeight.w400,
+                            color: context.color.subtitleColor,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

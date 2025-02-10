@@ -2,9 +2,9 @@ import 'package:dua/core/config/app_images.dart';
 import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/static/svg_path.dart';
 import 'package:dua/core/static/ui_const.dart';
-import 'package:dua/core/utility/utility.dart';
 import 'package:dua/presentation/common/widgets/custom_app_bar.dart';
 import 'package:dua/presentation/common/widgets/custom_search_bar.dart';
+import 'package:dua/presentation/common/widgets/floting_action_button_round.dart';
 import 'package:dua/presentation/common/widgets/svg_image.dart';
 import 'package:dua/presentation/memorization/widget/memorization_plan_card.dart';
 import 'package:flutter/material.dart';
@@ -38,59 +38,33 @@ class MemorizationPage extends StatelessWidget {
         ],
       ),
       floatingActionButton: FlotingButtonRounded(),
-      body: Column(
-        children: [
-          CustomSearchBar(
-            hintText: 'Search',
-          ),
-          Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.all(16),
-              itemCount: 1, // Number of plans
-              itemBuilder: (context, index) {
-                return MemorizationPlanCard(
-                  title: 'My 50 Day Plan',
-                  daysLeft: 21,
-                  completedTasks: 1,
-                  totalTasks: 3,
-                  remainingDays: 8,
-                  endDate: 'Jan 14, 2025',
-                  progress: 0.75,
-                  theme: theme,
-                );
-              },
+      body: Padding(
+        padding: EdgeInsets.all(fourPx),
+        child: Column(
+          children: [
+            CustomSearchBar(
+              hintText: 'Search by Plan',
             ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class FlotingButtonRounded extends StatelessWidget {
-  final String? icon;
-  const FlotingButtonRounded({
-    super.key,
-    this.icon,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return FloatingActionButton(
-      onPressed: () {},
-      backgroundColor: context.color.primaryColor100,
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(oneHundredPx),
-        side: BorderSide(
-          color: context.color.primaryColor20,
-          width: 1.8,
+            Expanded(
+              child: ListView.builder(
+                padding: EdgeInsets.all(sixteenPx),
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                  return MemorizationPlanCard(
+                    title: 'My 50 Day Plan',
+                    daysLeft: 21,
+                    completedTasks: 1,
+                    totalTasks: 3,
+                    remainingDays: 8,
+                    endDate: 'Jan 14, 2025',
+                    progress: 0.75,
+                    theme: theme,
+                  );
+                },
+              ),
+            ),
+          ],
         ),
-      ),
-      child: SvgImage(
-        assetName: icon ?? SvgPath.icAdd,
-        width: twentyFourPx,
-        height: twentyFourPx,
       ),
     );
   }
