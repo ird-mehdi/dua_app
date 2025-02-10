@@ -32,6 +32,7 @@ class SubCategory extends StatelessWidget {
                 padding: EdgeInsets.only(top: eightPx, left: tenPx),
                 child: ListView.builder(
                   shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: 10,
                   itemBuilder: (context, index) {
                     return DuaListTile(

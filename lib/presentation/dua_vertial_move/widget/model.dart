@@ -1,52 +1,69 @@
 class DuaCardModel {
-  final bool? isLast;
-  final bool? isFooterShown;
-  final bool? isFirst;
-  final bool? isArabicTopTitleShown;
-  final bool? isReferenceShown;
-  final bool? isDuaNumberShown;
+  final bool isFirstDuaTitleShown;
+  final bool isSecondDuaTitleShown;
+  final bool isLast;
+  final bool isArabicTopTitleShown;
+  final bool isFirstDuaReferenceShown;
+  final bool isSecondDuaReferenceShown;
+  final bool multipleDuaSeparatorDividerShown;
+  final bool isSecondDuaSectionShown;
 
   DuaCardModel({
-    this.isLast,
-    this.isFooterShown,
-    this.isFirst,
-    this.isArabicTopTitleShown,
-    this.isReferenceShown,
-    this.isDuaNumberShown,
+    this.isSecondDuaTitleShown = true,
+    this.isFirstDuaTitleShown = true,
+    this.isLast = true,
+    this.isArabicTopTitleShown = true,
+    this.isFirstDuaReferenceShown = true,
+    this.isSecondDuaReferenceShown = true,
+    this.multipleDuaSeparatorDividerShown = true,
+    this.isSecondDuaSectionShown = true,
   });
 }
 
 List<DuaCardModel> duaCardModelList = [
   DuaCardModel(
+    isFirstDuaTitleShown: false,
     isLast: true,
-    isFirst: true,
     isArabicTopTitleShown: true,
-    isReferenceShown: true,
-    isDuaNumberShown: true,
-    isFooterShown: true,
+    isFirstDuaReferenceShown: true,
+    isSecondDuaReferenceShown: true,
+    isSecondDuaTitleShown: false,
+    multipleDuaSeparatorDividerShown: false,
+    isSecondDuaSectionShown: false,
   ),
   DuaCardModel(
+    isFirstDuaTitleShown: false,
     isLast: true,
-    isFirst: false,
     isArabicTopTitleShown: true,
-    isReferenceShown: true,
-    isDuaNumberShown: true,
-    isFooterShown: true,
+    isFirstDuaReferenceShown: false,
+    isSecondDuaReferenceShown: true,
+    isSecondDuaTitleShown: false,
+    multipleDuaSeparatorDividerShown: true,
+    isSecondDuaSectionShown: true,
   ),
-  DuaCardModel(
-    isLast: true,
-    isFirst: true,
-    isArabicTopTitleShown: true,
-    isReferenceShown: true,
-    isDuaNumberShown: true,
-    isFooterShown: true,
-  ),
-  DuaCardModel(
-    isLast: true,
-    isFirst: true,
-    isArabicTopTitleShown: true,
-    isReferenceShown: true,
-    isDuaNumberShown: true,
-    isFooterShown: true,
-  ),
+  // DuaCardModel(
+  //   isLast: true,
+  //   isFirst: false,
+  //   isArabicTopTitleShown: true,
+  //   isReferenceShown: true,
+
+  //   isDuaNumberShown: true,
+  //   isFooterShown: true,
+  // ),
+  // DuaCardModel(
+  //   isLast: true,
+  //   isFirst: true,
+  //   isArabicTopTitleShown: true,
+  //   isReferenceShown: true,
+  //   isDuaNumberShown: true,
+  //   isFooterShown: true,
+  // ),
+  // DuaCardModel(
+  //   isLast: true,
+  //   isFirst: true,
+  //   isArabicTopTitleShown: true,
+  //   isReferenceShown: true,
+  //   isDuaNumberShown: true,
+  //   isFooterShown: true,
+  // ),
 ];
