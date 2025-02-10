@@ -8,6 +8,7 @@ import 'package:dua/presentation/common/widgets/floting_action_button_round.dart
 import 'package:dua/presentation/common/widgets/svg_image.dart';
 import 'package:dua/presentation/memorization/widget/memorization_plan_card.dart';
 import 'package:dua/presentation/memorization/widget/memorize_model.dart';
+import 'package:dua/presentation/plan_details/ui/plan_details_page.dart';
 import 'package:flutter/material.dart';
 
 class MemorizationPage extends StatelessWidget {
@@ -52,18 +53,24 @@ class MemorizationPage extends StatelessWidget {
                 itemCount: MemorizeModel.getMemorizeModel().length,
                 itemBuilder: (context, index) {
                   return MemorizationPlanCard(
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PlanDetailsPage(),
+                      ),
+                    ),
                     title: MemorizeModel.getMemorizeModel()[index].title,
-
-
                     daysLeft: MemorizeModel.getMemorizeModel()[index].daysLeft,
                     completedTasks:
+
                         MemorizeModel.getMemorizeModel()[index].completedTasks,
-                    totalTasks: MemorizeModel.getMemorizeModel()[index].totalTasks,
-                    remainingDays: MemorizeModel.getMemorizeModel()[index].remainingDays,
+                    totalTasks:
+                        MemorizeModel.getMemorizeModel()[index].totalTasks,
+                    remainingDays:
+                        MemorizeModel.getMemorizeModel()[index].remainingDays,
                     endDate: MemorizeModel.getMemorizeModel()[index].endDate,
                     progress: MemorizeModel.getMemorizeModel()[index].progress,
                     theme: theme,
-
                   );
                 },
               ),
