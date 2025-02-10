@@ -458,6 +458,13 @@ double get ninetyPx {
   return _ninetyPx!;
 }
 
+double? _oneHundredPx;
+
+double get oneHundredPx {
+  _oneHundredPx ??= 100.px;
+  return _oneHundredPx!;
+}
+
 double? _twentyPx;
 
 double get twentyPx {

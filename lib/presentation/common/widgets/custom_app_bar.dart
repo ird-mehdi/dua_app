@@ -47,7 +47,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ? IconButton(
               icon: SvgPicture.asset(icon ?? SvgPath.icArrowBack),
               iconSize: iconSize ?? twentyFourPx,
-              onPressed: onLeadingPressed ?? () => Navigator.of(context).pop(),
+              onPressed: onLeadingPressed,
             )
           : null,
       actions: actions,

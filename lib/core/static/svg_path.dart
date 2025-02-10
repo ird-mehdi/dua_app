@@ -25,5 +25,29 @@ class SvgPath {
   static const String icArrowBack = "assets/images/svg/ic_arrow_back.svg";
   static const String icSort = "assets/images/svg/ic_sort.svg";
 
+  static const String icFolderFavorate = "assets/images/svg/ic_folder_favorate.svg";
+  static const String icLogin = "assets/images/svg/ic_login.svg";
+  static const String icMoreVertical = "assets/images/svg/ic_more_vertical.svg";
+  static const String icVolumeTurnedOf = "assets/images/svg/ic_volume_plus.svg";
+  static const String icAdd = "assets/images/svg/ic_add.svg";
+
+
+
+  static const String icAyah = "assets/images/svg/ic_ayah.svg";
+  static const String icTeacher = "assets/images/svg/ic_teacher.svg";
+  static const String icClock = "assets/images/svg/ic_clock.svg";
+
+
+
+
+
+
+
+
+
+
+
+
+
   static const String icMainComponent = "assets/images/svg/ic_main_component.svg";
 }

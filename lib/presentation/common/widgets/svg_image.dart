@@ -1,3 +1,4 @@
+import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/utility/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -27,9 +28,10 @@ class SvgImage extends StatelessWidget {
       child: SvgPicture.asset(
         assetName,
         fit: fit,
-        height: height,
-        width: width,
+        height: height ?? twentyFourPx,
+        width: width ?? twentyFourPx,
         colorFilter: color == null ? null : buildColorFilterToChangeColor(color),
+
       ),
     );
   }
