@@ -7,6 +7,7 @@ import 'package:dua/presentation/common/widgets/custom_search_bar.dart';
 import 'package:dua/presentation/common/widgets/floting_action_button_round.dart';
 import 'package:dua/presentation/common/widgets/svg_image.dart';
 import 'package:dua/presentation/memorization/widget/memorization_plan_card.dart';
+import 'package:dua/presentation/memorization/widget/memorize_model.dart';
 import 'package:flutter/material.dart';
 
 class MemorizationPage extends StatelessWidget {
@@ -48,17 +49,21 @@ class MemorizationPage extends StatelessWidget {
             Expanded(
               child: ListView.builder(
                 padding: EdgeInsets.all(sixteenPx),
-                itemCount: 10,
+                itemCount: MemorizeModel.getMemorizeModel().length,
                 itemBuilder: (context, index) {
                   return MemorizationPlanCard(
-                    title: 'My 50 Day Plan',
-                    daysLeft: 21,
-                    completedTasks: 1,
-                    totalTasks: 3,
-                    remainingDays: 8,
-                    endDate: 'Jan 14, 2025',
-                    progress: 0.75,
+                    title: MemorizeModel.getMemorizeModel()[index].title,
+
+
+                    daysLeft: MemorizeModel.getMemorizeModel()[index].daysLeft,
+                    completedTasks:
+                        MemorizeModel.getMemorizeModel()[index].completedTasks,
+                    totalTasks: MemorizeModel.getMemorizeModel()[index].totalTasks,
+                    remainingDays: MemorizeModel.getMemorizeModel()[index].remainingDays,
+                    endDate: MemorizeModel.getMemorizeModel()[index].endDate,
+                    progress: MemorizeModel.getMemorizeModel()[index].progress,
                     theme: theme,
+
                   );
                 },
               ),
