@@ -1,7 +1,7 @@
 import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/config/themes.dart';
 import 'package:dua/core/static/font_family.dart';
-import 'package:dua/presentation/memorization/ui/memorization_page.dart';
+import 'package:dua/presentation/main/ui/nav_bar_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -37,9 +37,9 @@ class DuaApp extends StatelessWidget {
         // home: AllDuaPage(),
         // home: SubCategory(),
         // home: DuaVerticalMove(),
-        // home: NavBarPage(),
+        home: NavBarPage(),
         // home: PrayerTimePage(),
-        home: MemorizationPage(),
+        //home: MemorizationPage(),
       );
     });
   }

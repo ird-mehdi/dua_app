@@ -99,7 +99,9 @@ class DuaCategoryCard extends StatelessWidget {
         gapH4,
         Text(
           'Duas',
-          style: Theme.of(context).extension<DuaCustomTextTheme>()?.duaCount,
+          style: Theme.of(context)
+              .extension<DuaCustomTextTheme>()
+              ?.categorySubtitle,
         ),
       ],
     );

@@ -46,7 +46,6 @@ class DuaTheme {
             primaryColor90: DuaColor.primaryColorLight90,
             primaryColor80: DuaColor.primaryColorLight80,
             primaryColor70: DuaColor.primaryColorLight70,
-
             primaryColor60: DuaColor.primaryColorLight60,
             primaryColor50: DuaColor.primaryColorLight50,
             primaryColor40: DuaColor.primaryColorLight40,
@@ -161,10 +160,18 @@ class DuaTheme {
               letterSpacing: 0.12,
             ),
             duaCount: TextStyle(
-              fontSize: titleLargeFontSize,
+              fontSize: duaCountFontSize,
               fontWeight: FontWeight.w500,
               color: DuaColor.headingTextColorLight,
               fontFamily: FontFamily.poppins,
+            ),
+            duaCountSubtitle: TextStyle(
+              fontSize: labelSmallFontSize,
+              fontWeight: FontWeight.w400,
+              color: DuaColor.subtitleColorLight,
+              fontFamily: FontFamily.poppins,
+              height: 1.67,
+              letterSpacing: 0.12,
             ),
           )
         ],
@@ -226,7 +233,7 @@ class DuaTheme {
               DuaColor.primaryColorLight01.withAlpha((0.2 * 255).toInt()),
           selectionHandleColor: DuaColor.primaryColorLight01,
         ),
-          primaryColorLight: DuaColor.primaryColorLight100,
+        primaryColorLight: DuaColor.primaryColorLight100,
         buttonTheme: const ButtonThemeData(
           buttonColor: DuaColor.titleColorLight,
         ),

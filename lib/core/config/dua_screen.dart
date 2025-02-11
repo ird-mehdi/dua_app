@@ -612,7 +612,6 @@ double get thirtySixPx {
   return _thirtySixPx!;
 }
 
-
 double? _thirtySevenPx;
 
 double get thirtySevenPx {
@@ -655,11 +654,6 @@ double get thirtyNinePx {
   return _thirtyNinePx!;
 }
 
-
-
-
-
-
 double? _fortyFivePx;
 
 double get fortyFivePx {
@@ -674,7 +668,6 @@ double get sixtyPx {
   return _sixtyPx!;
 }
 
-
 double? _seventyTwoPx;
 
 double get seventyTwoPx {
@@ -682,21 +675,12 @@ double get seventyTwoPx {
   return _seventyTwoPx!;
 }
 
-
-
-
-
-
 double? _fiftySixPx;
 
 double get fiftySixPx {
   _fiftySixPx ??= 56.px;
   return _fiftySixPx!;
 }
-
-
-
-
 
 double? _seventyFivePx;
 
@@ -872,6 +856,10 @@ double get labelMediumFontSize {
 
 double get labelLargeFontSize {
   return 16;
+}
+
+double get duaCountFontSize {
+  return 15;
 }
 
 double get lableExtraSmallFontSize {
