@@ -12,48 +12,45 @@ class DuaCardFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: eighteenPx),
-      child: Row(
-        children: [
-          gapW15,
-          SvgImage(
-            assetName: AppImages.icBookmark,
-            color: context.color.primaryColor70,
-            width: twentyFourPx,
-            height: twentyFourPx,
-          ),
-          const Spacer(),
-          SvgImage(
-            assetName: AppImages.icLampCharge,
-            color: context.color.primaryColor70,
-            width: twentyFourPx,
-            height: twentyFourPx,
-          ),
-          const Spacer(),
-          SvgImage(
-            assetName: AppImages.icPlayNoneBg,
-            color: context.color.primaryColor70,
-            width: twentyFourPx,
-            height: twentyFourPx,
-          ),
-          const Spacer(),
-          SvgImage(
-            assetName: AppImages.icCalendar,
-            color: context.color.primaryColor70,
-            width: twentyFourPx,
-            height: twentyFourPx,
-          ),
-          const Spacer(),
-          SvgImage(
-            assetName: AppImages.icMore,
-            color: context.color.primaryColor70,
-            width: twentyFourPx,
-            height: twentyFourPx,
-          ),
-          gapW12,
-        ],
-      ),
+    return Row(
+      children: [
+        gapW15,
+        SvgImage(
+          assetName: AppImages.icBookmark,
+          color: context.color.primaryColor70,
+          width: twentyFourPx,
+          height: twentyFourPx,
+        ),
+        const Spacer(),
+        SvgImage(
+          assetName: AppImages.icLampCharge,
+          color: context.color.primaryColor70,
+          width: twentyFourPx,
+          height: twentyFourPx,
+        ),
+        const Spacer(),
+        SvgImage(
+          assetName: AppImages.icPlayNoneBg,
+          color: context.color.primaryColor70,
+          width: twentyFourPx,
+          height: twentyFourPx,
+        ),
+        const Spacer(),
+        SvgImage(
+          assetName: AppImages.icCalendar,
+          color: context.color.primaryColor70,
+          width: twentyFourPx,
+          height: twentyFourPx,
+        ),
+        const Spacer(),
+        SvgImage(
+          assetName: AppImages.icMore,
+          color: context.color.primaryColor70,
+          width: twentyFourPx,
+          height: twentyFourPx,
+        ),
+        gapW12,
+      ],
     );
   }
 }

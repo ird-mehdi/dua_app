@@ -37,7 +37,7 @@ class DuaApp extends StatelessWidget {
         // home: AllDuaPage(),
         // home: SubCategory(),
         // home: DuaVerticalMove(),
-        //home: NavBarPage(),
+        // home: NavBarPage(),
         // home: PrayerTimePage(),
         home: MemorizationPage(),
       );

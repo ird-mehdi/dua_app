@@ -67,3 +67,52 @@ List<DuaCardModel> duaCardModelList = [
   //   isFooterShown: true,
   // ),
 ];
+
+List<DuaCardModel> planDetailsDuaCardModelList = [
+  DuaCardModel(
+    isFirstDuaTitleShown: false,
+    isLast: true,
+    isArabicTopTitleShown: true,
+    isFirstDuaReferenceShown: true,
+    isSecondDuaReferenceShown: true,
+    isSecondDuaTitleShown: false,
+    multipleDuaSeparatorDividerShown: false,
+    isSecondDuaSectionShown: false,
+  ),
+  DuaCardModel(
+    isFirstDuaTitleShown: false,
+    isLast: true,
+    isArabicTopTitleShown: true,
+    isFirstDuaReferenceShown: true,
+    isSecondDuaReferenceShown: true,
+    isSecondDuaTitleShown: false,
+    multipleDuaSeparatorDividerShown: false,
+    isSecondDuaSectionShown: false,
+  ),
+
+  // DuaCardModel(
+  //   isLast: true,
+  //   isFirst: false,
+  //   isArabicTopTitleShown: true,
+  //   isReferenceShown: true,
+
+  //   isDuaNumberShown: true,
+  //   isFooterShown: true,
+  // ),
+  // DuaCardModel(
+  //   isLast: true,
+  //   isFirst: true,
+  //   isArabicTopTitleShown: true,
+  //   isReferenceShown: true,
+  //   isDuaNumberShown: true,
+  //   isFooterShown: true,
+  // ),
+  // DuaCardModel(
+  //   isLast: true,
+  //   isFirst: true,
+  //   isArabicTopTitleShown: true,
+  //   isReferenceShown: true,
+  //   isDuaNumberShown: true,
+  //   isFooterShown: true,
+  // ),
+];

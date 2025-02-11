@@ -98,7 +98,7 @@ class FirstDua extends StatelessWidget {
             ],
           ),
 
-        gapH16,
+        gapH6,
 
         // Action buttons
       ],

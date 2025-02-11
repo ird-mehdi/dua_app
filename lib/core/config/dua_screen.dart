@@ -705,6 +705,13 @@ double get seventyFivePx {
   return _seventyFivePx!;
 }
 
+double? _seventyEightPx;
+
+double get seventyEightPx {
+  _seventyEightPx ??= 78.px;
+  return _seventyEightPx!;
+}
+
 double? _eightyPx;
 
 double get eightyPx {

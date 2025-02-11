@@ -5,14 +5,13 @@ import 'package:dua/presentation/dua_vertial_move/widget/dua_card_footer.dart';
 import 'package:dua/presentation/dua_vertial_move/widget/first_dua_section.dart';
 import 'package:dua/presentation/dua_vertial_move/widget/model.dart';
 import 'package:dua/presentation/dua_vertial_move/widget/second_dua_section.dart';
-import 'package:dua/presentation/dua_vertial_move/widget/section_card.dart';
 import 'package:flutter/material.dart';
 
-class SingleDuaCard extends StatelessWidget {
+class SinglePlanCard extends StatelessWidget {
   final ThemeData theme;
   final DuaCardModel duaCardModel;
 
-  const SingleDuaCard({
+  const SinglePlanCard({
     super.key,
     required this.theme,
     required this.duaCardModel,
@@ -23,7 +22,7 @@ class SingleDuaCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SectionCard(theme: theme),
+        PlanHeader(theme: theme),
         gapH16,
         DuaNumber(theme: theme),
         gapH12,
@@ -35,7 +34,7 @@ class SingleDuaCard extends StatelessWidget {
           ),
         SecondDua(duaCardModel: duaCardModel, theme: theme),
         const DuaCardFooter(),
-        gapH10,
+        gapH30,
         if (duaCardModel.isLast)
           Divider(
             color: context.color.primaryColor10,
@@ -43,6 +42,50 @@ class SingleDuaCard extends StatelessWidget {
           ),
         gapH20,
       ],
+    );
+  }
+}
+
+class PlanHeader extends StatelessWidget {
+  const PlanHeader({
+    super.key,
+    required this.theme,
+  });
+
+  final ThemeData theme;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: Container(
+        padding: EdgeInsets.all(sixteenPx),
+        decoration: BoxDecoration(
+          color: context.color.shadeColor,
+          borderRadius: BorderRadius.circular(twelvePx),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Plan Name 1',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w700,
+                color: context.color.primaryColor100,
+                fontSize: fifteenPx,
+              ),
+            ),
+            Text(
+              'Total Duas: 3',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontSize: twelvePx,
+                color: context.color.subtitleColor,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -36,6 +36,9 @@ class SvgPath {
   static const String icTeacher = "assets/images/svg/ic_teacher.svg";
   static const String icClock = "assets/images/svg/ic_clock.svg";
 
+  static const String icLampSlash =
+      "assets/images/svg/ic_lamp_slash.svg";
+
   static const String icMainComponent =
       "assets/images/svg/ic_main_component.svg";
 }
