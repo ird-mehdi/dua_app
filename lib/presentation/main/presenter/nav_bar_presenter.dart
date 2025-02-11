@@ -4,6 +4,7 @@ import 'package:dua/presentation/all_dua/ui/all_dua.dart';
 import 'package:dua/presentation/home/ui/home_page.dart';
 import 'package:dua/presentation/main/presenter/nav_bar_ui_state.dart';
 import 'package:dua/presentation/memorization/ui/memorization_page.dart';
+import 'package:dua/presentation/scheduale/ui/schedule_page.dart';
 
 import 'package:flutter/widgets.dart';
 
@@ -18,7 +19,7 @@ class NavBarPresenter extends BasePresenter<NavBarUiState> {
     HomePage(),
     AllDuaPage(),
     HomePage(),
-    HomePage(),
+    SchedulePage(),
     MemorizationPage(),
   ];
 

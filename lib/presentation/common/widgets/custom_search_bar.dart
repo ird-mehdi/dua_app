@@ -2,8 +2,8 @@ import 'package:dua/core/config/app_images.dart';
 import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/static/ui_const.dart';
 import 'package:dua/core/utility/utility.dart';
+import 'package:dua/presentation/common/widgets/svg_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 class CustomSearchBar extends StatelessWidget {
   final String hintText;
@@ -15,7 +15,7 @@ class CustomSearchBar extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: eightPx,
+        horizontal: sixteenPx,
       ),
       child: TextField(
         // controller: controller ?? null,
@@ -30,10 +30,11 @@ class CustomSearchBar extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SvgPicture.asset(
-                  AppImages.icSearch,
+                SvgImage(
+                  assetName: AppImages.icSearch,
                   width: eighteenPx,
                   height: eighteenPx,
+                  color: context.color.primaryColor100,
                 ),
                 gapH10,
               ],

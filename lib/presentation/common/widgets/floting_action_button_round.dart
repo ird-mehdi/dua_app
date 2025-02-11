@@ -10,6 +10,8 @@ class FlotingButtonRounded extends StatelessWidget {
   final double? paddingBottom;
   final double? paddingLeft;
   final double? paddingRight;
+  final double? width;
+  final double? height;
   const FlotingButtonRounded({
     super.key,
     this.icon,
@@ -17,6 +19,8 @@ class FlotingButtonRounded extends StatelessWidget {
     this.paddingBottom,
     this.paddingLeft,
     this.paddingRight,
+    this.width,
+    this.height,
   });
 
   @override
@@ -28,21 +32,25 @@ class FlotingButtonRounded extends StatelessWidget {
         left: paddingLeft ?? 0,
         right: paddingRight ?? 0,
       ),
-      child: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: context.color.primaryColor100,
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(oneHundredPx),
-          side: BorderSide(
-            color: context.color.primaryColor20,
-            width: 1.8,
+      child: SizedBox(
+        width: width ?? eightyPx,
+        height: height ?? eightyPx,
+        child: FloatingActionButton(
+          onPressed: () {},
+          backgroundColor: context.color.primaryColor100,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(oneHundredPx),
+            side: BorderSide(
+              color: context.color.primaryColor20,
+              width: 1.8,
+            ),
           ),
-        ),
-        child: SvgImage(
-          assetName: icon ?? SvgPath.icAdd,
-          width: twentyFourPx,
-          height: twentyFourPx,
+          child: SvgImage(
+            assetName: icon ?? SvgPath.icAdd,
+            width: twentyFourPx,
+            height: twentyFourPx,
+          ),
         ),
       ),
     );

@@ -15,6 +15,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool? showLeading;
   final double? titleFontSize;
   final double? iconSize;
+  final double? paddingLeft;
+  final double? paddingRight;
   const CustomAppBar({
     super.key,
     required this.title,
@@ -27,30 +29,38 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.showLeading = true,
     this.titleFontSize,
     this.iconSize,
+    this.paddingLeft,
+    this.paddingRight,
   });
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      backgroundColor: backgroundColor,
-      titleSpacing: titleSpacing,
-      title: Text(
-        title,
-        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontSize: titleFontSize ?? twentyPx,
-              fontWeight: FontWeight.w600,
-              color: DuaColor.headingTextColorLight,
-            ),
+    return Padding(
+      padding: EdgeInsets.only(
+        left: paddingLeft ?? twelvePx,
+        right: paddingRight ?? tenPx,
       ),
-      centerTitle: centerTitle,
-      leading: showLeading!
-          ? IconButton(
-              icon: SvgPicture.asset(icon ?? SvgPath.icArrowBack),
-              iconSize: iconSize ?? twentyFourPx,
-              onPressed: onLeadingPressed,
-            )
-          : null,
-      actions: actions,
+      child: AppBar(
+        backgroundColor: backgroundColor,
+        titleSpacing: titleSpacing,
+        title: Text(
+          title,
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontSize: titleFontSize ?? twentyPx,
+                fontWeight: FontWeight.w600,
+                color: DuaColor.headingTextColorLight,
+              ),
+        ),
+        centerTitle: centerTitle,
+        leading: showLeading!
+            ? IconButton(
+                icon: SvgPicture.asset(icon ?? SvgPath.icArrowBack),
+                iconSize: iconSize ?? twentyFourPx,
+                onPressed: onLeadingPressed,
+              )
+            : null,
+        actions: actions,
+      ),
     );
   }
 
