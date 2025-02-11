@@ -2,10 +2,12 @@ import 'package:dua/core/utility/utility.dart';
 import 'package:flutter/material.dart';
 
 class DuaColor {
+  static const Color primaryColorLight110 = Color(0xFF698754);
   static const Color primaryColorLight100 = Color(0xFF417360);
   static const Color primaryColorLight90 = Color(0xFF4A7765);
   static const Color primaryColorLight80 = Color(0xFF5D8675);
   static const Color primaryColorLight70 = Color(0xFF709484);
+
   static const Color primaryColorLight60 = Color(0xFF83A394);
   static const Color primaryColorLight50 = Color(0xFF95B1A3);
   static const Color primaryColorLight40 = Color(0xFFABC0B2);
@@ -52,6 +54,7 @@ class DuaColor {
   static const Color quickAccessColorLight7 = Color(0x26277BC0);
   static const Color quickAccessColorLight8 = Color(0x26E0144C);
   static const Color cardDurationBackground = Color(0x3396AB99);
+  static const Color primaryColorLight400 = Color(0xFF698754);
 
   static const Color black = Colors.black;
   static const Color white = Colors.white;

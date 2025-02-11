@@ -8,6 +8,10 @@ class AppImages {
 
   static const String icCategory = "assets/images/svg/category.svg";
 
+  static const String icMore = "assets/images/svg/ic_more.svg";
+
+  static const String icPlayNoneBg = "assets/images/svg/ic_play_nonebg.svg";
+
   static const String icHome = "assets/images/svg/home.svg";
 
   static const String icLampCharge = "assets/images/svg/lampCharge.svg";

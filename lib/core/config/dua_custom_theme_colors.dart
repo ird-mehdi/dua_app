@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class DuaCustomThemeColors extends ThemeExtension<DuaCustomThemeColors> {
+  final Color primaryColor110;
+  final Color primaryColor400;
   final Color primaryColor100;
   final Color primaryColor90;
   final Color primaryColor80;
@@ -55,6 +57,8 @@ class DuaCustomThemeColors extends ThemeExtension<DuaCustomThemeColors> {
   final Color cardDurationBackground;
 
   const DuaCustomThemeColors({
+    required this.primaryColor110,
+    required this.primaryColor400,
     required this.primaryColor100,
     required this.primaryColor90,
     required this.primaryColor80,
@@ -111,6 +115,8 @@ class DuaCustomThemeColors extends ThemeExtension<DuaCustomThemeColors> {
 
   @override
   ThemeExtension<DuaCustomThemeColors> copyWith({
+    Color? primaryColor110,
+    Color? primaryColor400,
     Color? primaryColor100,
     Color? primaryColor90,
     Color? primaryColor80,
@@ -165,6 +171,8 @@ class DuaCustomThemeColors extends ThemeExtension<DuaCustomThemeColors> {
     Color? cardDurationBackground,
   }) {
     return DuaCustomThemeColors(
+      primaryColor110: primaryColor110 ?? this.primaryColor110,
+      primaryColor400: primaryColor400 ?? this.primaryColor400,
       primaryColor100: primaryColor100 ?? this.primaryColor100,
       primaryColor90: primaryColor90 ?? this.primaryColor90,
       primaryColor80: primaryColor80 ?? this.primaryColor80,
@@ -231,9 +239,12 @@ class DuaCustomThemeColors extends ThemeExtension<DuaCustomThemeColors> {
       return this;
     }
     return DuaCustomThemeColors(
+      primaryColor110: Color.lerp(primaryColor110, other.primaryColor110, t)!,
+      primaryColor400: Color.lerp(primaryColor400, other.primaryColor400, t)!,
       titleHeadingColorLight:
           Color.lerp(titleHeadingColorLight, other.titleHeadingColorLight, t)!,
       primaryColor100: Color.lerp(primaryColor100, other.primaryColor100, t)!,
+
       primaryColor90: Color.lerp(primaryColor90, other.primaryColor90, t)!,
       primaryColor80: Color.lerp(primaryColor80, other.primaryColor80, t)!,
       primaryColor70: Color.lerp(primaryColor70, other.primaryColor70, t)!,

@@ -6,6 +6,7 @@ import 'package:dua/domain/service/error_message_handler.dart';
 import 'package:dua/presentation/home/presenter/home_presenter.dart';
 import 'package:dua/presentation/prayer_time/presenter/prayer_time_presenter.dart';
 import 'package:dua/presentation/ruqyah_video/presenter/video_play_list_presenter.dart';
+import 'package:dua/presentation/subcategory/presenter/sub_category_presenter.dart';
 import 'package:get_it/get_it.dart';
 
 // Implementation Note:
@@ -88,7 +89,10 @@ class ServiceLocator {
         .registerLazySingleton(() => loadPresenter(PrayerTimePresenter()));
     _serviceLocator
         .registerLazySingleton(() => loadPresenter(VideoPlayListPresenter()));
+    _serviceLocator
+        .registerLazySingleton(() => loadPresenter(SubCategoryPresenter()));
   }
+
 
   Future<void> _setUpUseCase() async {
     // _serviceLocator

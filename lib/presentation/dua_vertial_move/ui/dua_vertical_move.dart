@@ -3,6 +3,8 @@ import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/utility/utility.dart';
 import 'package:dua/presentation/common/widgets/custom_app_bar.dart';
 import 'package:dua/presentation/common/widgets/svg_image.dart';
+import 'package:dua/presentation/dua_vertial_move/widget/model.dart';
+import 'package:dua/presentation/dua_vertial_move/widget/single_dua_card.dart';
 import 'package:flutter/material.dart';
 
 class DuaVerticalMove extends StatelessWidget {
@@ -10,13 +12,17 @@ class DuaVerticalMove extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: CustomAppBar(
         title: 'Dua Importance',
+        titleFontSize: eighteenPx,
+        // icon: ,
+
         actions: [
           Padding(
-            padding: EdgeInsets.only(right: sixteenPx),
+            padding: EdgeInsets.only(right: twentyFivePx),
             child: Container(
                 width: twentyFourPx,
                 height: twentyFourPx,
@@ -29,216 +35,64 @@ class DuaVerticalMove extends StatelessWidget {
           )
         ],
       ),
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(
+          bottom: fiftySixPx,
+        ),
+        child: Container(
+          width: seventyTwoPx,
+          height: fiftySixPx,
+          decoration: BoxDecoration(
+            color: context.color.primaryColor100,
+            borderRadius: BorderRadius.circular(fortyPx),
+          ),
+          child: Center(child: SvgImage(assetName: AppImages.icPlay)),
+        ),
+      ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(sixteenPx),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Section header
-            Container(
-              padding: const EdgeInsets.all(12.0),
-              decoration: BoxDecoration(
-                color: Colors.green.shade50,
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              child: const Row(
-                children: [
-                  Text(
-                    'Section: ',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                    ),
-                  ),
-                  Text(
-                    'The most important thing to ask Allah for',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                ],
-              ),
+            ListView.builder(
+              itemCount: duaCardModelList.length,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                return SingleDuaCard(
+                  theme: theme,
+                  duaCardModel: duaCardModelList[index],
+                );
+              },
             ),
-            const SizedBox(height: 16),
-
-            // Item #4
-            Row(
-              children: [
-                Container(
-                  width: 32,
-                  height: 32,
-                  decoration: BoxDecoration(
-                    color: Colors.green.shade600,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Center(
-                    child: Text(
-                      '4',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  'The servant is dependent on his Lord #1',
-                  style: TextStyle(
-                    color: Colors.green.shade700,
-                    fontSize: 16,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-
-            // Arabic Text
-            const Center(
-              child: Text(
-                'إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ',
-                style: TextStyle(
-                  fontSize: 28,
-                  height: 2,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-
-            // Transliteration
-            const Center(
-              child: Text(
-                "lyyaaka na'budu wa lyyaaka nasta'een",
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            const SizedBox(height: 8),
-
-            // Translation
-            const Center(
-              child: Text(
-                'It is You we worship and It is You we ask for help.',
-                style: TextStyle(fontSize: 14),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            // Quote
-            const Text(
-              'He whom Allah guides is the [rightly] guided, but he whom He leaves astray - never will you find for him a protecting guide. (Surah Al-Kahf 18:17)',
-              style: TextStyle(fontSize: 14),
-            ),
-            const SizedBox(height: 16),
-
-            // Reference
-            const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Reference:',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                  ),
-                ),
-                Text(
-                  'Muslim: 770',
-                  style: TextStyle(fontSize: 14),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-
-            // Action buttons
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(color: Colors.grey.shade300),
-                  bottom: BorderSide(color: Colors.grey.shade300),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.bookmark_border),
-                    onPressed: () {},
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.lightbulb_outline),
-                    onPressed: () {},
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.play_arrow),
-                    onPressed: () {},
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.calendar_today),
-                    onPressed: () {},
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.more_vert),
-                    onPressed: () {},
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            // Item #5
-            Row(
-              children: [
-                Container(
-                  width: 32,
-                  height: 32,
-                  decoration: BoxDecoration(
-                    color: Colors.green.shade600,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Center(
-                    child: Text(
-                      '5',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  "Allah's guidance #2",
-                  style: TextStyle(
-                    color: Colors.green.shade700,
-                    fontSize: 16,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-
-            // Final text
-            const Text(
-              'The Messenger of Allah (ﷺ) commenced the prayer when he got up at night. Then he said:',
-              style: TextStyle(fontSize: 14),
-            ),
-            const SizedBox(height: 16),
-
-            // Final Arabic text
-            const Center(
-              child: Text(
-                'اهْدِنِي لِمَا اخْتُلِفَ فِيهِ مِنَ الْحَقِّ بِإِذْنِكَ إِنَّكَ',
-                style: TextStyle(
-                  fontSize: 28,
-                  height: 2,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
+            // SingleDuaCard(
+            //   theme: theme,
+            // ),
+            // gapH10,
+            // SingleDuaCard(
+            //   theme: theme,
+            //   isFirst: false,
+            //   isArabicTopTitleShown: true,
+            // ),
+            // gapH10,
+            // SingleDuaCard(
+            //   theme: theme,
+            //   isReferenceShown: false,
+            //   isFooterShown: false,
+            // ),
+            // gapH10,
+            // SingleDuaCard(
+            //   theme: theme,
+            //   isDuaNumberShown: false,
+            //   isFirst: false,
+            // ),
+            // gapH10,
+            // SingleDuaCard(
+            //   theme: theme,
+            //   isArabicTopTitleShown: true,
+            //   isLast: false,
+            // ),
           ],
         ),
       ),

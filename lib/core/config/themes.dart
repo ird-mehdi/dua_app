@@ -39,11 +39,14 @@ class DuaTheme {
         brightness: Brightness.light,
         extensions: [
           DuaCustomThemeColors(
+            primaryColor400: DuaColor.primaryColorLight400,
             titleHeadingColorLight: DuaColor.titleHeadingColorLight,
+            primaryColor110: DuaColor.primaryColorLight110,
             primaryColor100: DuaColor.primaryColorLight100,
             primaryColor90: DuaColor.primaryColorLight90,
             primaryColor80: DuaColor.primaryColorLight80,
             primaryColor70: DuaColor.primaryColorLight70,
+
             primaryColor60: DuaColor.primaryColorLight60,
             primaryColor50: DuaColor.primaryColorLight50,
             primaryColor40: DuaColor.primaryColorLight40,
@@ -223,7 +226,7 @@ class DuaTheme {
               DuaColor.primaryColorLight01.withAlpha((0.2 * 255).toInt()),
           selectionHandleColor: DuaColor.primaryColorLight01,
         ),
-        primaryColorLight: DuaColor.primaryColorLight100,
+          primaryColorLight: DuaColor.primaryColorLight100,
         buttonTheme: const ButtonThemeData(
           buttonColor: DuaColor.titleColorLight,
         ),

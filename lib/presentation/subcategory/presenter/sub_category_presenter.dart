@@ -8,10 +8,21 @@ class SubCategoryPresenter extends BasePresenter<SubCategoryUiState> {
 
   SubCategoryUiState get currentUiState => uiState.value;
 
-  void toggleIsExtend(bool value) {
-    uiState.value = currentUiState.copyWith(isExtend: !currentUiState.isExtend );
+  void toggleExpansion(int index) {
+    final Set<int> newExpandedIndices =
+        Set.from(currentUiState.expandedIndices);
+    if (newExpandedIndices.contains(index)) {
+      newExpandedIndices.remove(index);
+    } else {
+      newExpandedIndices.add(index);
+    }
+    uiState.value =
+        currentUiState.copyWith(expandedIndices: newExpandedIndices);
   }
 
+  bool isExpanded(int index) {
+    return currentUiState.expandedIndices.contains(index);
+  }
 
   @override
   Future<void> addUserMessage(String message) {
@@ -23,4 +34,3 @@ class SubCategoryPresenter extends BasePresenter<SubCategoryUiState> {
     uiState.value = currentUiState.copyWith(isLoading: loading);
   }
 }
-

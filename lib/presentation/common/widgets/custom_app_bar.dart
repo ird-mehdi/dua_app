@@ -1,4 +1,3 @@
-
 import 'package:dua/core/config/dua_color.dart';
 import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/static/svg_path.dart';
@@ -15,6 +14,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color? backgroundColor;
   final bool? showLeading;
   final double? titleFontSize;
+  final double? iconSize;
   const CustomAppBar({
     super.key,
     required this.title,
@@ -26,6 +26,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.backgroundColor,
     this.showLeading = true,
     this.titleFontSize,
+    this.iconSize,
   });
 
   @override
@@ -45,7 +46,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: showLeading!
           ? IconButton(
               icon: SvgPicture.asset(icon ?? SvgPath.icArrowBack),
-              onPressed: onLeadingPressed ?? () => Navigator.of(context).pop(),
+              iconSize: iconSize ?? twentyFourPx,
+              onPressed: onLeadingPressed,
             )
           : null,
       actions: actions,
