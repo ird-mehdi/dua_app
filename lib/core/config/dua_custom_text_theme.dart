@@ -18,6 +18,7 @@ class DuaCustomTextTheme extends ThemeExtension<DuaCustomTextTheme> {
   final TextStyle? prayerTime;
   final TextStyle? prayerLocation;
   final TextStyle? nextPrayerText;
+  final TextStyle? duaCountSubtitle;
 
   const DuaCustomTextTheme({
     this.lableExtraSmall,
@@ -35,6 +36,7 @@ class DuaCustomTextTheme extends ThemeExtension<DuaCustomTextTheme> {
     this.prayerTime,
     this.prayerLocation,
     this.nextPrayerText,
+    this.duaCountSubtitle,
   });
 
   @override
@@ -54,6 +56,7 @@ class DuaCustomTextTheme extends ThemeExtension<DuaCustomTextTheme> {
     TextStyle? prayerTime,
     TextStyle? prayerLocation,
     TextStyle? nextPrayerText,
+    TextStyle? duaCountSubtitle,
   }) {
     return DuaCustomTextTheme(
       lableExtraSmall: lableExtraSmall ?? this.lableExtraSmall,
@@ -71,6 +74,7 @@ class DuaCustomTextTheme extends ThemeExtension<DuaCustomTextTheme> {
       prayerTime: prayerTime ?? this.prayerTime,
       prayerLocation: prayerLocation ?? this.prayerLocation,
       nextPrayerText: nextPrayerText ?? this.nextPrayerText,
+      duaCountSubtitle: duaCountSubtitle ?? this.duaCountSubtitle,
     );
   }
 
@@ -101,6 +105,8 @@ class DuaCustomTextTheme extends ThemeExtension<DuaCustomTextTheme> {
       prayerTime: TextStyle.lerp(prayerTime, other.prayerTime, t),
       prayerLocation: TextStyle.lerp(prayerLocation, other.prayerLocation, t),
       nextPrayerText: TextStyle.lerp(nextPrayerText, other.nextPrayerText, t),
+      duaCountSubtitle:
+          TextStyle.lerp(duaCountSubtitle, other.duaCountSubtitle, t),
     );
   }
 }
