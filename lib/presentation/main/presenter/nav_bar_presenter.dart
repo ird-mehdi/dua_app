@@ -1,7 +1,9 @@
 import 'package:dua/core/base/base_presenter.dart';
 import 'package:dua/core/utility/utility.dart';
+import 'package:dua/presentation/all_dua/ui/all_dua.dart';
 import 'package:dua/presentation/home/ui/home_page.dart';
 import 'package:dua/presentation/main/presenter/nav_bar_ui_state.dart';
+import 'package:dua/presentation/memorization/ui/memorization_page.dart';
 
 import 'package:flutter/widgets.dart';
 
@@ -14,9 +16,10 @@ class NavBarPresenter extends BasePresenter<NavBarUiState> {
   // List of widget pages corresponding to each bottom navigation item
   final List<Widget> pages = [
     HomePage(),
+    AllDuaPage(),
     HomePage(),
     HomePage(),
-    HomePage(),
+    MemorizationPage(),
   ];
 
   // Update selected index
