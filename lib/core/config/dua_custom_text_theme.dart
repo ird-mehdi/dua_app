@@ -150,7 +150,7 @@ class QuranTextTheme {
     ),
     titleMedium: TextStyle(
       fontFamily: FontFamily.poppins,
-      fontSize: titleMediumFontSize,
+      fontSize: headlineLargeFontSize,
       fontWeight: FontWeight.w600,
     ),
     titleSmall: TextStyle(

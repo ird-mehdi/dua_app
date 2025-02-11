@@ -1,16 +1,19 @@
 import 'package:dua/core/config/app_images.dart';
 import 'package:dua/core/config/dua_screen.dart';
+import 'package:dua/core/di/service_locator.dart';
 import 'package:dua/core/static/svg_path.dart';
 import 'package:dua/core/static/ui_const.dart';
 import 'package:dua/presentation/common/widgets/custom_app_bar.dart';
 import 'package:dua/presentation/common/widgets/custom_search_bar.dart';
 import 'package:dua/presentation/common/widgets/floting_action_button_round.dart';
 import 'package:dua/presentation/common/widgets/svg_image.dart';
+import 'package:dua/presentation/scheduale/presenter/schedule_presenter.dart';
 import 'package:dua/presentation/scheduale/widget/schedule_card.dart';
 import 'package:flutter/material.dart';
 
 class SchedulePage extends StatelessWidget {
-  const SchedulePage({super.key});
+  SchedulePage({super.key});
+  final SchedulePresenter _presenter = locate<SchedulePresenter>();
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +53,10 @@ class SchedulePage extends StatelessWidget {
               padding: EdgeInsets.all(sixteenPx),
               itemCount: 2, // Temporary count, replace with actual data length
               itemBuilder: (context, index) {
-                return ScheduleCard(theme: theme);
+                return ScheduleCard(
+                  presenter: _presenter,
+                  theme: theme,
+                );
               },
             ),
           ),
@@ -59,4 +65,3 @@ class SchedulePage extends StatelessWidget {
     );
   }
 }
-

@@ -22,6 +22,7 @@ class DuaTheme {
     visualDensity: VisualDensity.adaptivePlatformDensity,
     fontFamily: FontFamily.poppins,
     scaffoldBackgroundColor: DuaColor.backgroundColorLight,
+    
     bannerTheme:
         MaterialBannerThemeData(backgroundColor: DuaColor.primaryColorLight01),
     dialogTheme: const DialogTheme(

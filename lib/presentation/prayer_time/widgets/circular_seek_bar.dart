@@ -1,4 +1,4 @@
-library circular_seek_bar;
+library;
 
 import 'dart:math';
 
