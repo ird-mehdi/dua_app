@@ -2,7 +2,7 @@ import 'package:dua/core/config/app_images.dart';
 import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/static/ui_const.dart';
 import 'package:dua/core/utility/utility.dart';
-import 'package:dua/presentation/common/widgets/custom_bottom_sheet.dart';
+import 'package:dua/presentation/scheduale/widget/edit_schedule_bottom_sheet.dart';
 import 'package:dua/presentation/common/widgets/svg_image.dart';
 import 'package:dua/presentation/scheduale/presenter/schedule_presenter.dart';
 import 'package:flutter/material.dart';

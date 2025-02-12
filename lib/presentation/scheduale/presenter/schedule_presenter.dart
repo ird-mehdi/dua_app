@@ -1,5 +1,5 @@
 import 'package:dua/core/base/base_presenter.dart';
-import 'package:dua/presentation/common/widgets/custom_bottom_sheet.dart';
+import 'package:dua/presentation/scheduale/widget/edit_schedule_bottom_sheet.dart';
 import 'package:dua/presentation/scheduale/presenter/schedule_ui_state.dart';
 import 'package:flutter/material.dart';
 
