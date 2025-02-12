@@ -13,6 +13,7 @@ class ScheduleCard extends StatelessWidget {
   final String totalDua;
   final String scheduleTime;
   final SchedulePresenter presenter;
+  final VoidCallback onTap;
 
   const ScheduleCard({
     super.key,
@@ -21,77 +22,81 @@ class ScheduleCard extends StatelessWidget {
     this.totalDua = '3',
     this.scheduleTime = '9:30AM',
     required this.presenter,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: tenPx),
-      padding: EdgeInsets.all(sixteenPx),
-      decoration: BoxDecoration(
-        borderRadius: radius30,
-        border: Border.all(
-          color: context.color.primaryColor10,
-          width: 1,
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        margin: EdgeInsets.only(bottom: tenPx),
+        padding: EdgeInsets.all(sixteenPx),
+        decoration: BoxDecoration(
+          borderRadius: radius30,
+          border: Border.all(
+            color: context.color.primaryColor10,
+            width: 1,
+          ),
         ),
-      ),
-      child: Expanded(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Container(
-                  width: thirtyFourPx,
-                  height: thirtyFourPx,
-                  padding: padding5,
-                  decoration: BoxDecoration(
-                    color: context.color.iconShadeColor,
-                    borderRadius: radius30,
+        child: Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    width: thirtyFourPx,
+                    height: thirtyFourPx,
+                    padding: padding5,
+                    decoration: BoxDecoration(
+                      color: context.color.iconShadeColor,
+                      borderRadius: radius30,
+                    ),
+                    child: SvgImage(
+                      assetName: AppImages.icDate,
+                      color: context.color.primaryColor100,
+                      width: twentyPx,
+                      height: twentyPx,
+                    ),
                   ),
-                  child: SvgImage(
-                    assetName: AppImages.icDate,
-                    color: context.color.primaryColor100,
-                    width: twentyPx,
-                    height: twentyPx,
+                  gapW12,
+                  Text(
+                    scheduleName,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontSize: fifteenPx,
+                      fontWeight: FontWeight.w500,
+                      color: context.color.titleColor,
+                    ),
                   ),
-                ),
-                gapW12,
-                Text(
-                  scheduleName,
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontSize: fifteenPx,
-                    fontWeight: FontWeight.w500,
-                    color: context.color.titleColor,
+                  Spacer(),
+                  SvgImage(
+                    assetName: AppImages.icMore,
+                    onTap: () => EditScheduleBottomSheet.show(
+                      context: context,
+                      presenter: presenter,
+                    ),
                   ),
-                ),
-                Spacer(),
-                SvgImage(
-                  assetName: AppImages.icMore,
-                  onTap: () => EditScheduleBottomSheet.show(
-                    context: context,
-                    presenter: presenter,
-                  ),
-                ),
-              ],
-            ),
-            gapH16,
-            Text(
-              'Total Dua: $totalDua',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontSize: elevenPx,
-                color: context.color.subtitleColor,
+                ],
               ),
-            ),
-            gapH8,
-            Text(
-              'Schedule time: $scheduleTime',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontSize: elevenPx,
-                color: context.color.subtitleColor,
+              gapH16,
+              Text(
+                'Total Dua: $totalDua',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontSize: elevenPx,
+                  color: context.color.subtitleColor,
+                ),
               ),
-            ),
-          ],
+              gapH8,
+              Text(
+                'Schedule time: $scheduleTime',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontSize: elevenPx,
+                  color: context.color.subtitleColor,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

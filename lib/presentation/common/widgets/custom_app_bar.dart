@@ -45,7 +45,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         titleSpacing: titleSpacing,
         title: Text(
           title,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontSize: titleFontSize ?? twentyPx,
                 fontWeight: FontWeight.w600,
                 color: DuaColor.headingTextColorLight,

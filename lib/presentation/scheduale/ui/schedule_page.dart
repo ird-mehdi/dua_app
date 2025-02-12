@@ -9,6 +9,7 @@ import 'package:dua/presentation/common/widgets/floting_action_button_round.dart
 import 'package:dua/presentation/common/widgets/svg_image.dart';
 import 'package:dua/presentation/scheduale/presenter/schedule_presenter.dart';
 import 'package:dua/presentation/scheduale/widget/schedule_card.dart';
+import 'package:dua/presentation/schedule_details/ui/schedule_details_page.dart';
 import 'package:flutter/material.dart';
 
 class SchedulePage extends StatelessWidget {
@@ -21,6 +22,8 @@ class SchedulePage extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(
         title: 'Schedule',
+        titleSpacing: fourPx,
+        paddingLeft: tenPx,
         titleFontSize: eighteenPx,
         icon: AppImages.icCategory2,
         actions: [
@@ -56,6 +59,12 @@ class SchedulePage extends StatelessWidget {
                 return ScheduleCard(
                   presenter: _presenter,
                   theme: theme,
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ScheduleDetailsPage(),
+                    ),
+                  ),
                 );
               },
             ),

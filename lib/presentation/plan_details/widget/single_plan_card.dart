@@ -1,6 +1,8 @@
-import 'package:dua/core/config/dua_screen.dart';
+
 import 'package:dua/core/static/ui_const.dart';
 import 'package:dua/core/utility/utility.dart';
+import 'package:dua/presentation/common/widgets/dua_collection_preview.dart';
+import 'package:dua/presentation/common/widgets/dua_title_with_number.dart';
 import 'package:dua/presentation/dua_vertial_move/widget/dua_card_footer.dart';
 import 'package:dua/presentation/dua_vertial_move/widget/first_dua_section.dart';
 import 'package:dua/presentation/dua_vertial_move/widget/model.dart';
@@ -22,9 +24,13 @@ class SinglePlanCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        PlanHeader(theme: theme),
+        DuaCollectionPreview(
+          theme: theme,
+          title: 'Plan Name 1',
+          subtitle: 'Total Duas: 3',
+        ),
         gapH16,
-        DuaNumber(theme: theme),
+        DuaTitleWithNumber(theme: theme, title: 'One Hundred times Subhanallahi wa Bihamdihi', number: '125'),
         gapH12,
         FirstDua(duaCardModel: duaCardModel, theme: theme),
         if (duaCardModel.multipleDuaSeparatorDividerShown)
@@ -46,91 +52,4 @@ class SinglePlanCard extends StatelessWidget {
   }
 }
 
-class PlanHeader extends StatelessWidget {
-  const PlanHeader({
-    super.key,
-    required this.theme,
-  });
 
-  final ThemeData theme;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: Container(
-        padding: EdgeInsets.all(sixteenPx),
-        decoration: BoxDecoration(
-          color: context.color.shadeColor,
-          borderRadius: BorderRadius.circular(twelvePx),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Plan Name 1',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w700,
-                color: context.color.primaryColor100,
-                fontSize: fifteenPx,
-              ),
-            ),
-            Text(
-              'Total Duas: 3',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontSize: twelvePx,
-                color: context.color.subtitleColor,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class DuaNumber extends StatelessWidget {
-  const DuaNumber({
-    super.key,
-    required this.theme,
-  });
-
-  final ThemeData theme;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          width: thirtySixPx,
-          height: thirtySixPx,
-          decoration: BoxDecoration(
-            color: context.color.primaryColor100,
-            shape: BoxShape.circle,
-          ),
-          child: const Center(
-            child: Text(
-              '125',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ),
-        gapW12,
-        Expanded(
-          child: Text(
-            'One Hundred times Subhanallahi wa Bihamdihi',
-            style: theme.textTheme.bodyMedium?.copyWith(
-              fontSize: fourteenPx,
-              color: context.color.primaryColor100,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
