@@ -1,4 +1,3 @@
-
 import 'package:dua/core/static/ui_const.dart';
 import 'package:dua/core/utility/utility.dart';
 import 'package:dua/presentation/common/widgets/dua_collection_preview.dart';
@@ -30,9 +29,19 @@ class SinglePlanCard extends StatelessWidget {
           subtitle: 'Total Duas: 3',
         ),
         gapH16,
-        DuaTitleWithNumber(theme: theme, title: 'One Hundred times Subhanallahi wa Bihamdihi', number: '125'),
+        DuaTitleWithNumber(
+            theme: theme,
+            title: 'One Hundred times Subhanallahi wa Bihamdihi',
+            number: '125'),
         gapH12,
-        FirstDua(duaCardModel: duaCardModel, theme: theme),
+        FirstDua(
+            title: 'One Hundred times Subhanallahi wa Bihamdihi',
+            subtitleArabic: 'السلام عليكم ورحمة الله وبركاته',
+            transliteration: 'السلام عليكم ورحمة الله وبركاته',
+            meaning: 'The greeting of peace, mercy, and blessings of Allah',
+            reference: 'Ibn Majah',
+            duaCardModel: duaCardModel,
+            theme: theme),
         if (duaCardModel.multipleDuaSeparatorDividerShown)
           Divider(
             color: context.color.primaryColor10,
@@ -51,5 +60,3 @@ class SinglePlanCard extends StatelessWidget {
     );
   }
 }
-
-

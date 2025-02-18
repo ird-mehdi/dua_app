@@ -7,10 +7,19 @@ import 'package:flutter/material.dart';
 class SecondDua extends StatelessWidget {
   const SecondDua({
     super.key,
+    required this.title,
+    required this.arabicText,
+    required this.transliteration,
+    required this.meaning,
+    required this.reference,
     required this.duaCardModel,
     required this.theme,
   });
-
+  final String title;
+  final String arabicText;
+  final String transliteration;
+  final String meaning;
+  final String reference;
   final DuaCardModel duaCardModel;
   final ThemeData theme;
 
@@ -22,7 +31,7 @@ class SecondDua extends StatelessWidget {
         gapH16,
         if (duaCardModel.isSecondDuaTitleShown)
           Text(
-            'The Messenger of Allah (ﷺ) commenced the prayer when he got up at night. Then he said:',
+            title,
             style: theme.textTheme.titleSmall?.copyWith(
               fontSize: fourteenPx,
               height: 1.5,
@@ -30,17 +39,18 @@ class SecondDua extends StatelessWidget {
               color: context.color.titleColor,
               fontWeight: FontWeight.w400,
             ),
-            textAlign: TextAlign.justify,
+            textAlign: TextAlign.left,
           ),
 
         // Arabic Text
         if (duaCardModel.isSecondDuaSectionShown)
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Align(
                 alignment: Alignment.centerRight,
                 child: Text(
-                  'سُبْحَانَ اللَّهِ وَبِحَمْدِهِ',
+                  arabicText,
                   style: context.textStyle.arabicAyah?.copyWith(
                     fontSize: twentyEightPx,
                     color: context.color.headingTextColor,
@@ -53,25 +63,25 @@ class SecondDua extends StatelessWidget {
               gapH25,
               // Transliteration
               Text(
-                "Sub'hanallahi wa bi'hamdihi",
+                transliteration,
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  fontSize: fourteenPx,
-                  color: context.color.titleColor.withOpacityInt(0.5),
-                  fontWeight: FontWeight.w400,
-                ),
+                    fontSize: fourteenPx,
+                    color: context.color.titleColor.withOpacityInt(0.5),
+                    fontWeight: FontWeight.w400,
+                    fontStyle: FontStyle.italic),
+                textAlign: TextAlign.left,
               ),
               gapH20,
 
               // Quote
               Text(
-                '''
-    Abu Hurairah (RA) said, the Messenger of Allah (ﷺ) said that, if anyone recite "Sub'hanallahi wa bi'hamdihi" hundred times in the morning and in the evening, then you will bring largest rewards then anyone in the day of resurrection, except who recite it more than him. In the other narration, he will be forgiven even if his sins are greater than the foams of the sea. Another narration, the dhikr was mentioned as "Sub'hanallahil 'adhim wa bi'hamdihi".''',
+                meaning,
                 style: theme.textTheme.bodyMedium?.copyWith(
                   fontSize: fourteenPx,
                   color: context.color.titleColor,
                   fontWeight: FontWeight.w400,
                 ),
-                textAlign: TextAlign.justify,
+                textAlign: TextAlign.left,
               ),
               gapH20,
 
@@ -90,7 +100,7 @@ class SecondDua extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'Muslim: 770',
+                        reference,
                         style: theme.textTheme.bodyMedium?.copyWith(
                           fontSize: fifteenPx,
                           color: context.color.titleColor,

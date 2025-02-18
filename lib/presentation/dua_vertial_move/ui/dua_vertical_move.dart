@@ -66,33 +66,6 @@ class DuaVerticalMove extends StatelessWidget {
                 );
               },
             ),
-            // SingleDuaCard(
-            //   theme: theme,
-            // ),
-            // gapH10,
-            // SingleDuaCard(
-            //   theme: theme,
-            //   isFirst: false,
-            //   isArabicTopTitleShown: true,
-            // ),
-            // gapH10,
-            // SingleDuaCard(
-            //   theme: theme,
-            //   isReferenceShown: false,
-            //   isFooterShown: false,
-            // ),
-            // gapH10,
-            // SingleDuaCard(
-            //   theme: theme,
-            //   isDuaNumberShown: false,
-            //   isFirst: false,
-            // ),
-            // gapH10,
-            // SingleDuaCard(
-            //   theme: theme,
-            //   isArabicTopTitleShown: true,
-            //   isLast: false,
-            // ),
           ],
         ),
       ),

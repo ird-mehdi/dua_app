@@ -15,7 +15,6 @@ import 'package:flutter/material.dart';
 class SchedulePage extends StatelessWidget {
   SchedulePage({super.key});
   final SchedulePresenter _presenter = locate<SchedulePresenter>();
-
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);

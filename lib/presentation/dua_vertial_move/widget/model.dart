@@ -41,31 +41,6 @@ List<DuaCardModel> duaCardModelList = [
     multipleDuaSeparatorDividerShown: true,
     isSecondDuaSectionShown: true,
   ),
-  // DuaCardModel(
-  //   isLast: true,
-  //   isFirst: false,
-  //   isArabicTopTitleShown: true,
-  //   isReferenceShown: true,
-
-  //   isDuaNumberShown: true,
-  //   isFooterShown: true,
-  // ),
-  // DuaCardModel(
-  //   isLast: true,
-  //   isFirst: true,
-  //   isArabicTopTitleShown: true,
-  //   isReferenceShown: true,
-  //   isDuaNumberShown: true,
-  //   isFooterShown: true,
-  // ),
-  // DuaCardModel(
-  //   isLast: true,
-  //   isFirst: true,
-  //   isArabicTopTitleShown: true,
-  //   isReferenceShown: true,
-  //   isDuaNumberShown: true,
-  //   isFooterShown: true,
-  // ),
 ];
 
 List<DuaCardModel> planDetailsDuaCardModelList = [
@@ -89,30 +64,27 @@ List<DuaCardModel> planDetailsDuaCardModelList = [
     multipleDuaSeparatorDividerShown: false,
     isSecondDuaSectionShown: false,
   ),
+];
 
-  // DuaCardModel(
-  //   isLast: true,
-  //   isFirst: false,
-  //   isArabicTopTitleShown: true,
-  //   isReferenceShown: true,
-
-  //   isDuaNumberShown: true,
-  //   isFooterShown: true,
-  // ),
-  // DuaCardModel(
-  //   isLast: true,
-  //   isFirst: true,
-  //   isArabicTopTitleShown: true,
-  //   isReferenceShown: true,
-  //   isDuaNumberShown: true,
-  //   isFooterShown: true,
-  // ),
-  // DuaCardModel(
-  //   isLast: true,
-  //   isFirst: true,
-  //   isArabicTopTitleShown: true,
-  //   isReferenceShown: true,
-  //   isDuaNumberShown: true,
-  //   isFooterShown: true,
-  // ),
+List<DuaCardModel> scheduleDetailsDuaCardModelList = [
+  DuaCardModel(
+    isFirstDuaTitleShown: false,
+    isLast: true,
+    isArabicTopTitleShown: true,
+    isFirstDuaReferenceShown: true,
+    isSecondDuaReferenceShown: true,
+    isSecondDuaTitleShown: false,
+    multipleDuaSeparatorDividerShown: true,
+    isSecondDuaSectionShown: true,
+  ),
+  DuaCardModel(
+    isFirstDuaTitleShown: false,
+    isLast: true,
+    isArabicTopTitleShown: true,
+    isFirstDuaReferenceShown: true,
+    isSecondDuaReferenceShown: true,
+    isSecondDuaTitleShown: false,
+    multipleDuaSeparatorDividerShown: false,
+    isSecondDuaSectionShown: false,
+  ),
 ];

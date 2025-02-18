@@ -5,14 +5,25 @@ import 'package:dua/presentation/dua_vertial_move/widget/model.dart';
 import 'package:flutter/material.dart';
 
 class FirstDua extends StatelessWidget {
+  final String title;
+  final String subtitleArabic;
+  final String transliteration;
+  final String meaning;
+  final String reference;
+  final DuaCardModel duaCardModel;
+  final ThemeData theme;
   const FirstDua({
     super.key,
+    required this.title,
+    required this.subtitleArabic,
+    required this.transliteration,
+    required this.meaning,
+    required this.reference,
     required this.duaCardModel,
     required this.theme,
   });
 
-  final DuaCardModel duaCardModel;
-  final ThemeData theme;
+  
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +32,7 @@ class FirstDua extends StatelessWidget {
       children: [
         if (duaCardModel.isFirstDuaTitleShown)
           Text(
-            'The Messenger of Allah (ﷺ) commenced the prayer when he got up at night. Then he said:',
+            title,
             style: theme.textTheme.titleSmall?.copyWith(
               fontSize: fourteenPx,
               height: 1.5,
@@ -36,7 +47,7 @@ class FirstDua extends StatelessWidget {
         Align(
           alignment: Alignment.centerRight,
           child: Text(
-            'سُبْحَانَ اللَّهِ وَبِحَمْدِهِ',
+            subtitleArabic,
             style: context.textStyle.arabicAyah?.copyWith(
               fontSize: twentyEightPx,
               color: context.color.headingTextColor,
@@ -50,7 +61,7 @@ class FirstDua extends StatelessWidget {
         gapH25,
         // Transliteration
         Text(
-          "Sub’hanallahi wa bi’hamdihi",
+          transliteration,
           style: theme.textTheme.bodyMedium?.copyWith(
             fontSize: fourteenPx,
             color: context.color.titleColor.withOpacityInt(0.5),
@@ -61,7 +72,7 @@ class FirstDua extends StatelessWidget {
 
         // Quote
         Text(
-          '''Glory and praise is to Allah''',
+          meaning,
           style: theme.textTheme.bodyMedium?.copyWith(
             fontSize: fourteenPx,
             color: context.color.titleColor,
@@ -92,7 +103,7 @@ class FirstDua extends StatelessWidget {
                     color: context.color.titleColor,
                     fontWeight: FontWeight.w600,
                   ),
-                  text: 'Muslim: 770',
+                  text: reference,
                 ),
               ),
             ],
