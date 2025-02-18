@@ -29,7 +29,7 @@ class SubCategory extends StatelessWidget {
               ),
               // gapH10,
               Padding(
-                padding: EdgeInsets.only(top: eightPx, left: tenPx),
+                padding: EdgeInsets.only(top: eightPx, left: tenPx, right: 8),
                 child: ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),

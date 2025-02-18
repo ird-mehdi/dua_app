@@ -47,7 +47,15 @@ class SinglePlanCard extends StatelessWidget {
             color: context.color.primaryColor10,
             height: 1,
           ),
-        SecondDua(duaCardModel: duaCardModel, theme: theme),
+        SecondDua(
+            title: '',
+            arabicText: 'إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ',
+            transliteration: 'Iyyaaka na\'budu wa liyaaka nasta\'een',
+            meaning:
+                'He whom Allah guides is the [rightly] guided, but he whom He leaves astray - never will you find for him a protecting guide. (Surah Al-Kahf 18:17)',
+            reference: 'Muslim: 770',
+            duaCardModel: duaCardModel,
+            theme: theme),
         const DuaCardFooter(),
         gapH30,
         if (duaCardModel.isLast)

@@ -21,161 +21,132 @@ class DuaListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return PresentableWidgetBuilder<SubCategoryPresenter>(
-      presenter: presenter,
-      builder: () {
-        return ExpansionTile(
-          tilePadding: EdgeInsets.zero,
-          childrenPadding: EdgeInsets.zero,
-          backgroundColor: context.color.shadeColor,
-          shape: RoundedRectangleBorder(
-
-            borderRadius: BorderRadius.circular(thirtyPx),
-            side: BorderSide.none,
-          ),
-          leading: Padding(
-            padding: EdgeInsets.all(eightPx),
-            child: Container(
-              width: thirtySixPx,
-              height: thirtySixPx,
-              decoration: BoxDecoration(
-                color: presenter.isExpanded(index)
-                    ? context.color.secondaryColor
-                    : context.color.primaryColor100,
-                shape: BoxShape.circle,
-                border:
-                    Border.all(color: context.color.iconShadeColor, width: 2),
-              ),
-              child: Center(
-                child: Text(
-                  '${index + 1}',
-                  style: TextStyle(color: context.color.btnTextColor),
+        presenter: presenter,
+        builder: () {
+          return ExpansionTile(
+            tilePadding: EdgeInsets.zero,
+            childrenPadding: EdgeInsets.all(eightPx),
+            backgroundColor: context.color.shadeColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(thirtyPx),
+              side: BorderSide.none,
+            ),
+            leading: Padding(
+              padding: EdgeInsets.only(left: tenPx),
+              child: Container(
+                width: thirtySixPx,
+                height: thirtySixPx,
+                decoration: BoxDecoration(
+                  color: presenter.isExpanded(index)
+                      ? context.color.primaryColor100
+                      : context.color.secondaryColor.withOpacityInt(0.3),
+                  shape: BoxShape.circle,
+                  border:
+                      Border.all(color: context.color.iconShadeColor, width: 2),
+                ),
+                child: Center(
+                  child: Text(
+                    '${index + 1}',
+                    style: theme.textTheme.labelMedium?.copyWith(
+                        color: presenter.isExpanded(index)
+                            ? context.color.white
+                            : context.color.primaryColor100,
+                        fontSize: thirteenPx,
+                        fontWeight: FontWeight.w600),
+                  ),
                 ),
               ),
             ),
-          ),
-          showTrailingIcon: false,
-          title: Text(
-            'The most important thing to ask Allah for',
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontSize: fifteenPx,
-              color: context.color.titleColor,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          subtitle: Text(
-            'Total 15 Duas',
-            style: theme.textTheme.titleSmall?.copyWith(
-              fontSize: twelvePx,
-              color: context.color.subtitleColor,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-          children: [
-            Container(
-              padding: EdgeInsets.all(sixteenPx),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Divider(
-                    height: onePx,
-                    color: context.color.iconShadeColor,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: twelvePx, left: tenPx),
-                    child: Row(
-                      children: [
-                        SvgImage(
-                          assetName: SvgPath.icMainComponent,
-                          width: twentyFourPx,
-                          height: twentyFourPx,
-                        ),
-                        gapW20,
-                        Text(
-                          'Sincerity',
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w400,
-                            fontSize: fourteenPx,
-                            color: context.color.titleColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  gapH10,
-                  Padding(
-                    padding: EdgeInsets.only(top: twelvePx, left: tenPx),
-                    child: Row(
-                      children: [
-                        SvgImage(
-                          assetName: SvgPath.icMainComponent,
-                          width: twentyFourPx,
-                          height: twentyFourPx,
-                        ),
-                        gapW20,
-                        Text(
-                          'Eating Lawful Food',
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w400,
-                            fontSize: fourteenPx,
-                            color: context.color.titleColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  gapH10,
-                  Padding(
-                    padding: EdgeInsets.only(top: twelvePx, left: tenPx),
-                    child: Row(
-                      children: [
-                        SvgImage(
-                          assetName: SvgPath.icMainComponent,
-                          width: twentyFourPx,
-                          height: twentyFourPx,
-                        ),
-                        gapW20,
-                        Text(
-                          "The Consciousness of One's Heart",
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w400,
-                            fontSize: fourteenPx,
-                            color: context.color.titleColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  gapH10,
-                  Padding(
-                    padding: EdgeInsets.only(top: twelvePx, left: tenPx),
-                    child: Row(
-                      children: [
-                        SvgImage(
-                          assetName: SvgPath.icMainComponent,
-                          width: twentyFourPx,
-                          height: twentyFourPx,
-                        ),
-                        gapW20,
-                        Text(
-                          'Supplicate for Good Only',
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w400,
-                            fontSize: fourteenPx,
-                            color: context.color.titleColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
+            showTrailingIcon: false,
+            title: Padding(
+              padding: EdgeInsets.only(top: eightPx, bottom: eightPx),
+              child: Text(
+                'The most important thing to ask Allah for',
+                style: theme.textTheme.titleMedium?.copyWith(
+                    fontSize: fourteenPx,
+                    color: context.color.titleColor,
+                    fontWeight: FontWeight.w500),
               ),
-            )
-          ],
-          onExpansionChanged: (expanded) {
-            presenter.toggleExpansion(index);
-          },
-        );
-      }
+            ),
+            subtitle: Text(
+              'Total 15 Duas',
+              style: theme.textTheme.titleSmall?.copyWith(
+                fontSize: twelvePx,
+                color: context.color.subtitleColor,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            children: [
+              Container(
+                padding: EdgeInsets.only(top: fivePx, bottom: tenPx),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Divider(
+                      height: onePx,
+                      color: context.color.primaryColor10,
+                    ),
+                    gapH10,
+                    IconTextRow(
+                        theme: theme,
+                        iconPath: SvgPath.icMainComponent,
+                        text: 'Sincerity'),
+                    gapH10,
+                    IconTextRow(
+                        theme: theme,
+                        iconPath: SvgPath.icMainComponent,
+                        text: 'Eating Lawful Food'),
+                    gapH10,
+                    IconTextRow(
+                        theme: theme,
+                        iconPath: SvgPath.icMainComponent,
+                        text: "The Consciousness of One's Heart"),
+                    gapH10,
+                    IconTextRow(
+                        theme: theme,
+                        iconPath: SvgPath.icMainComponent,
+                        text: 'Supplicate for Good Only')
+                  ],
+                ),
+              )
+            ],
+            onExpansionChanged: (expanded) {
+              presenter.toggleExpansion(index);
+            },
+          );
+        });
+  }
+}
+
+class IconTextRow extends StatelessWidget {
+  const IconTextRow({super.key, required this.theme, this.iconPath, this.text});
+  final String? iconPath;
+  final String? text;
+  final ThemeData theme;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding:
+          EdgeInsets.only(left: thirteenPx, bottom: fourteenPx, top: fourPx),
+      child: Row(
+        children: [
+          SvgImage(
+            assetName: iconPath ?? SvgPath.icMainComponent,
+            width: twentyFourPx,
+            height: twentyFourPx,
+          ),
+          gapW25,
+          Text(
+            text ?? 'Sincerity',
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w400,
+              fontSize: fourteenPx,
+              color: context.color.titleColor,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
