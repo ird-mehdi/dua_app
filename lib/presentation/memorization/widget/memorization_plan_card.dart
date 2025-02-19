@@ -3,31 +3,30 @@ import 'package:dua/core/static/svg_path.dart';
 import 'package:dua/core/static/ui_const.dart';
 import 'package:dua/core/utility/utility.dart';
 import 'package:dua/presentation/common/widgets/svg_image.dart';
+import 'package:dua/presentation/memorization/widget/memorize_model.dart';
 import 'package:dua/presentation/prayer_time/widgets/circular_seek_bar.dart';
 import 'package:flutter/material.dart';
 
 class MemorizationPlanCard extends StatelessWidget {
-  final String title;
-  final int daysLeft;
-  final int completedTasks;
-  final int totalTasks;
-  final int remainingDays;
-  final String endDate;
-  final double progress;
   final Function() onTap;
+  final MemorizeModel memorizeModel;
   final ThemeData theme;
+  final double? containerWidth;
+  final double? containerHeight;
+  final double? containerBarWidth;
+  final double? seekBarWidth;
+  final double? seekBarHeight;
 
   const MemorizationPlanCard({
     super.key,
-    required this.title,
-    required this.daysLeft,
-    required this.completedTasks,
-    required this.totalTasks,
-    required this.remainingDays,
-    required this.endDate,
-    required this.progress,
     required this.theme,
     required this.onTap,
+    required this.memorizeModel,
+    this.containerWidth,
+    this.containerHeight,
+    this.containerBarWidth,
+    this.seekBarWidth,
+    this.seekBarHeight,
   });
 
   @override
@@ -50,7 +49,8 @@ class MemorizationPlanCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              MemorizationPlanCardHeader(title: title, theme: theme),
+              MemorizationPlanCardHeader(
+                  title: memorizeModel.title, theme: theme),
               SizedBox(height: 16),
               Row(
                 children: [
@@ -65,7 +65,7 @@ class MemorizationPlanCard extends StatelessWidget {
                               text: TextSpan(
                                 children: [
                                   TextSpan(
-                                    text: '$daysLeft ',
+                                    text: '${memorizeModel.daysLeft} ',
                                     style:
                                         theme.textTheme.titleMedium?.copyWith(
                                       fontSize: twentyTwoPx,
@@ -95,62 +95,79 @@ class MemorizationPlanCard extends StatelessWidget {
                         ),
                         gapH8,
                         MemorizationPlanCardRow(
-                          title: 'Completed: $completedTasks/$totalTasks',
+                          title:
+                              'Completed: ${memorizeModel.completedTasks}/${memorizeModel.totalTasks}',
                           icon: SvgPath.icAyah,
                           theme: theme,
                         ),
                         gapH8,
                         MemorizationPlanCardRow(
-                          title: 'Remaining: $remainingDays',
+                          title: 'Remaining: ${memorizeModel.remainingDays}',
                           icon: SvgPath.icTeacher,
                           theme: theme,
                         ),
                         gapH8,
                         MemorizationPlanCardRow(
-                          title: 'End Date: $endDate',
+                          title: 'End Date: ${memorizeModel.endDate}',
                           icon: SvgPath.icClock,
                           theme: theme,
                         ),
                       ],
                     ),
                   ),
-                  CircularSeekBar(
-                    progress: progress,
-                    width: oneHundredPx,
-                    height: oneHundredPx,
-                    minProgress: 0,
-                    maxProgress: 1,
-                    barWidth: 8,
-                    progressColor: context.color.primaryColor100,
-                    trackColor: context.color.shadeColor,
-                    strokeCap: StrokeCap.round,
-                    dashGap: 0,
-                    dashWidth: 8,
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            '${(progress * 100).toInt()}%',
-                            style: TextStyle(
-                              fontSize: sixteenPx,
-                              fontWeight: FontWeight.w500,
-                              color: context.color.titleColor,
-                            ),
-                            textAlign: TextAlign.center,
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Container(
+                        width: containerWidth ?? 26.percentWidth,
+                        height: containerHeight ?? 26.percentWidth,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: context.color.primaryColor10,
+                            width: containerBarWidth ?? eightPx,
                           ),
-                          Text(
-                            'Completed',
-                            style: TextStyle(
-                              fontSize: elevenPx,
-                              fontWeight: FontWeight.w400,
-                              color: context.color.subtitleColor,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
+                      CircularSeekBar(
+                        progress: memorizeModel.progress,
+                        width: seekBarWidth ?? 24.percentWidth,
+                        height: seekBarHeight ?? 24.percentWidth,
+                        minProgress: 0,
+                        maxProgress: 1,
+                        barWidth: 8,
+                        progressColor: context.color.primaryColor100,
+                        trackColor: Colors.transparent,
+                        strokeCap: StrokeCap.round,
+                        dashGap: 0,
+                        dashWidth: 8,
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                '${(memorizeModel.progress * 100).toInt()}%',
+                                style: TextStyle(
+                                  fontSize: sixteenPx,
+                                  fontWeight: FontWeight.w500,
+                                  color: context.color.titleColor,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              Text(
+                                'Completed',
+                                style: TextStyle(
+                                  fontSize: elevenPx,
+                                  fontWeight: FontWeight.w400,
+                                  color: context.color.subtitleColor,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

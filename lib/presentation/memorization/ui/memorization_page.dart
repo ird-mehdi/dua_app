@@ -80,29 +80,13 @@ class MemorizationPage extends StatelessWidget {
                       ),
                     )
                   : ListView.builder(
-                      itemCount: MemorizeModel.getMemorizeModel().length,
+                      itemCount: getMemorizeModel.length,
                       itemBuilder: (context, index) {
+                        final MemorizeModel memorizeModel =
+                            getMemorizeModel[index];
                         return MemorizationPlanCard(
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PlanDetailsPage(),
-                            ),
-                          ),
-                          title: MemorizeModel.getMemorizeModel()[index].title,
-                          daysLeft:
-                              MemorizeModel.getMemorizeModel()[index].daysLeft,
-                          completedTasks:
-                              MemorizeModel.getMemorizeModel()[index]
-                                  .completedTasks,
-                          totalTasks: MemorizeModel.getMemorizeModel()[index]
-                              .totalTasks,
-                          remainingDays: MemorizeModel.getMemorizeModel()[index]
-                              .remainingDays,
-                          endDate:
-                              MemorizeModel.getMemorizeModel()[index].endDate,
-                          progress:
-                              MemorizeModel.getMemorizeModel()[index].progress,
+                          onTap: () => context.navigatorPush(PlanDetailsPage()),
+                          memorizeModel: memorizeModel,
                           theme: theme,
                         );
                       },

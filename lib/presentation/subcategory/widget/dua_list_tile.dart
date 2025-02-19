@@ -24,7 +24,8 @@ class DuaListTile extends StatelessWidget {
         presenter: presenter,
         builder: () {
           return ExpansionTile(
-            tilePadding: EdgeInsets.all(tenPx),
+            tilePadding:
+                EdgeInsets.only(left: sixteenPx, right: sixteenPx, top: tenPx),
             backgroundColor: context.color.shadeColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(twentyPx),
