@@ -25,102 +25,99 @@ class SecondDua extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        gapH16,
-        if (duaCardModel.isSecondDuaTitleShown)
-          Text(
-            title,
-            style: theme.textTheme.titleSmall?.copyWith(
-              fontSize: fourteenPx,
-              height: 1.5,
-              letterSpacing: -0.3,
-              color: context.color.titleColor,
-              fontWeight: FontWeight.w400,
+    return Padding(
+      padding: EdgeInsets.all(sixPx),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (duaCardModel.isSecondDuaTitleShown)
+            Text(
+              title,
+              style: theme.textTheme.titleSmall?.copyWith(
+                fontSize: fourteenPx,
+                height: 1.5,
+                letterSpacing: -0.3,
+                color: context.color.titleColor,
+                fontWeight: FontWeight.w400,
+              ),
+              textAlign: TextAlign.left,
             ),
-            textAlign: TextAlign.left,
-          ),
 
-        // Arabic Text
-        if (duaCardModel.isSecondDuaSectionShown)
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  arabicText,
-                  style: context.textStyle.arabicAyah?.copyWith(
-                    fontSize: twentyEightPx,
-                    color: context.color.headingTextColor,
-                    fontWeight: FontWeight.w400,
-                    height: 1.5,
+          // Arabic Text
+          if (duaCardModel.isSecondDuaSectionShown)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    arabicText,
+                    style: context.textStyle.arabicAyah?.copyWith(
+                      fontSize: twentyEightPx,
+                      color: context.color.headingTextColor,
+                      fontWeight: FontWeight.w400,
+                      height: 1.5,
+                    ),
+                    textAlign: TextAlign.right,
                   ),
-                  textAlign: TextAlign.right,
                 ),
-              ),
-              gapH25,
-              // Transliteration
-              Text(
-                transliteration,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                    fontSize: fourteenPx,
-                    color: context.color.titleColor.withOpacityInt(0.5),
-                    fontWeight: FontWeight.w400,
-                    fontStyle: FontStyle.italic),
-                textAlign: TextAlign.left,
-              ),
-              gapH20,
-
-              // Quote
-              Text(
-                meaning,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  fontSize: fourteenPx,
-                  color: context.color.titleColor,
-                  fontWeight: FontWeight.w400,
+                gapH25,
+                // Transliteration
+                Text(
+                  transliteration,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                      fontSize: fourteenPx,
+                      color: context.color.titleColor.withOpacityInt(0.5),
+                      fontWeight: FontWeight.w400,
+                      fontStyle: FontStyle.italic),
+                  textAlign: TextAlign.left,
                 ),
-                textAlign: TextAlign.left,
-              ),
-              gapH20,
+                gapH12,
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Reference:',
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          fontSize: twelvePx,
-                          color: context.color.titleColor,
-                          fontWeight: FontWeight.w400,
+                // Quote
+                Text(
+                  meaning,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                      fontSize: fourteenPx,
+                      color: context.color.titleColor,
+                      fontWeight: FontWeight.w400,
+                      height: 1.8),
+                  textAlign: TextAlign.left,
+                ),
+                gapH20,
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Reference:',
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            fontSize: twelvePx,
+                            color: context.color.titleColor,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
-                      ),
-                      Text(
-                        reference,
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          fontSize: fifteenPx,
-                          color: context.color.titleColor,
-                          fontWeight: FontWeight.w600,
+                        Text(
+                          reference,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            fontSize: fifteenPx,
+                            color: context.color.titleColor,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox()
-                ],
-              ),
-            ],
-          ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
 
-        // Reference
-
-        gapH16,
-
-        // Action buttons
-      ],
+          // Action buttons
+        ],
+      ),
     );
   }
 }

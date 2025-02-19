@@ -79,8 +79,7 @@ class DuaListTile extends StatelessWidget {
             ),
             children: [
               Container(
-                margin:
-                    EdgeInsets.only(bottom: tenPx, right: tenPx, left: tenPx),
+                margin: EdgeInsets.only(right: tenPx, left: tenPx),
                 padding: EdgeInsets.only(top: fivePx, bottom: tenPx),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

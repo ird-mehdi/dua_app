@@ -38,7 +38,7 @@ class DuaNumberWidget extends StatelessWidget {
               ),
             ),
           ),
-          gapW15,
+          gapW16,
           Expanded(
             child: Text(
               dua,

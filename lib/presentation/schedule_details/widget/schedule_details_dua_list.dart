@@ -26,13 +26,12 @@ class ScheduleDetailsDuaList extends StatelessWidget {
           title: 'Schedule Name',
           subtitle: 'Total Duas: 3',
         ),
-        gapH16,
+        gapH20,
         DuaNumberWidget(
           theme: theme,
           number: 4,
           dua: 'The servant is dependent on his Lord #1',
         ),
-        gapH16,
         SecondDua(
             title: '',
             arabicText: 'إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ',
@@ -42,9 +41,7 @@ class ScheduleDetailsDuaList extends StatelessWidget {
             reference: 'Muslim: 770',
             duaCardModel: duaCardModel,
             theme: theme),
-        gapH16,
         const DuaCardFooter(),
-        gapH30,
         if (scheduleDetailsDuaCardModelList[0].isLast)
           Divider(
             color: context.color.primaryColor10,

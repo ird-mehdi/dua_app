@@ -45,30 +45,34 @@ class SchedulePage extends StatelessWidget {
       floatingActionButton: FlotingButtonRounded(
         paddingBottom: 24,
       ),
-      body: Column(
-        children: [
-          CustomSearchBar(
-            hintText: 'Search by Plan',
-          ),
-          Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.all(sixteenPx),
-              itemCount: 2, // Temporary count, replace with actual data length
-              itemBuilder: (context, index) {
-                return ScheduleCard(
-                  presenter: _presenter,
-                  theme: theme,
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ScheduleDetailsPage(),
-                    ),
-                  ),
-                );
-              },
+      body: Padding(
+        padding: EdgeInsets.all(sixteenPx),
+        child: Column(
+          children: [
+            CustomSearchBar(
+              hintText: 'Search by Plan',
             ),
-          ),
-        ],
+            gapH16,
+            Expanded(
+              child: ListView.builder(
+                itemCount:
+                    2, // Temporary count, replace with actual data length
+                itemBuilder: (context, index) {
+                  return ScheduleCard(
+                    presenter: _presenter,
+                    theme: theme,
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ScheduleDetailsPage(),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -33,7 +33,7 @@ class ScheduleCard extends StatelessWidget {
         margin: EdgeInsets.only(bottom: tenPx),
         padding: EdgeInsets.all(sixteenPx),
         decoration: BoxDecoration(
-          borderRadius: radius30,
+          borderRadius: radius20,
           border: Border.all(
             color: context.color.primaryColor10,
             width: 1,

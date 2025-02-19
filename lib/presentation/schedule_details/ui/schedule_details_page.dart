@@ -21,8 +21,8 @@ class ScheduleDetailsPage extends StatelessWidget {
         title: 'Schedule Name',
         titleFontSize: eighteenPx,
         titleSpacing: tenPx,
-        paddingLeft: 0,
-        paddingRight: twentyPx,
+        paddingLeft: eightPx,
+        paddingRight: twentyFivePx,
         onLeadingPressed: () => Navigator.pop(context),
         actions: [
           SvgImage(
@@ -31,9 +31,9 @@ class ScheduleDetailsPage extends StatelessWidget {
           ),
         ],
       ),
-      body: Padding(
-        padding: EdgeInsets.all(eighteenPx),
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(sixteenPx),
           child: ListView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),

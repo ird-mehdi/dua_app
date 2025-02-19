@@ -19,7 +19,8 @@ class DuaCollectionPreview extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: Container(
-        padding: EdgeInsets.all(sixteenPx),
+        padding:
+            EdgeInsets.symmetric(horizontal: sixteenPx, vertical: eighteenPx),
         decoration: BoxDecoration(
           color: context.color.shadeColor,
           borderRadius: BorderRadius.circular(twelvePx),
