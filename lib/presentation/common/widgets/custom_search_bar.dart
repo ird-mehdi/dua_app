@@ -13,44 +13,40 @@ class CustomSearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: sixteenPx,
-      ),
-      child: TextField(
-        // controller: controller ?? null,
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.w400,
-            color: context.color.titleColor.withOpacityInt(0.6),
-            fontSize: thirteenPx,
-          ),
-          prefixIcon: Padding(
-            padding: EdgeInsets.only(left: sixteenPx),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SvgImage(
-                  assetName: AppImages.icSearch,
-                  width: eighteenPx,
-                  height: eighteenPx,
-                  color: context.color.primaryColor100,
-                ),
-                gapH10,
-              ],
-            ),
-          ),
-          filled: true,
-          fillColor: context.color.shadeColor,
-          contentPadding: EdgeInsets.symmetric(
-            vertical: fourteenPx,
-            horizontal: sixteenPx,
-          ),
-          border: _buildInputBorder(context),
-          enabledBorder: _buildInputBorder(context),
-          focusedBorder: _buildInputBorder(context),
+    return TextField(
+      // controller: controller ?? null,
+      decoration: InputDecoration(
+        hintText: hintText,
+        hintStyle: theme.textTheme.titleLarge?.copyWith(
+          fontWeight: FontWeight.w400,
+          color: context.color.titleColor.withOpacityInt(0.6),
+          fontSize: thirteenPx,
         ),
+        prefixIcon: Padding(
+          padding: EdgeInsets.only(left: sixteenPx),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SvgImage(
+                assetName: AppImages.icSearch,
+                width: eighteenPx,
+                height: eighteenPx,
+                color: context.color.primaryColor100,
+                
+              ),
+              gapH10,
+            ],
+          ),
+        ),
+        filled: true,
+        fillColor: context.color.shadeColor,
+        contentPadding: EdgeInsets.symmetric(
+          vertical: fourteenPx,
+          horizontal: sixteenPx,
+        ),
+        border: _buildInputBorder(context),
+        enabledBorder: _buildInputBorder(context),
+        focusedBorder: _buildInputBorder(context),
       ),
     );
   }

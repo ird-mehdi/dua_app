@@ -24,67 +24,73 @@ class DuaListTile extends StatelessWidget {
         presenter: presenter,
         builder: () {
           return ExpansionTile(
-            tilePadding: EdgeInsets.zero,
-            childrenPadding: EdgeInsets.all(eightPx),
+            tilePadding: EdgeInsets.all(tenPx),
             backgroundColor: context.color.shadeColor,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(thirtyPx),
+              borderRadius: BorderRadius.circular(twentyPx),
               side: BorderSide.none,
             ),
-            leading: Padding(
-              padding: EdgeInsets.only(left: tenPx),
-              child: Container(
-                width: thirtySixPx,
-                height: thirtySixPx,
-                decoration: BoxDecoration(
-                  color: presenter.isExpanded(index)
-                      ? context.color.primaryColor100
-                      : context.color.secondaryColor.withOpacityInt(0.3),
-                  shape: BoxShape.circle,
-                  border:
-                      Border.all(color: context.color.iconShadeColor, width: 2),
-                ),
-                child: Center(
-                  child: Text(
-                    '${index + 1}',
-                    style: theme.textTheme.labelMedium?.copyWith(
-                        color: presenter.isExpanded(index)
-                            ? context.color.white
-                            : context.color.primaryColor100,
-                        fontSize: thirteenPx,
-                        fontWeight: FontWeight.w600),
-                  ),
+            leading: Container(
+              width: thirtySixPx,
+              height: thirtySixPx,
+              decoration: BoxDecoration(
+                color: presenter.isExpanded(index)
+                    ? context.color.primaryColor100
+                    : context.color.secondaryColor.withOpacityInt(0.3),
+                shape: BoxShape.circle,
+                border:
+                    Border.all(color: context.color.iconShadeColor, width: 2),
+              ),
+              child: Center(
+                child: Text(
+                  '${index + 1}',
+                  style: theme.textTheme.labelMedium?.copyWith(
+                      color: presenter.isExpanded(index)
+                          ? context.color.white
+                          : context.color.primaryColor100,
+                      fontSize: thirteenPx,
+                      fontWeight: FontWeight.w600),
                 ),
               ),
             ),
             showTrailingIcon: false,
-            title: Padding(
-              padding: EdgeInsets.only(top: eightPx, bottom: eightPx),
-              child: Text(
-                'The most important thing to ask Allah for',
-                style: theme.textTheme.titleMedium?.copyWith(
-                    fontSize: fourteenPx,
-                    color: context.color.titleColor,
-                    fontWeight: FontWeight.w500),
-              ),
-            ),
-            subtitle: Text(
-              'Total 15 Duas',
-              style: theme.textTheme.titleSmall?.copyWith(
-                fontSize: twelvePx,
-                color: context.color.subtitleColor,
-                fontWeight: FontWeight.w400,
-              ),
+            title: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'The most important thing to ask Allah for',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                      fontSize:
+                          presenter.isExpanded(index) ? fifteenPx : fourteenPx,
+                      color: context.color.titleColor,
+                      fontWeight: FontWeight.w500),
+                ),
+                gapH8,
+                Text(
+                  'Total 15 Duas',
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontSize: twelvePx,
+                    color: context.color.subtitleColor,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ],
             ),
             children: [
               Container(
+                margin:
+                    EdgeInsets.only(bottom: tenPx, right: tenPx, left: tenPx),
                 padding: EdgeInsets.only(top: fivePx, bottom: tenPx),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Divider(
-                      height: onePx,
-                      color: context.color.primaryColor10,
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: eightPx),
+                      child: Divider(
+                        height: onePx,
+                        color: context.color.primaryColor10,
+                      ),
                     ),
                     gapH10,
                     IconTextRow(
@@ -127,14 +133,17 @@ class IconTextRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:
-          EdgeInsets.only(left: thirteenPx, bottom: fourteenPx, top: fourPx),
+      padding: EdgeInsets.only(
+        left: sixteenPx,
+        bottom: twelvePx,
+        top: twoPx,
+      ),
       child: Row(
         children: [
           SvgImage(
             assetName: iconPath ?? SvgPath.icMainComponent,
-            width: twentyFourPx,
-            height: twentyFourPx,
+            width: twentyFivePx,
+            height: twentyFivePx,
           ),
           gapW25,
           Text(

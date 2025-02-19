@@ -1,5 +1,6 @@
 import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/di/service_locator.dart';
+import 'package:dua/core/static/ui_const.dart';
 import 'package:dua/presentation/common/widgets/custom_search_bar.dart';
 import 'package:dua/presentation/common/widgets/custom_app_bar.dart';
 import 'package:dua/presentation/subcategory/presenter/sub_category_presenter.dart';
@@ -21,26 +22,23 @@ class SubCategory extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(eightPx),
+          padding: EdgeInsets.all(sixteenPx),
           child: Column(
             children: [
               CustomSearchBar(
                 hintText: 'Search by Subcategories Name',
               ),
-              // gapH10,
-              Padding(
-                padding: EdgeInsets.only(top: eightPx, left: tenPx, right: 8),
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    return DuaListTile(
-                      index: index,
-                      presenter: presenter,
-                    );
-                  },
-                ),
+              gapH10,
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                  return DuaListTile(
+                    index: index,
+                    presenter: presenter,
+                  );
+                },
               ),
             ],
           ),
