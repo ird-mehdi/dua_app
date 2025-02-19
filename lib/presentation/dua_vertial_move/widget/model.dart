@@ -45,25 +45,25 @@ List<DuaCardModel> duaCardModelList = [
 
 List<DuaCardModel> planDetailsDuaCardModelList = [
   DuaCardModel(
-    isFirstDuaTitleShown: false,
+    isFirstDuaTitleShown: true,
     isLast: true,
     isArabicTopTitleShown: true,
     isFirstDuaReferenceShown: true,
     isSecondDuaReferenceShown: true,
     isSecondDuaTitleShown: false,
-    multipleDuaSeparatorDividerShown: false,
-    isSecondDuaSectionShown: false,
+    multipleDuaSeparatorDividerShown: true,
+    isSecondDuaSectionShown: true,
   ),
-  DuaCardModel(
-    isFirstDuaTitleShown: false,
-    isLast: true,
-    isArabicTopTitleShown: true,
-    isFirstDuaReferenceShown: true,
-    isSecondDuaReferenceShown: true,
-    isSecondDuaTitleShown: false,
-    multipleDuaSeparatorDividerShown: false,
-    isSecondDuaSectionShown: false,
-  ),
+  // DuaCardModel(
+  //   isFirstDuaTitleShown: false,
+  //   isLast: true,
+  //   isArabicTopTitleShown: true,
+  //   isFirstDuaReferenceShown: true,
+  //   isSecondDuaReferenceShown: true,
+  //   isSecondDuaTitleShown: false,
+  //   multipleDuaSeparatorDividerShown: false,
+  //   isSecondDuaSectionShown: false,
+  // ),
 ];
 
 List<DuaCardModel> scheduleDetailsDuaCardModelList = [

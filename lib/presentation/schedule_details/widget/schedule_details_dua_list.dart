@@ -32,7 +32,7 @@ class ScheduleDetailsDuaList extends StatelessWidget {
           number: 4,
           dua: 'The servant is dependent on his Lord #1',
         ),
-        SecondDua(
+        DuaContentCard(
             title: '',
             arabicText: 'إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ',
             transliteration: 'Iyyaaka na\'budu wa liyaaka nasta\'een',
@@ -54,7 +54,7 @@ class ScheduleDetailsDuaList extends StatelessWidget {
           dua: 'The servant is dependent on his Lord #1',
         ),
         gapH16,
-        SecondDua(
+        DuaContentCard(
             title: '',
             arabicText: 'إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ',
             transliteration: 'Iyyaaka na\'budu wa liyaaka nasta\'een',
@@ -66,7 +66,7 @@ class ScheduleDetailsDuaList extends StatelessWidget {
         gapH16,
         const DuaCardFooter(),
         gapH30,
-        if (scheduleDetailsDuaCardModelList[0].isLast)
+        if (duaCardModel.isLast)
           Divider(
             color: context.color.primaryColor10,
             height: 1,

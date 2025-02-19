@@ -20,6 +20,7 @@ class PlanDetailsPage extends StatelessWidget {
         appBar: CustomAppBar(
           title: 'Plan Details',
           titleFontSize: eighteenPx,
+          paddingLeft: eightPx,
           onLeadingPressed: () => Navigator.pop(context),
           actions: [
             IconButton(
@@ -27,15 +28,14 @@ class PlanDetailsPage extends StatelessWidget {
               icon: SvgImage(
                 assetName: AppImages.icSetting2,
                 color: context.color.primaryColor100,
-                width: sixteenPx,
-                height: sixteenPx,
               ),
             ),
           ],
         ),
         body: SingleChildScrollView(
-          padding: EdgeInsets.all(twentyPx),
+          padding: EdgeInsets.all(sixteenPx),
           child: isListEmpty
+              // ignore: dead_code
               ? SizedBox(
                   width: double.infinity,
                   height: MediaQuery.of(context).size.height * 0.7,

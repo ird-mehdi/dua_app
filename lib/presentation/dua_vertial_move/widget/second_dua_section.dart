@@ -4,8 +4,8 @@ import 'package:dua/core/utility/utility.dart';
 import 'package:dua/presentation/dua_vertial_move/widget/model.dart';
 import 'package:flutter/material.dart';
 
-class SecondDua extends StatelessWidget {
-  const SecondDua({
+class DuaContentCard extends StatelessWidget {
+  const DuaContentCard({
     super.key,
     required this.title,
     required this.arabicText,
@@ -30,6 +30,7 @@ class SecondDua extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          gapH25,
           if (duaCardModel.isSecondDuaTitleShown)
             Text(
               title,
@@ -100,6 +101,7 @@ class SecondDua extends StatelessWidget {
                             fontWeight: FontWeight.w400,
                           ),
                         ),
+                        gapH4,
                         Text(
                           reference,
                           style: theme.textTheme.bodyMedium?.copyWith(

@@ -33,13 +33,13 @@ class DuaCollectionPreview extends StatelessWidget {
               style: theme.textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.w700,
                 color: context.color.primaryColor100,
-                fontSize: fifteenPx,
+                fontSize: fourteenPx,
               ),
             ),
             Text(
               subtitle,
               style: theme.textTheme.bodyMedium?.copyWith(
-                fontSize: twelvePx,
+                fontSize: elevenPx,
                 color: context.color.subtitleColor,
                 fontWeight: FontWeight.w400,
               ),

@@ -23,96 +23,96 @@ class FirstDua extends StatelessWidget {
     required this.theme,
   });
 
-  
-
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (duaCardModel.isFirstDuaTitleShown)
+    return Padding(
+      padding: EdgeInsets.all(sixPx),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          gapH25,
+          if (duaCardModel.isFirstDuaTitleShown)
+            Text(
+              title,
+              style: theme.textTheme.titleSmall?.copyWith(
+                fontSize: fourteenPx,
+                height: 1.5,
+                letterSpacing: -0.3,
+                color: context.color.titleColor,
+                fontWeight: FontWeight.w400,
+              ),
+              textAlign: TextAlign.justify,
+            ),
+
+          // Arabic Text
+          Align(
+            alignment: Alignment.centerRight,
+            child: Text(
+              subtitleArabic,
+              style: context.textStyle.arabicAyah?.copyWith(
+                fontSize: twentyEightPx,
+                color: context.color.headingTextColor,
+                fontWeight: FontWeight.w400,
+                height: 1.5,
+              ),
+              textAlign: TextAlign.right,
+            ),
+          ),
+
+          gapH25,
+          // Transliteration
           Text(
-            title,
-            style: theme.textTheme.titleSmall?.copyWith(
+            transliteration,
+            style: theme.textTheme.bodyMedium?.copyWith(
               fontSize: fourteenPx,
-              height: 1.5,
-              letterSpacing: -0.3,
+              color: context.color.titleColor.withOpacityInt(0.5),
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          gapH20,
+
+          // Quote
+          Text(
+            meaning,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              fontSize: fourteenPx,
               color: context.color.titleColor,
               fontWeight: FontWeight.w400,
             ),
-            textAlign: TextAlign.justify,
           ),
+          gapH20,
 
-        // Arabic Text
-        Align(
-          alignment: Alignment.centerRight,
-          child: Text(
-            subtitleArabic,
-            style: context.textStyle.arabicAyah?.copyWith(
-              fontSize: twentyEightPx,
-              color: context.color.headingTextColor,
-              fontWeight: FontWeight.w400,
-              height: 1.5,
+          // Reference
+          if (duaCardModel.isFirstDuaReferenceShown)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                RichText(
+                  text: TextSpan(
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontSize: twelvePx,
+                      color: context.color.titleColor,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    text: 'Reference:',
+                  ),
+                ),
+                RichText(
+                  text: TextSpan(
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontSize: fifteenPx,
+                      color: context.color.titleColor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    text: reference,
+                  ),
+                ),
+              ],
             ),
-            textAlign: TextAlign.right,
-          ),
-        ),
 
-        gapH25,
-        // Transliteration
-        Text(
-          transliteration,
-          style: theme.textTheme.bodyMedium?.copyWith(
-            fontSize: fourteenPx,
-            color: context.color.titleColor.withOpacityInt(0.5),
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-        gapH20,
-
-        // Quote
-        Text(
-          meaning,
-          style: theme.textTheme.bodyMedium?.copyWith(
-            fontSize: fourteenPx,
-            color: context.color.titleColor,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-        gapH20,
-
-        // Reference
-        if (duaCardModel.isFirstDuaReferenceShown)
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              RichText(
-                text: TextSpan(
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    fontSize: twelvePx,
-                    color: context.color.titleColor,
-                    fontWeight: FontWeight.w400,
-                  ),
-                  text: 'Reference:',
-                ),
-              ),
-              RichText(
-                text: TextSpan(
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    fontSize: fifteenPx,
-                    color: context.color.titleColor,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  text: reference,
-                ),
-              ),
-            ],
-          ),
-
-        gapH6,
-
-        // Action buttons
-      ],
+          // Action buttons
+        ],
+      ),
     );
   }
 }
