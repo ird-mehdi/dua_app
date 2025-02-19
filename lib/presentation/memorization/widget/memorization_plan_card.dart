@@ -30,7 +30,6 @@ class MemorizationPlanCard extends StatelessWidget {
     required this.onTap,
   });
 
-
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -43,12 +42,11 @@ class MemorizationPlanCard extends StatelessWidget {
 
           padding: EdgeInsets.all(twelvePx),
           decoration: BoxDecoration(
-
             color: context.color.btnTextColor,
             borderRadius: BorderRadius.circular(fourteenPx),
             border: Border.all(color: context.color.primaryColor10),
           ),
-        
+
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -68,7 +66,8 @@ class MemorizationPlanCard extends StatelessWidget {
                                 children: [
                                   TextSpan(
                                     text: '$daysLeft ',
-                                    style: theme.textTheme.titleMedium?.copyWith(
+                                    style:
+                                        theme.textTheme.titleMedium?.copyWith(
                                       fontSize: twentyTwoPx,
                                       fontWeight: FontWeight.w700,
                                       color: context.color.titleColor,
@@ -76,7 +75,8 @@ class MemorizationPlanCard extends StatelessWidget {
                                   ),
                                   TextSpan(
                                     text: 'Days Left',
-                                    style: theme.textTheme.titleMedium?.copyWith(
+                                    style:
+                                        theme.textTheme.titleMedium?.copyWith(
                                       color: context.color.subtitleColor,
                                       fontSize: thirteenPx,
                                       fontWeight: FontWeight.w400,
@@ -120,7 +120,7 @@ class MemorizationPlanCard extends StatelessWidget {
                     height: oneHundredPx,
                     minProgress: 0,
                     maxProgress: 1,
-                    barWidth: 5,
+                    barWidth: 8,
                     progressColor: context.color.primaryColor100,
                     trackColor: context.color.shadeColor,
                     strokeCap: StrokeCap.round,
@@ -216,7 +216,7 @@ class MemorizationPlanCardHeader extends StatelessWidget {
         Text(
           title,
           style: theme.textTheme.bodySmall?.copyWith(
-            fontSize: fourteenPx,
+            fontSize: fifteenPx,
             fontWeight: FontWeight.w500,
             color: context.color.titleColor,
           ),

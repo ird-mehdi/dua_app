@@ -17,7 +17,6 @@ class MemorizeModel {
     required this.endDate,
   });
 
-
   static List<MemorizeModel> getMemorizeModel() {
     return [
       MemorizeModel(
@@ -38,42 +37,42 @@ class MemorizeModel {
         remainingDays: 45,
         endDate: 'Mar 15, 2025',
       ),
-      MemorizeModel(
-        title: 'My 45 Day Plan',
-        daysLeft: 30,
-        completedTasks: 4,
-        totalTasks: 6,
-        progress: 0.67,
-        remainingDays: 30,
-        endDate: 'Apr 1, 2025',
-      ),
-      MemorizeModel(
-        title: 'My 90 Day Plan',
-        daysLeft: 75,
-        completedTasks: 5,
-        totalTasks: 12,
-        progress: 0.42,
-        remainingDays: 75,
-        endDate: 'May 20, 2025',
-      ),
-      MemorizeModel(
-        title: 'My 21 Day Plan',
-        daysLeft: 10,
-        completedTasks: 6,
-        totalTasks: 7,
-        progress: 0.85,
-        remainingDays: 10,
-        endDate: 'Feb 10, 2025',
-      ),
-      MemorizeModel(
-        title: 'My 100 Day Plan',
-        daysLeft: 88,
-        completedTasks: 4,
-        totalTasks: 15,
-        progress: 0.27,
-        remainingDays: 88,
-        endDate: 'Jun 30, 2025',
-      ),
+      // MemorizeModel(
+      //   title: 'My 45 Day Plan',
+      //   daysLeft: 30,
+      //   completedTasks: 4,
+      //   totalTasks: 6,
+      //   progress: 0.67,
+      //   remainingDays: 30,
+      //   endDate: 'Apr 1, 2025',
+      // ),
+      // MemorizeModel(
+      //   title: 'My 90 Day Plan',
+      //   daysLeft: 75,
+      //   completedTasks: 5,
+      //   totalTasks: 12,
+      //   progress: 0.42,
+      //   remainingDays: 75,
+      //   endDate: 'May 20, 2025',
+      // ),
+      // MemorizeModel(
+      //   title: 'My 21 Day Plan',
+      //   daysLeft: 10,
+      //   completedTasks: 6,
+      //   totalTasks: 7,
+      //   progress: 0.85,
+      //   remainingDays: 10,
+      //   endDate: 'Feb 10, 2025',
+      // ),
+      // MemorizeModel(
+      //   title: 'My 100 Day Plan',
+      //   daysLeft: 88,
+      //   completedTasks: 4,
+      //   totalTasks: 15,
+      //   progress: 0.27,
+      //   remainingDays: 88,
+      //   endDate: 'Jun 30, 2025',
+      // ),
     ];
   }
 }

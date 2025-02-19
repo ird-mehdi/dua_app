@@ -46,64 +46,70 @@ class MemorizationPage extends StatelessWidget {
       floatingActionButton: FlotingButtonRounded(
         paddingBottom: 24,
       ),
-      body: Column(
-        children: [
-          CustomSearchBar(
-            hintText: 'Search by Plan',
-          ),
-          Expanded(
-            child: isListEmpty
-                ? Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SvgImage(
-                          assetName: SvgPath.icLampSlash,
-                          width: seventyEightPx,
-                          height: seventyEightPx,
-                        ),
-                        gapH10,
-                        Text(
-                          'No memorization found',
-                          style: theme.textTheme.displayMedium?.copyWith(
-                            fontSize: twelvePx,
-                            fontWeight: FontWeight.w400,
-                            color: context.color.titleColor.withOpacityInt(0.6),
+      body: Padding(
+        padding: EdgeInsets.all(sixteenPx),
+        child: Column(
+          children: [
+            CustomSearchBar(
+              hintText: 'Search by Plan',
+            ),
+            gapH16,
+            Expanded(
+              child: isListEmpty
+                  // ignore: dead_code
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgImage(
+                            assetName: SvgPath.icLampSlash,
+                            width: seventyEightPx,
+                            height: seventyEightPx,
                           ),
-                        ),
-                      ],
+                          gapH10,
+                          Text(
+                            'No memorization found',
+                            style: theme.textTheme.displayMedium?.copyWith(
+                              fontSize: twelvePx,
+                              fontWeight: FontWeight.w400,
+                              color:
+                                  context.color.titleColor.withOpacityInt(0.6),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : ListView.builder(
+                      itemCount: MemorizeModel.getMemorizeModel().length,
+                      itemBuilder: (context, index) {
+                        return MemorizationPlanCard(
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PlanDetailsPage(),
+                            ),
+                          ),
+                          title: MemorizeModel.getMemorizeModel()[index].title,
+                          daysLeft:
+                              MemorizeModel.getMemorizeModel()[index].daysLeft,
+                          completedTasks:
+                              MemorizeModel.getMemorizeModel()[index]
+                                  .completedTasks,
+                          totalTasks: MemorizeModel.getMemorizeModel()[index]
+                              .totalTasks,
+                          remainingDays: MemorizeModel.getMemorizeModel()[index]
+                              .remainingDays,
+                          endDate:
+                              MemorizeModel.getMemorizeModel()[index].endDate,
+                          progress:
+                              MemorizeModel.getMemorizeModel()[index].progress,
+                          theme: theme,
+                        );
+                      },
                     ),
-                  )
-                : ListView.builder(
-                    padding: EdgeInsets.all(sixteenPx),
-                    itemCount: MemorizeModel.getMemorizeModel().length,
-                    itemBuilder: (context, index) {
-                      return MemorizationPlanCard(
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => PlanDetailsPage(),
-                          ),
-                        ),
-                        title: MemorizeModel.getMemorizeModel()[index].title,
-                        daysLeft:
-                            MemorizeModel.getMemorizeModel()[index].daysLeft,
-                        completedTasks: MemorizeModel.getMemorizeModel()[index]
-                            .completedTasks,
-                        totalTasks:
-                            MemorizeModel.getMemorizeModel()[index].totalTasks,
-                        remainingDays: MemorizeModel.getMemorizeModel()[index]
-                            .remainingDays,
-                        endDate:
-                            MemorizeModel.getMemorizeModel()[index].endDate,
-                        progress:
-                            MemorizeModel.getMemorizeModel()[index].progress,
-                        theme: theme,
-                      );
-                    },
-                  ),
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }
