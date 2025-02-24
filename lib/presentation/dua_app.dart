@@ -1,7 +1,7 @@
 import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/config/themes.dart';
 import 'package:dua/core/static/font_family.dart';
-import 'package:dua/test_preview_all_screens.dart';
+import 'package:dua/presentation/dhikr/ui/dhikr_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -38,9 +38,10 @@ class DuaApp extends StatelessWidget {
         // home: SubCategory(),
         // home: DuaVerticalMove(),
         // home: NavBarPage(),
+        home: DhikrPage(),
         // home: SchedulePage(),
         // home: ScheduleDetailsPage(),
-        home: ScreenList(),
+        // home: ScreenList(),
         // home: PrayerTimePage(),
         // home: MemorizationPage(),
         // home: PlanDetailsPage(),

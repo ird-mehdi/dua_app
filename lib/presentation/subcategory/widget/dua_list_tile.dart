@@ -31,29 +31,7 @@ class DuaListTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(twentyPx),
               side: BorderSide.none,
             ),
-            leading: Container(
-              width: thirtySixPx,
-              height: thirtySixPx,
-              decoration: BoxDecoration(
-                color: presenter.isExpanded(index)
-                    ? context.color.primaryColor100
-                    : context.color.secondaryColor.withOpacityInt(0.3),
-                shape: BoxShape.circle,
-                border:
-                    Border.all(color: context.color.iconShadeColor, width: 2),
-              ),
-              child: Center(
-                child: Text(
-                  '${index + 1}',
-                  style: theme.textTheme.labelMedium?.copyWith(
-                      color: presenter.isExpanded(index)
-                          ? context.color.white
-                          : context.color.primaryColor100,
-                      fontSize: thirteenPx,
-                      fontWeight: FontWeight.w600),
-                ),
-              ),
-            ),
+            leading: CircleNumberWidget(presenter: presenter, index: index, theme: theme),
             showTrailingIcon: false,
             title: Column(
               mainAxisSize: MainAxisSize.min,
@@ -121,6 +99,46 @@ class DuaListTile extends StatelessWidget {
             },
           );
         });
+  }
+}
+
+class CircleNumberWidget extends StatelessWidget {
+  const CircleNumberWidget({
+    super.key,
+    required this.presenter,
+    required this.index,
+    required this.theme,
+  });
+
+  final SubCategoryPresenter presenter;
+  final int index;
+  final ThemeData theme;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: thirtySixPx,
+      height: thirtySixPx,
+      decoration: BoxDecoration(
+        color: presenter.isExpanded(index)
+            ? context.color.primaryColor100
+            : context.color.secondaryColor.withOpacityInt(0.3),
+        shape: BoxShape.circle,
+        border:
+            Border.all(color: context.color.iconShadeColor, width: 2),
+      ),
+      child: Center(
+        child: Text(
+          '${index + 1}',
+          style: theme.textTheme.labelMedium?.copyWith(
+              color: presenter.isExpanded(index)
+                  ? context.color.white
+                  : context.color.primaryColor100,
+              fontSize: thirteenPx,
+              fontWeight: FontWeight.w600),
+        ),
+      ),
+    );
   }
 }
 
