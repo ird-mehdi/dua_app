@@ -7,7 +7,7 @@ class AllDuasUiState extends BaseUiState {
     required super.isLoading,
     super.userMessage,
     this.duas,
-    this.selectedLanguage = 'bn', // Default to Bangla
+    this.selectedLanguage = 'en', // Default to English
     this.searchQuery = '',
     this.selectedCharacter,
     this.scrollController,
@@ -26,7 +26,7 @@ class AllDuasUiState extends BaseUiState {
       isLoading: false,
       userMessage: '',
       duas: const [],
-      selectedLanguage: 'bn',
+      selectedLanguage: 'en', // Default to English
       searchQuery: '',
       selectedCharacter: 'A',
       scrollController: ScrollController(),

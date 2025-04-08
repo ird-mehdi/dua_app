@@ -1,0 +1,2 @@
+/Users/mehdi/Documents/GitHub/dua_app/android/app/.cxx/Debug/305d452b/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/mehdi/Documents/GitHub/dua_app/android/app/.cxx/Debug/305d452b/armeabi-v7a/CMakeFiles/rebuild_cache.dir

@@ -1,26 +1,35 @@
 import 'package:dua/domain/entities/dua_entity.dart';
+import 'package:dua/data/services/dua_database/database_service.dart';
 
-class DuaMapper extends DuaEntity {
-  const DuaMapper({
-    required super.id,
-    required super.name,
-    required super.languageId,
-    required super.groups,
-    required super.context,
-    required super.source,
-    required super.indopak,
-    required super.clean,
-    required super.transliteration,
-    required super.translation,
-    required super.note,
-    required super.reference,
-    required super.audio,
-    required super.categoryId,
-    required super.subcategoryId,
-  });
+class DuaMapper {
+  const DuaMapper();
 
-  static DuaMapper fromJson(Map<String, dynamic> json) {
-    return DuaMapper(
+  static DuaEntity fromDto(Dua dua) {
+    return DuaEntity(
+      id: dua.id,
+      languageId: dua.languageId ?? '',
+      groups: dua.groups,
+      name: dua.name ?? '',
+      context: dua.context ?? '',
+      source: dua.source ?? '',
+      indopak: dua.indopak ?? '',
+      clean: dua.clean ?? '',
+      transliteration: dua.transliteration ?? '',
+      translation: dua.translation ?? '',
+      note: dua.note ?? '',
+      reference: dua.reference ?? '',
+      audio: dua.audio ?? 0,
+      categoryId: dua.categoryId ?? 0,
+      subcategoryId: dua.subcategoryId ?? 0,
+    );
+  }
+
+  static List<DuaEntity> fromDtoList(List<Dua> duas) {
+    return duas.map((dua) => fromDto(dua)).toList();
+  }
+
+  static DuaEntity fromJson(Map<String, dynamic> json) {
+    return DuaEntity(
       id: json['id'],
       name: json['name'],
       languageId: json['languageId'],

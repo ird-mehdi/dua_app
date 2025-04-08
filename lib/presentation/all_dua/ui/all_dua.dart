@@ -23,22 +23,51 @@ class AllDuaPage extends StatelessWidget {
         child: Column(
           children: [
             CustomAppBar(
-              title: 'All Dua',
+              title: 'All Duas',
               icon: AppImages.icCategory2,
               titleSpacing: eightPx,
               titleFontSize: eighteenPx,
             ),
             CustomSearchBar(
               hintText: 'Search by dua\'s name',
+              onChanged: (query) {
+                presenter.updateSearchQuery(query);
+              },
+            ),
+            SizedBox(height: eightPx),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton.icon(
+                  onPressed: () {
+                    presenter.toggleLanguage();
+                  },
+                  icon: Icon(Icons.language),
+                  label: PresentableWidgetBuilder(
+                    presenter: presenter,
+                    builder: () {
+                      return Text(
+                          presenter.uiState.value.selectedLanguage == 'bn'
+                              ? 'বাংলা'
+                              : 'English');
+                    },
+                  ),
+                ),
+              ],
             ),
             Expanded(
               child: PresentableWidgetBuilder(
                 presenter: presenter,
                 builder: () {
+                  if (presenter.uiState.value.isLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
                   final duas = presenter.uiState.value.duas ?? [];
                   if (duas.isEmpty) {
                     return const Center(child: Text('No duas found'));
                   }
+
                   return DuaListItem(
                     number: 1,
                     text: duas[0].name,

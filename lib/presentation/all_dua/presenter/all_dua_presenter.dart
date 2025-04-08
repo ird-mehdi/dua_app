@@ -11,6 +11,9 @@ class AllDuasPresenter extends BasePresenter<AllDuasUiState> {
 
   AllDuasUiState get currentUiState => uiState.value;
   List<DuaEntity> _allDuas = []; // Store all duas to filter locally
+  bool _isLoading = false;
+  int _retryCount = 0;
+  static const int _maxRetries = 3;
 
   AllDuasPresenter(this.getAllDuas);
 
@@ -21,35 +24,88 @@ class AllDuasPresenter extends BasePresenter<AllDuasUiState> {
   }
 
   Future<void> _fetchAllDuas() async {
+    if (_isLoading) return;
+
+    _isLoading = true;
     uiState.value = currentUiState.copyWith(isLoading: true);
+
     try {
+      print('AllDuasPresenter: Fetching all duas');
       final result = await getAllDuas();
+
       result.fold(
         (error) {
+          print('AllDuasPresenter: Error fetching duas: $error');
           uiState.value = currentUiState.copyWith(
             isLoading: false,
             userMessage: error,
           );
+
+          // Retry if we still have attempts left and got an error
+          if (_retryCount < _maxRetries) {
+            _retryCount++;
+            print(
+                'AllDuasPresenter: Retrying fetch ($_retryCount/$_maxRetries)');
+            Future.delayed(Duration(seconds: 1), _fetchAllDuas);
+          }
         },
         (duas) {
+          print('AllDuasPresenter: Received ${duas.length} duas');
           _allDuas = duas;
-          print(
-              'AllDuasPresenter: _fetchAllDuas: ${_allDuas.length} duas retrieved');
-          print('AllDuasPresenter: _fetchAllDuas: ${_allDuas[0].name}');
+
+          if (duas.isEmpty && _retryCount < _maxRetries) {
+            // Retry if we got an empty list
+            _retryCount++;
+            print(
+                'AllDuasPresenter: Received empty list, retrying ($_retryCount/$_maxRetries)');
+            Future.delayed(Duration(seconds: 1), _fetchAllDuas);
+            return;
+          }
+
+          if (duas.isNotEmpty) {
+            print('AllDuasPresenter: First dua: ${duas[0].name}');
+          } else {
+            print('AllDuasPresenter: No duas received');
+          }
+
           _applyFilters();
+          _retryCount = 0; // Reset retry count on success
         },
       );
     } catch (e) {
+      print('AllDuasPresenter: Exception during fetch: $e');
       uiState.value = currentUiState.copyWith(
         isLoading: false,
         userMessage: 'Failed to load duas: $e',
       );
+
+      // Retry if we still have attempts left
+      if (_retryCount < _maxRetries) {
+        _retryCount++;
+        print(
+            'AllDuasPresenter: Retrying fetch due to exception ($_retryCount/$_maxRetries)');
+        Future.delayed(Duration(seconds: 1), _fetchAllDuas);
+      }
+    } finally {
+      _isLoading = false;
     }
   }
 
   // Apply both language and search filters
   void _applyFilters() {
-    if (_allDuas.isEmpty) return;
+    if (_allDuas.isEmpty) {
+      print('AllDuasPresenter: No duas to filter');
+      uiState.value = currentUiState.copyWith(
+        isLoading: false,
+        duas: [],
+      );
+      return;
+    }
+
+    print('AllDuasPresenter: Applying filters');
+    print(
+        'AllDuasPresenter: Language filter: ${currentUiState.selectedLanguage}');
+    print('AllDuasPresenter: Search query: ${currentUiState.searchQuery}');
 
     final filteredDuas = _allDuas.where((dua) {
       // Filter by language
@@ -63,13 +119,13 @@ class AllDuasPresenter extends BasePresenter<AllDuasUiState> {
       return languageMatches && nameMatches;
     }).toList();
 
+    print('AllDuasPresenter: Filtered to ${filteredDuas.length} duas');
+
     uiState.value = currentUiState.copyWith(
       isLoading: false,
       duas: filteredDuas,
     );
   }
-
-  
 
   void selectCharacter(String character) {
     uiState.value = currentUiState.copyWith(selectedCharacter: character);
@@ -82,7 +138,8 @@ class AllDuasPresenter extends BasePresenter<AllDuasUiState> {
     double position = 0;
 
     // Simply calculate a rough position based on the character index
-    final int characterIndex = currentUiState.alphabetLetters?.indexOf(character) ?? 0;
+    final int characterIndex =
+        currentUiState.alphabetLetters?.indexOf(character) ?? 0;
     // Rough estimation of position - we can refine this as needed
     position = characterIndex * 100; // Estimated height per section
 
@@ -97,18 +154,22 @@ class AllDuasPresenter extends BasePresenter<AllDuasUiState> {
   // Toggle between Bangla and English
   void toggleLanguage() {
     final newLanguage = currentUiState.selectedLanguage == 'bn' ? 'en' : 'bn';
+    print('AllDuasPresenter: Toggling language to $newLanguage');
     uiState.value = currentUiState.copyWith(selectedLanguage: newLanguage);
     _applyFilters();
   }
 
   // Update search query
   void updateSearchQuery(String query) {
+    print('AllDuasPresenter: Updating search query to: $query');
     uiState.value = currentUiState.copyWith(searchQuery: query);
     _applyFilters();
   }
 
   @override
   void refresh() {
+    print('AllDuasPresenter: Refreshing data');
+    _retryCount = 0;
     _fetchAllDuas();
   }
 

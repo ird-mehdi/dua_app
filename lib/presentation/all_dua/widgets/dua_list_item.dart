@@ -1,7 +1,7 @@
 import 'package:dua/core/di/service_locator.dart';
 import 'package:dua/presentation/all_dua/presenter/all_dua_presenter.dart';
+import 'package:dua/presentation/dua_details/ui/dua_details_page.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class DuaListItem extends StatelessWidget {
   final int number;
@@ -22,159 +22,41 @@ class DuaListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AllDuasPresenter presenter = locate<AllDuasPresenter>();
+    final duas = presenter.uiState.value.duas ?? [];
 
-    return Row(
-      children: [
-        // Dua List
-        Expanded(
-          child: ListView.builder(
-            padding: EdgeInsets.zero,
-            controller: presenter.uiState.value.scrollController,
-            itemCount: presenter.uiState.value.alphabetLetters?.length ?? 0,
-            itemBuilder: (context, index) {
-              final character = presenter.uiState.value.alphabetLetters?[index] ?? '';
-              final items = presenter.uiState.value.duas ?? [];
-              
-              final filteredItems = items.where((dua) => 
-                dua.name.isNotEmpty && dua.name[0].toUpperCase() == character
-              ).toList();
+    if (duas.isEmpty) {
+      return const Center(child: Text('No duas found'));
+    }
 
-              if (filteredItems.isEmpty) {
-                return const SizedBox.shrink();
-              }
-
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Sticky Header for each character
-                  Container(
-                    color: const Color(0xFFF9FAFB),
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 32,
-                          height: 32,
-                          decoration: BoxDecoration(
-                            color: theme.colorScheme.primaryContainer
-                                .withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Center(
-                            child: Text(
-                              character,
-                              style: TextStyle(
-                                color: theme.colorScheme.primary,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  // Dua Items with Left Border for each character
-                  Container(
-                    margin: const EdgeInsets.only(left: 16),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        left: BorderSide(
-                          color: Colors.grey.shade300,
-                          width: 2,
-                          style: BorderStyle.solid,
-                        ),
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: filteredItems.map((item) {
-                        final isSelected =
-                            character == presenter.uiState.value.selectedCharacter;
-                        return _buildDuaItem(item.name, highlighted: isSelected);
-                      }).toList(),
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
-        ),
-
-        // Alphabet Index
-        Container(
-          width: 24,
-          padding: const EdgeInsets.only(top: 10),
-          child: Obx(() => Column(
-                children: _buildAlphabetIndex(presenter),
-              )),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildDuaItem(String text, {bool highlighted = false}) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      margin: const EdgeInsets.only(left: 24),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: Colors.grey.shade100,
-            width: 1,
-          ),
-        ),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            margin: const EdgeInsets.only(top: 10),
-            width: 23,
-            height: 1,
-            color: Colors.grey.shade300,
-          ),
-          const SizedBox(width: 2),
-          Expanded(
+    return ListView.builder(
+      padding: EdgeInsets.zero,
+      controller: presenter.uiState.value.scrollController,
+      itemCount: duas.length,
+      itemBuilder: (context, index) {
+        final dua = duas[index];
+        return ListTile(
+          leading: CircleAvatar(
             child: Text(
-              text,
-              style: TextStyle(
-                color: highlighted
-                    ? theme.colorScheme.primary
-                    : const Color(0xFF1F2937),
-                fontWeight: highlighted ? FontWeight.w500 : FontWeight.normal,
+              '${index + 1}',
+              style: theme.textTheme.titleSmall?.copyWith(
+                fontWeight: FontWeight.w500,
+                color: Colors.white,
               ),
             ),
           ),
-        ],
-      ),
+          title: Text(dua.name),
+          //subtitle: Text(dua.context),
+          onTap: () {
+            // Navigate to dua details page
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => DuaDetailsPage(dua: dua),
+              ),
+            );
+          },
+        );
+      },
     );
-  }
-
-  List<Widget> _buildAlphabetIndex(AllDuasPresenter presenter) {
-    final alphabetLetters = presenter.uiState.value.alphabetLetters ?? [];
-    final selectedCharacter = presenter.uiState.value.selectedCharacter ?? '';
-    
-    return alphabetLetters.map((letter) {
-      final isActive = letter == selectedCharacter;
-
-      return GestureDetector(
-        onTap: () {
-          presenter.selectCharacter(letter);
-        },
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 1),
-          child: Text(
-            letter,
-            style: TextStyle(
-              fontSize: 12,
-              color: isActive ? const Color(0xFF10B981) : Colors.grey,
-              fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
-            ),
-          ),
-        ),
-      );
-    }).toList();
   }
 }

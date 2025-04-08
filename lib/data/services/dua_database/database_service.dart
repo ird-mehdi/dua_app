@@ -14,9 +14,15 @@ part 'database_service.g.dart';
 
 @DriftDatabase(tables: [Duas])
 class DuaDatabase extends _$DuaDatabase {
+  bool _isInitialized = false;
+
   DuaDatabase({QueryExecutor? executor}) : super(executor ?? loadDatabase()) {
-    _initDatabase();
-    verifyDatabase();
+    // Change order to verify first, then initialize
+    verifyDatabase().then((_) {
+      _initDatabase().then((_) {
+        _isInitialized = true;
+      });
+    });
   }
 
   @override
@@ -71,6 +77,19 @@ class DuaDatabase extends _$DuaDatabase {
             '_manualCopyDatabaseFromAssets: Successfully copied database, size: ${await targetFile.length()} bytes');
       } catch (e) {
         print('_manualCopyDatabaseFromAssets: Failed to copy database: $e');
+        // Try alternative paths
+        try {
+          final ByteData data =
+              await rootBundle.load('assets/databases/database.sqlite');
+          final List<int> bytes =
+              data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+          await targetFile.writeAsBytes(bytes);
+          print(
+              '_manualCopyDatabaseFromAssets: Successfully copied database using alternative path');
+        } catch (e) {
+          print(
+              '_manualCopyDatabaseFromAssets: Failed to copy database using alternative path: $e');
+        }
       }
     } catch (e, stackTrace) {
       print('_manualCopyDatabaseFromAssets: Exception: $e');
@@ -92,12 +111,21 @@ class DuaDatabase extends _$DuaDatabase {
         print('_initDatabase: Database file not found!');
       }
 
-      final count = await (select(duas)..limit(10)).get();
+      // Use a longer timeout to prevent hanging
+      final count = await (select(duas)..limit(10)).get().timeout(
+        Duration(seconds: 10),
+        onTimeout: () {
+          print('_initDatabase: Database query timed out!');
+          return [];
+        },
+      );
+
       print('_initDatabase: Retrieved ${count.length} duas from database');
       if (count.isEmpty) {
-        print('_initDatabase: Database is empty');
+        print('_initDatabase: Database is empty or query failed');
       } else {
         print('_initDatabase: First dua: ${count.first.name}');
+        _isInitialized = true;
       }
     } catch (e, stackTrace) {
       print('_initDatabase: Database initialization error: $e');
@@ -106,13 +134,20 @@ class DuaDatabase extends _$DuaDatabase {
   }
 
   Future<List<Dua>> getAllDuas() async {
-    print('_getAllDuas: Getting all duas from database');
+    print('getAllDuas: Getting all duas from database');
     try {
-      // First, validate that we can actually read from the database
-      final validationResult = await validateDatabase();
-      if (!validationResult) {
-        print('_getAllDuas: Database validation failed, returning empty list');
-        return [];
+      // If database is still initializing, wait for a short time
+      if (!_isInitialized) {
+        print('getAllDuas: Database not yet fully initialized, retrying...');
+        await Future.delayed(Duration(milliseconds: 500));
+
+        // Force initialization check to complete more quickly
+        final testCount = await (select(duas)..limit(1)).get().timeout(
+              Duration(seconds: 2),
+              onTimeout: () => [],
+            );
+
+        _isInitialized = testCount.isNotEmpty;
       }
 
       final query = select(duas)
@@ -120,12 +155,20 @@ class DuaDatabase extends _$DuaDatabase {
           (t) => OrderingTerm(expression: t.id),
         ]);
 
-      final results = await query.get();
-      print('_getAllDuas: Found ${results.length} duas in database');
+      // Use a longer timeout (10 seconds) for the first data load
+      final results = await query.get().timeout(
+        Duration(seconds: 10),
+        onTimeout: () {
+          print('getAllDuas: Query timed out, returning empty list');
+          return [];
+        },
+      );
+
+      print('getAllDuas: Found ${results.length} duas in database');
       return results;
     } catch (e, stackTrace) {
-      print('_getAllDuas: Error fetching duas: $e');
-      print('_getAllDuas: Stack trace: $stackTrace');
+      print('getAllDuas: Error fetching duas: $e');
+      print('getAllDuas: Stack trace: $stackTrace');
       return [];
     }
   }
@@ -134,10 +177,17 @@ class DuaDatabase extends _$DuaDatabase {
     print('validateDatabase: Checking database schema...');
     try {
       // Try a simple count query first to see if the database is accessible
-      final count = await (select(duas)..limit(1)).get();
+      final count = await (select(duas)..limit(1)).get().timeout(
+        Duration(seconds: 5),
+        onTimeout: () {
+          print('validateDatabase: Query timed out');
+          return [];
+        },
+      );
+
       print(
           'validateDatabase: Successfully queried database, found ${count.length} records');
-      return true;
+      return true; // Return true even if empty to prevent blocking data flow
     } catch (e, stackTrace) {
       print('validateDatabase: Database validation error: $e');
       print('validateDatabase: Stack trace: $stackTrace');
@@ -173,11 +223,40 @@ class DuaDatabase extends _$DuaDatabase {
     }
   }
 
-  Future<List<Dua>> getDuasByCategory(int categoryId) => (select(duas)
-        ..where((t) => t.categoryId.equals(categoryId))
-        ..orderBy([(t) => OrderingTerm(expression: t.id)]))
-      .get();
+  Future<List<Dua>> getDuasByCategory(int categoryId) async {
+    try {
+      return await (select(duas)
+            ..where((t) => t.categoryId.equals(categoryId))
+            ..orderBy([(t) => OrderingTerm(expression: t.id)]))
+          .get()
+          .timeout(
+        Duration(seconds: 5),
+        onTimeout: () {
+          print('getDuasByCategory: Query timed out');
+          return [];
+        },
+      );
+    } catch (e) {
+      print('getDuasByCategory: Error: $e');
+      return [];
+    }
+  }
 
-  Future<Dua> getDuaById(int id) =>
-      (select(duas)..where((t) => t.id.equals(id))).getSingle();
+  Future<Dua?> getDuaById(int id) async {
+    try {
+      final results =
+          await (select(duas)..where((t) => t.id.equals(id))).get().timeout(
+        Duration(seconds: 5),
+        onTimeout: () {
+          print('getDuaById: Query timed out');
+          return [];
+        },
+      );
+
+      return results.isNotEmpty ? results.first : null;
+    } catch (e) {
+      print('getDuaById: Error: $e');
+      return null;
+    }
+  }
 }

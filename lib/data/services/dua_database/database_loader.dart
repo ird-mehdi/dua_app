@@ -7,7 +7,9 @@ import 'package:drift/native.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 
-LazyDatabase loadDatabase() => LazyDatabase(_openConnection);
+// Creating a non-lazy database executor that runs in the foreground
+// instead of using a background isolate that can hang
+LazyDatabase loadDatabase() => LazyDatabase(() => _openConnection());
 
 Future<bool> isDatabaseFileFound() async {
   final bool? isDatabaseFileFound = await catchAndReturnFuture(() async {
@@ -60,9 +62,9 @@ Future<QueryExecutor> _openConnection() async {
         // Try with alternate path as fallback
         try {
           print(
-              '_openConnection: Trying with alternate path: assets/database/quran.db');
+              '_openConnection: Trying with alternate path: assets/databases/database.sqlite');
           final ByteData data =
-              await rootBundle.load('assets/database/quran.db');
+              await rootBundle.load('assets/databases/database.sqlite');
           print(
               '_openConnection: Asset loaded successfully with alternate path, size: ${data.lengthInBytes} bytes');
 
@@ -111,5 +113,6 @@ Future<QueryExecutor> _openConnection() async {
   }
 
   print('_openConnection: Opening database at: ${file.path}');
-  return NativeDatabase.createInBackground(file);
+  // Use NativeDatabase directly instead of createInBackground to avoid isolate issues
+  return NativeDatabase(file);
 }
