@@ -4,35 +4,76 @@ import 'package:dua/presentation/bookmark/ui/edit_bookmark_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+class BookmarkFolder {
+  final String name;
+  final Color color;
+  final int duaCount;
+
+  BookmarkFolder({
+    required this.name,
+    required this.color,
+    required this.duaCount,
+  });
+
+  BookmarkFolder copyWith({
+    String? name,
+    Color? color,
+    int? duaCount,
+  }) {
+    return BookmarkFolder(
+      name: name ?? this.name,
+      color: color ?? this.color,
+      duaCount: duaCount ?? this.duaCount,
+    );
+  }
+}
+
 class BookmarkUiState extends BaseUiState {
   final List<String> bookmarkedDuas;
+  final List<BookmarkFolder> bookmarkFolders;
 
   const BookmarkUiState({
     required this.bookmarkedDuas,
+    required this.bookmarkFolders,
     required super.isLoading,
     required super.userMessage,
   });
 
-  factory BookmarkUiState.initial() => const BookmarkUiState(
+  factory BookmarkUiState.initial() => BookmarkUiState(
         bookmarkedDuas: [],
+        bookmarkFolders: [
+          BookmarkFolder(
+            name: 'Bookmark Name',
+            color: Colors.blue,
+            duaCount: 12,
+          ),
+          BookmarkFolder(
+            name: 'Another Bookmark',
+            color: Colors.green,
+            duaCount: 5,
+          ),
+        ],
         isLoading: false,
         userMessage: null,
       );
 
   BookmarkUiState copyWith({
     List<String>? bookmarkedDuas,
+    List<BookmarkFolder>? bookmarkFolders,
     bool? isLoading,
     String? userMessage,
   }) {
     return BookmarkUiState(
       bookmarkedDuas: bookmarkedDuas ?? this.bookmarkedDuas,
+      bookmarkFolders: bookmarkFolders ?? this.bookmarkFolders,
       isLoading: isLoading ?? this.isLoading,
       userMessage: userMessage,
     );
   }
 
   @override
-  List<Object?> get props => [bookmarkedDuas, isLoading, userMessage];
+  List<Object?> get props =>
+      [bookmarkedDuas, bookmarkFolders, isLoading, userMessage];
 }
 
 class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
@@ -66,15 +107,32 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
     update();
   }
 
-  Future<void> showEditBookmarkBottomSheet(BuildContext context,
-      {String? folderName, Color? folderColor}) async {
+  Future<void> updateBookmarkFolder(int index, String name, Color color) async {
+    final List<BookmarkFolder> updatedFolders =
+        List.from(currentUiState.bookmarkFolders);
+    updatedFolders[index] = updatedFolders[index].copyWith(
+      name: name,
+      color: color,
+    );
+
+    _state.value = currentUiState.copyWith(
+      bookmarkFolders: updatedFolders,
+    );
+    update();
+  }
+
+  Future<void> showEditBookmarkBottomSheet(
+    BuildContext context, {
+    required String folderName,
+    required Color folderColor,
+    required int folderIndex,
+  }) async {
     await EditBookmarkBottomSheet.show(
       context: context,
-      folderName: folderName ?? 'Example Folder Name',
-      folderColor: folderColor ?? Colors.blue,
+      folderName: folderName,
+      folderColor: folderColor,
       onSave: (String name, Color color) {
-        // TODO: Implement save bookmark folder logic
-        update();
+        updateBookmarkFolder(folderIndex, name, color);
       },
     );
   }

@@ -12,7 +12,7 @@ class BookmarkScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    Theme.of(context);
     locate<BookmarkPresenter>();
 
     return Scaffold(
@@ -21,14 +21,16 @@ class BookmarkScreen extends StatelessWidget {
         child: Column(
           children: [
             CustomAppBar(
+              paddingLeft: 0,
               title: 'Bookmark',
-              icon: AppImages.icBookmark,
+              icon: AppImages.icCategory2,
               titleSpacing: eightPx,
               titleFontSize: eighteenPx,
             ),
             CustomSearchBar(
               hintText: 'Search bookmarked duas',
             ),
+            const SizedBox(height: 10), // 10px gap after search bar
             Expanded(
               child: GetBuilder<BookmarkPresenter>(
                 builder: (controller) {
@@ -36,18 +38,25 @@ class BookmarkScreen extends StatelessWidget {
                     return const Center(child: CircularProgressIndicator());
                   }
 
-                  if (controller.currentUiState.bookmarkedDuas.isEmpty) {
+                  if (controller.currentUiState.bookmarkFolders.isEmpty) {
                     return const Center(
-                      child: Text('No bookmarked duas found'),
+                      child: Text('No bookmarked folders found'),
                     );
                   }
 
-                  return ListView.builder(
-                    itemCount: 2,
+                  return ListView.separated(
+                    itemCount: controller.currentUiState.bookmarkFolders.length,
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: 10), // 10px gap between items
                     itemBuilder: (context, index) {
+                      final folder =
+                          controller.currentUiState.bookmarkFolders[index];
                       return BookmarkItem(
-                        color: theme.colorScheme.primaryContainer,
-                        iconColor: theme.colorScheme.primary,
+                        folderName: folder.name,
+                        duaCount: folder.duaCount,
+                        color: folder.color.withOpacity(0.2),
+                        iconColor: folder.color,
+                        folderIndex: index,
                       );
                     },
                   );
@@ -62,14 +71,20 @@ class BookmarkScreen extends StatelessWidget {
 }
 
 class BookmarkItem extends StatelessWidget {
+  final String folderName;
+  final int duaCount;
   final Color color;
   final Color iconColor;
+  final int folderIndex;
   final VoidCallback? onPressed;
 
   const BookmarkItem({
     super.key,
+    required this.folderName,
+    required this.duaCount,
     required this.color,
     required this.iconColor,
+    required this.folderIndex,
     this.onPressed,
   });
 
@@ -111,18 +126,18 @@ class BookmarkItem extends StatelessWidget {
               const SizedBox(width: 16),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text(
-                    'Bookmark Name',
-                    style: TextStyle(
+                    folderName,
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
                       color: Color(0xFF1F2937), // text-gray-800
                     ),
                   ),
                   Text(
-                    'Total 12 Duas',
-                    style: TextStyle(
+                    'Total $duaCount Duas',
+                    style: const TextStyle(
                       fontSize: 14,
                       color: Color(0xFF4B5563), // text-gray-600
                     ),
@@ -142,7 +157,8 @@ class BookmarkItem extends StatelessWidget {
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
                 ),
-                builder: (context) => const OptionsBottomSheet(),
+                builder: (context) =>
+                    OptionsBottomSheet(folderIndex: folderIndex),
               );
             },
           ),
@@ -153,11 +169,18 @@ class BookmarkItem extends StatelessWidget {
 }
 
 class OptionsBottomSheet extends StatelessWidget {
-  const OptionsBottomSheet({super.key});
+  final int folderIndex;
+
+  const OptionsBottomSheet({
+    super.key,
+    required this.folderIndex,
+  });
 
   @override
   Widget build(BuildContext context) {
     final BookmarkPresenter presenter = locate<BookmarkPresenter>();
+    final folder = presenter.currentUiState.bookmarkFolders[folderIndex];
+
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
       child: Column(
@@ -170,8 +193,9 @@ class OptionsBottomSheet extends StatelessWidget {
               Navigator.pop(context);
               presenter.showEditBookmarkBottomSheet(
                 context,
-                folderName: 'Bookmark Name',
-                folderColor: Theme.of(context).colorScheme.primary,
+                folderName: folder.name,
+                folderColor: folder.color,
+                folderIndex: folderIndex,
               );
             },
           ),
