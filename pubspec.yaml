@@ -29,12 +29,15 @@ dependencies:
   path: ^1.9.0
   share_plus: ^10.1.2
   logger: ^2.5.0
+  drift_flutter: ^0.2.4
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  drift_dev: ^2.26.0
+  build_runner: ^2.4.15
 
 flutter:
 
@@ -43,7 +46,7 @@ flutter:
   assets:
     - assets/images/svg/
     - assets/images/png/
-    - assets/databases/
+    - assets/databases/database.sqlite
   fonts:
     - family: Poppins
       fonts:

@@ -1,7 +1,10 @@
+import 'package:dua/core/base/base_presenter.dart';
 import 'package:dua/core/config/app_images.dart';
 import 'package:dua/core/config/dua_screen.dart';
+import 'package:dua/core/di/service_locator.dart';
 import 'package:dua/core/static/svg_path.dart';
 import 'package:dua/core/utility/utility.dart';
+import 'package:dua/presentation/all_dua/presenter/all_dua_presenter.dart';
 import 'package:dua/presentation/all_dua/widgets/dua_sorting_bottom_sheet.dart';
 import 'package:dua/presentation/common/widgets/custom_app_bar.dart';
 import 'package:dua/presentation/common/widgets/svg_image.dart';
@@ -10,7 +13,8 @@ import 'package:flutter/material.dart';
 import '../../common/widgets/custom_search_bar.dart';
 
 class AllDuaPage extends StatelessWidget {
-  const AllDuaPage({super.key});
+  final AllDuasPresenter presenter = loadPresenter(AllDuasPresenter(locate()));
+  AllDuaPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +63,6 @@ class AllDuaPage extends StatelessWidget {
                       width: fourteenPx,
                       height: fourteenPx,
                     ),
-
                   ),
                 ],
               ),
@@ -81,4 +84,3 @@ class AllDuaPage extends StatelessWidget {
     );
   }
 }
-
