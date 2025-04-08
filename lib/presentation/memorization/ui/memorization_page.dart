@@ -45,6 +45,7 @@ class MemorizationPage extends StatelessWidget {
       ),
       floatingActionButton: FlotingButtonRounded(
         paddingBottom: 24,
+        heroTag: 'memorizationPageFloatingBtn',
       ),
       body: Padding(
         padding: EdgeInsets.all(sixteenPx),

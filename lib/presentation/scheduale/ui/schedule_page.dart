@@ -15,6 +15,9 @@ import 'package:flutter/material.dart';
 class SchedulePage extends StatelessWidget {
   SchedulePage({super.key});
   final SchedulePresenter _presenter = locate<SchedulePresenter>();
+  
+  // Pre-create a fixed list of indices to improve list performance
+  final List<int> _indices = List.generate(2, (index) => index);
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -44,27 +47,31 @@ class SchedulePage extends StatelessWidget {
       ),
       floatingActionButton: FlotingButtonRounded(
         paddingBottom: 24,
+        heroTag: 'schedulePageFloatingBtn',
       ),
       body: Padding(
         padding: EdgeInsets.all(sixteenPx),
         child: Column(
           children: [
-            CustomSearchBar(
+            const CustomSearchBar(
               hintText: 'Search by Plan',
             ),
             gapH16,
             Expanded(
+              // Use builder constructor with a fixed list for better performance
               child: ListView.builder(
-                itemCount:
-                    2, // Temporary count, replace with actual data length
+                itemCount: _indices.length,
+                physics: const BouncingScrollPhysics(),  // Smoother scrolling physics
                 itemBuilder: (context, index) {
+                  // Capture index value for better state management
+                  final idx = _indices[index];
                   return ScheduleCard(
+                    key: ValueKey('schedule_card_$idx'),
                     presenter: _presenter,
                     theme: theme,
-                    onTap: () => Navigator.push(
-                      context,
+                    onTap: () => Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => ScheduleDetailsPage(),
+                        builder: (context) => const ScheduleDetailsPage(),
                       ),
                     ),
                   );

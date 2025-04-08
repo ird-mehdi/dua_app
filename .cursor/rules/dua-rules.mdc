@@ -1,0 +1,260 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+- Always follow my [base_presenter.dart](mdc:lib/core/base/base_presenter.dart) andf [service_locator.dart](mdc:lib/core/di/service_locator.dart) 
+
+
+## 📂 Folder Structure
+
+The project is divided into three main layers:
+
+1. The `core` layer contains the essential and reusable components that drive the functionality of
+   the application, things like utility functions, constants, and dependency
+   injection (DI) components.
+2. The `data` layer handles the storage, retrieval, and manipulation of data within the application,
+   which contains all the data-related code for the project. This includes data
+   services (api services, database services, backend as a service), data sources (e.g. local data
+   sources, remote data sources), and mappers (for converting data from one format to another),
+   repositories (for interacting with data sources).
+3. The `domain` layer defines the core logic and rules of the application, which contains all the
+   business logic for the project, including entities (such as
+   data models) and repositories (interfaces for interacting with the data layer).
+4. The `presentation` layer is responsible for responsible for displaying and interacting with the
+   user interface of the application, which contains the code for the user interface, including the
+   views and presenters that handle user input and render the UI.
+5. The main.dart file is the entry point of the app where the AlHadithApp class and runApp function
+   defined.
+
+Each layer is isolated from the others and communicates through interfaces, which help to enforce
+the separation of concerns, making it easier to write testable, maintainable code. It also makes it
+easier to change or add new features or make changes to a single layer without affecting the others.
+
+## 🔥 Secrets behind Performance
+
+### ⚡ Higher FPS
+
+1. Breaking down widgets in smaller widgets.
+   - For example, if you have a complex form, you can create separate widgets for each form field (
+     e.g., TextFieldWidget, CheckboxWidget, etc.) and compose them together to build the complete
+     form.
+2. Using `const` keyword wherever possible
+   ```dart
+   Widget build(BuildContext context) {
+    return Container(
+         color: Colors.blue,
+         child: const Text('Hello, World!'),
+    );
+   }
+   ```
+3. Using keys for widgets
+   ```dart
+   HadithListItem(
+         key: ValueKey(hadith.id),
+         hadith: hadith,
+         ....
+       );
+   }
+   ```
+4. Doing all expensive operations in `isolate`
+   ```dart
+      Future<List<HadithEntity>> toHadithList({
+         List<String>? highlighted,
+           required List<BookEntity> books,
+         }) async {
+        final List<HadithEntity> hadithList = await runInIsolate(
+       _convertHadithDtoListToHadithList,
+        (this, highlighted ?? [], books),
+      );
+      return hadithList;
+     }
+   ```
+5. Calculating value in data layer, and not doing any type of calculation inside build method
+   - For instance, you can look into calculations of `HadithListItem`, how they are calculated for
+     horizontal and vertical lists in the data layer.
+6. Caching `InheritedWidget` values, like `Theme.of(context)`, and `MediaQuery.of(context).size`
+   ```dart
+      final ThemeData themeData = Theme.of(context);
+      final double fontSize = themeData.textTheme.bodyText1!.fontSize!;
+   ```
+
+### ⌛ Faster Load Time
+
+1. Using concurrent `Future` to load data from multiple sources
+2. Doing heavy operations in `isolate` (`runInIsolate` wrapper is used for this)
+   ```dart
+      Future<List<HadithEntity>> toHadithList({
+         List<String>? highlighted,
+           required List<BookEntity> books,
+         }) async {
+        final List<HadithEntity> hadithList = await runInIsolate(
+       _convertHadithDtoListToHadithList,
+        (this, highlighted ?? [], books),
+      );
+      return hadithList;
+     }
+   ```
+3. Indexing database tables for faster query (Look
+   into https://blog.mastermind.dev/indexes-in-postgresql)
+4. Using suitable data structure for faster data access (like `Map` instead of `List`, or `Set`)
+5. Multi-level caching (memory, disk, database, look
+   into https://stackoverflow.com/questions/6469437/what-is-the-difference-between-caching-and-memoization)
+
+## 📋 General Guideline
+
+1. This project
+   uses [Clean Architecture - Clean Coder Blog - Uncle Bob](mdc:https:/blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+   as project's main architecture. For `presentation` layer, it makes use
+   of [Model–view–controller](mdc:https:/en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller)
+   pattern. Please stick to this architecture.
+   1. Create separate layers for the presentation, domain, and data layers.
+   2. Use dependency injection to ensure that the layers are loosely coupled and can be easily
+      tested.
+   3. Use use cases to define and encapsulate the business logic of the application.
+   4. Keep the presentation layer as simple as possible by having it only handle the UI and user
+      interactions.
+   5. Use entities to define the data models of the application and use repositories to handle data
+      access.
+   6. Use streams and RxDart to handle data flow and state management in the presentation layer.
+   7. Use exception handling and error message handling to handle any errors that occur throughout
+      the application.
+   8. Use unit tests to test the functionality of each layer and ensure that the application is
+      working as expected.
+   9. Use code reviews and code quality tools to maintain a high standard of code quality
+      throughout the project.
+   10. Continuously refactor and improve the codebase to ensure that it remains maintainable and
+       scalable.
+2. All **page** file should end with a `_page` suffix, such as, `hadith_home_page`.
+3. For state management, the project uses `GetX`. Avoid using `Obx`, and always use `GetX`, and
+   there should be only one controller per screen. For instance, `HadithHomePage` has
+   a `HomePresenter`.
+4. For logging, avoid using `debugPrint` and try to use custom `logger` implementation this project
+   has.
+5. Never use `dynamic` or `Object` type, always try to stick to strict type system.
+6. For commit messages, please
+   follow [Semantic Commit Messages](mdc:https:/gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716)
+   convention.
+   1. Use a present tense imperative verb for the subject of the commit message. For example, "fix"
+      instead of "fixed" or "fixes"
+   2. Use clear and concise language in the subject line, usually no more than 50 characters
+   3. Include a body describing the changes in more detail, if necessary
+   4. Use the following prefixes in the subject line:
+      1. feat: new feature
+      2. fix: bug fix
+      3. docs: documentation changes
+      4. style: code style changes
+      5. refactor: code refactoring
+      6. test: adding or updating tests
+         1. chore: changes to build process, tooling or dependencies
+   5. Use the imperative mode in the subject line. For example, "move" instead of "moved" or "
+      moves"
+   6. Avoid using "and" in the subject line Use the present tense in the subject line
+   7. Use specific and descriptive words in the subject line.
+   8. Use capital letters in the subject line.
+   9. Use a blank line between the subject and body lines, if the body is provided. For example, "
+      feat: Add new feature for user login" or "fix: resolve issue with error message on login
+      page"
+
+## 🎨 Design Choices (Why I have chosen these design patterns?)
+
+### 🏢 Clean Architecture
+
+1. **Separation of concerns**: Clean Architecture provides a clear separation of concerns between
+   different
+   parts of the app, making it easier to develop, test, and maintain the app over time. By dividing
+   the
+   app into different layers, developers can make changes to one part of the app without affecting
+   the
+   other parts, reducing the risk of introducing bugs or breaking existing functionality.
+
+2. **Testability**: Clean Architecture makes it easier to write automated tests for different parts
+   of
+   the
+   app, including the business logic and the user interface. This can help to ensure that the app
+   behaves correctly under different scenarios and edge cases, improving overall quality and
+   reliability.
+
+3. **Scalability**: Clean Architecture allows for easy scaling of the app as the project grows. By
+   separating the layers of the app, it is easier to add new features or make changes without
+   disrupting the existing codebase.
+
+4. **Flexibility**: Clean Architecture allows for flexibility in choosing the technologies and tools
+   used
+   in each layer of the app. This means that developers can use the best tool for the job in each
+   case,
+   rather than being limited by the choices made earlier in the development process.
+
+5. **Re-usability**: Clean Architecture encourages the use of modular code that can be reused across
+   different parts of the app or even across different apps. This can save time and effort when
+   developing new features or apps.
+
+6. **Maintainability**: By separating the concerns of different parts of the app, Clean Architecture
+   makes
+   it easier to maintain and update the app over time. Changes to one part of the app can be made
+   more
+   easily and with less risk of introducing bugs or breaking existing functionality.
+
+#### 🔌 Why Use Cases and Wrapper Functions over Plugins?
+
+**Use-Cases**: In Clean Architecture, the organization of code is designed to be immediately
+understandable and self-explanatory. This approach is sometimes called "Screaming Architecture," a
+term coined by Robert Martin, one of the pioneers of Clean Architecture. The goal is to create code
+that is easy to read, understand, maintain, and modify by following principles such as separation of
+concerns, modularity, and layering. This results in a more maintainable, testable, and scalable app.
+
+**Wrapper functions**: Using wrapper functions on external libraries and services can help to create
+a more modular and maintainable app. By providing an abstraction layer between the app and the
+external library or service, wrapper functions can make it easier to switch to a different library
+or service in the future without having to modify the app code. This can reduce the amount of
+refactoring needed when API changes occur or when switching to a different service. Additionally,
+using wrapper functions can align with the principles of Domain-Driven Design (DDD), which
+emphasizes the creation of an abstraction layer between the app’s domain logic and its
+infrastructure dependencies.
+
+## 💻 Technology Used
+
+### Drift
+
+For database management we used [Drift](mdc:https:/pub.dev/documentation/drift/latest), which is a
+blazingly fast reactive persistence library for Flutter and Dart, built on top of sqlite. Reasons
+for using Drift:
+
+1. Type-safe
+2. Reactive
+3. Fast, runs in a separate isolate
+4. Supports migrations
+5. Supports relations
+6. ORM (Object Relational Mapping)
+
+### Get
+
+For state and route management we used [Get](mdc:https:/pub.dev/documentation/get/latest), which
+combines high-performance state management, intelligent dependency injection, and route management
+quickly and practically. **Thinking about switching to BLoC, due lack of maintainability, and
+anti-patterns in GetX.**
+
+### FPDart
+
+To introduce functional programming features in Dart we
+used [FPDart](mdc:https:/github.com/SandroMaglione/fpdart).
+
+FPDart provides functional programming utilities for Dart and Flutter, such as Option, Either, and
+Try for null safety, error handling, and data validation. IO, Task, and Validation make code
+composable, reusable, and testable, improving code quality and maintainability. FPDart also includes
+Tuple, map, and asMap, making code more readable and maintainable by following functional
+programming principles.
+
+### Equatable
+
+For equality comparison, we used [Equatable](mdc:https:/github.com/felangel/equatable)
+for equality comparison, overriding == and hashCode for you. Helps to minimize the amount of code,
+widget rebuilds, and memory allocations.
+
+### get_it
+
+For dependency injection, we used [get_it](mdc:https:/pub.dev/packages/get_it), a simple and
+easy-to-use DI library for Flutter that improves maintainability and testability. Separates concerns
+in the app, allowing easy swapping of objects and decoupling dependencies between classes.
+easy swapping of objects and decoupling dependencies between classes.

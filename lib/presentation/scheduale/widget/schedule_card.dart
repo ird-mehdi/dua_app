@@ -39,64 +39,63 @@ class ScheduleCard extends StatelessWidget {
             width: 1,
           ),
         ),
-        child: Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    width: thirtyFourPx,
-                    height: thirtyFourPx,
-                    padding: padding5,
-                    decoration: BoxDecoration(
-                      color: context.color.iconShadeColor,
-                      borderRadius: radius30,
-                    ),
-                    child: SvgImage(
-                      assetName: AppImages.icDate,
-                      color: context.color.primaryColor100,
-                      width: twentyPx,
-                      height: twentyPx,
-                    ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: thirtyFourPx,
+                  height: thirtyFourPx,
+                  padding: padding5,
+                  decoration: BoxDecoration(
+                    color: context.color.iconShadeColor,
+                    borderRadius: radius30,
                   ),
-                  gapW12,
-                  Text(
-                    scheduleName,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontSize: fifteenPx,
-                      fontWeight: FontWeight.w500,
-                      color: context.color.titleColor,
-                    ),
+                  child: SvgImage(
+                    assetName: AppImages.icDate,
+                    color: context.color.primaryColor100,
+                    width: twentyPx,
+                    height: twentyPx,
+
                   ),
-                  Spacer(),
-                  SvgImage(
-                    assetName: AppImages.icMore,
-                    onTap: () => EditScheduleBottomSheet.show(
-                      context: context,
-                      presenter: presenter,
-                    ),
-                  ),
-                ],
-              ),
-              gapH16,
-              Text(
-                'Total Dua: $totalDua',
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  fontSize: elevenPx,
-                  color: context.color.subtitleColor,
                 ),
-              ),
-              gapH8,
-              Text(
-                'Schedule time: $scheduleTime',
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  fontSize: elevenPx,
-                  color: context.color.subtitleColor,
+                gapW12,
+                Text(
+                  scheduleName,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontSize: fifteenPx,
+                    fontWeight: FontWeight.w500,
+                    color: context.color.titleColor,
+                  ),
                 ),
+                Spacer(),
+                SvgImage(
+                  assetName: AppImages.icMore,
+                  onTap: () => EditScheduleBottomSheet.show(
+                    context: context,
+                    presenter: presenter,
+                  ),
+                ),
+              ],
+            ),
+            gapH16,
+            Text(
+              'Total Dua: $totalDua',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontSize: elevenPx,
+                color: context.color.subtitleColor,
               ),
-            ],
-          ),
+            ),
+            gapH8,
+            Text(
+              'Schedule time: $scheduleTime',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontSize: elevenPx,
+                color: context.color.subtitleColor,
+              ),
+            ),
+          ],
         ),
       ),
     );
