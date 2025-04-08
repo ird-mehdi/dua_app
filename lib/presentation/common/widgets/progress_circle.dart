@@ -1,6 +1,6 @@
 import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/utility/utility.dart';
-import 'package:dua/presentation/prayer_time/widgets/circular_seek_bar.dart';
+import 'package:dua/presentation/memorization/widget/circular_seek_bar.dart';
 import 'package:flutter/material.dart';
 
 class ProgressCircle extends StatelessWidget {

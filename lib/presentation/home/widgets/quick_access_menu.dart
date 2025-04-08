@@ -5,8 +5,8 @@ import 'package:dua/core/config/dua_color.dart';
 import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/static/ui_const.dart';
 import 'package:dua/core/utility/utility.dart';
-import 'package:dua/presentation/prayer_time/ui/prayer_time_page.dart';
-import 'package:dua/presentation/ruqyah_video/ui/video_play_list_page.dart';
+import 'package:dua/presentation/coming_soon.dart';
+import 'package:dua/presentation/dhikr/ui/dhikr_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -106,48 +106,48 @@ final List<QuickAccessItem> quickAccessItems = [
     icon: AppImages.icTimer,
     label: 'Last Read',
     color: DuaColor.quickAccessColorLight1,
-    widget: PrayerTimePage(),
+    widget: DhikrPage(),
   ),
   QuickAccessItem(
     icon: AppImages.icCup,
     label: 'Challanges',
     color: DuaColor.quickAccessColorLight2,
-    widget: PrayerTimePage(),
+    widget: ComingSoon(),
   ),
   QuickAccessItem(
     icon: AppImages.icBolt,
     label: 'Self Ruqyah',
     color: DuaColor.quickAccessColorLight3,
-    widget: PrayerTimePage(),
+    widget: ComingSoon(),
   ),
   QuickAccessItem(
     icon: AppImages.icBook,
     label: "Dua's Books",
     color: DuaColor.quickAccessColorLight4,
-    widget: PrayerTimePage(),
+    widget: ComingSoon(),
   ),
   QuickAccessItem(
     icon: AppImages.icPerson,
     label: 'Dhikr',
     color: DuaColor.quickAccessColorLight5,
-    widget: PrayerTimePage(),
+    widget: ComingSoon(),
   ),
   QuickAccessItem(
     icon: AppImages.icMosque,
     label: 'Prayer Time',
     color: DuaColor.quickAccessColorLight6,
-    widget: PrayerTimePage(),
+    widget: ComingSoon(),
   ),
   QuickAccessItem(
     icon: AppImages.icApps,
     label: 'Other Apps',
     color: DuaColor.quickAccessColorLight7,
-    widget: VideoPlayListPage(),
+    widget: ComingSoon(),
   ),
   QuickAccessItem(
     icon: AppImages.icLovely,
     label: 'Support Us',
     color: DuaColor.quickAccessColorLight8,
-    widget: PrayerTimePage(),
+    widget: ComingSoon(),
   ),
 ];

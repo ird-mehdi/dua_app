@@ -4,7 +4,7 @@ import 'package:dua/core/static/ui_const.dart';
 import 'package:dua/core/utility/utility.dart';
 import 'package:dua/presentation/common/widgets/svg_image.dart';
 import 'package:dua/presentation/memorization/widget/memorize_model.dart';
-import 'package:dua/presentation/prayer_time/widgets/circular_seek_bar.dart';
+import 'package:dua/presentation/memorization/widget/circular_seek_bar.dart';
 import 'package:flutter/material.dart';
 
 class MemorizationPlanCard extends StatelessWidget {
