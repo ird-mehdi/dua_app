@@ -1,5 +1,7 @@
 import 'package:dua/core/base/base_presenter.dart';
 import 'package:dua/core/base/base_ui_state.dart';
+import 'package:dua/presentation/bookmark/ui/edit_bookmark_bottom_sheet.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class BookmarkUiState extends BaseUiState {
@@ -62,5 +64,18 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
     );
     await toggleLoading(loading: false);
     update();
+  }
+
+  Future<void> showEditBookmarkBottomSheet(BuildContext context,
+      {String? folderName, Color? folderColor}) async {
+    await EditBookmarkBottomSheet.show(
+      context: context,
+      folderName: folderName ?? 'Example Folder Name',
+      folderColor: folderColor ?? Colors.blue,
+      onSave: (String name, Color color) {
+        // TODO: Implement save bookmark folder logic
+        update();
+      },
+    );
   }
 }
