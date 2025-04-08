@@ -1,24 +1,22 @@
-import 'package:dua/core/base/base_presenter.dart';
 import 'package:dua/core/config/app_images.dart';
 import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/di/service_locator.dart';
-import 'package:dua/core/static/svg_path.dart';
-import 'package:dua/core/utility/utility.dart';
 import 'package:dua/presentation/all_dua/presenter/all_dua_presenter.dart';
-import 'package:dua/presentation/all_dua/widgets/dua_sorting_bottom_sheet.dart';
+import 'package:dua/presentation/all_dua/widgets/dua_list_item.dart';
 import 'package:dua/presentation/common/widgets/custom_app_bar.dart';
-import 'package:dua/presentation/common/widgets/svg_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../common/widgets/custom_search_bar.dart';
 
 class AllDuaPage extends StatelessWidget {
-  final AllDuasPresenter presenter = loadPresenter(AllDuasPresenter(locate()));
-  AllDuaPage({super.key});
+  const AllDuaPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    locate<AllDuaPresenter>();
+
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.all(eightPx),
@@ -33,51 +31,17 @@ class AllDuaPage extends StatelessWidget {
             CustomSearchBar(
               hintText: 'Search by dua\'s name',
             ),
-            Padding(
-              padding: EdgeInsets.only(left: eightPx),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Select Sorting Type',
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      fontSize: twelvePx,
-                      color: context.color.titleColor,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (context) {
-                          return SizedBox(
-                            height: 200,
-                            child: DuaSortingBottomSheet(),
-                          );
-                        },
-                      );
-                    },
-                    icon: SvgImage(
-                      assetName: SvgPath.icSort,
-                      width: fourteenPx,
-                      height: fourteenPx,
-                    ),
-                  ),
-                ],
+            Expanded(
+              child: GetBuilder<AllDuaPresenter>(
+                builder: (controller) {
+                  return DuaListItem(
+                    number: 1,
+                    text: controller.duaItems.value['A']?[0] ?? '',
+                    theme: theme,
+                  );
+                },
               ),
             ),
-            // gapH10,
-            // Expanded(
-            //   child: ListView.builder(
-            //     padding: const EdgeInsets.symmetric(horizontal: 16),
-
-            //     itemCount: 20, // Replace with actual data length
-            //     itemBuilder: (BuildContext context, int index) {
-            //       return DuaListTile();
-            //     },
-            //   ),
-            // ),
           ],
         ),
       ),
