@@ -1,10 +1,14 @@
+import 'package:dua/core/di/service_locator.dart';
+import 'package:dua/presentation/all_dua/presenter/all_dua_presenter.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class DuaListItem extends StatelessWidget {
   final int number;
   final String text;
   final bool isHighlighted;
   final VoidCallback? onTap;
+  final ThemeData theme;
 
   const DuaListItem({
     required this.number,
@@ -12,112 +16,95 @@ class DuaListItem extends StatelessWidget {
     this.isHighlighted = false,
     this.onTap,
     super.key,
+    required this.theme,
   });
 
   @override
   Widget build(BuildContext context) {
+    final AllDuaPresenter presenter = locate<AllDuaPresenter>();
+
     return Row(
       children: [
         // Dua List
         Expanded(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Sticky Header
-                Container(
-                  color: Color(0xFFF9FAFB),
-                  padding: EdgeInsets.symmetric(vertical: 8),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 32,
-                        height: 32,
-                        decoration: BoxDecoration(
-                          color: Color(0xFFD1FAE5),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Center(
-                          child: Text(
-                            "A",
-                            style: TextStyle(
-                              color: Color(0xFF10B981),
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14,
+          child: ListView.builder(
+            padding: EdgeInsets.zero,
+            controller: presenter.scrollController,
+            itemCount: presenter.alphabetLetters.length,
+            itemBuilder: (context, index) {
+              final character = presenter.alphabetLetters[index];
+              final items = presenter.duaItems.value[character] ?? [];
+
+              if (items.isEmpty) {
+                return const SizedBox.shrink();
+              }
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Sticky Header for each character
+                  Container(
+                    color: const Color(0xFFF9FAFB),
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 32,
+                          height: 32,
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.primaryContainer
+                                .withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Center(
+                            child: Text(
+                              character,
+                              style: TextStyle(
+                                color: theme.colorScheme.primary,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      SizedBox(width: 12),
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Color(0xFF1F2937),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Text(
-                          "Tap for jump",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // Dua Items with Left Border
-                Container(
-                  margin: EdgeInsets.only(left: 16),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      left: BorderSide(
-                        color: Colors.grey.shade300,
-                        width: 2,
-                        style: BorderStyle.solid,
-                      ),
+                      ],
                     ),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildDuaItem(
-                          "A dhikr which is light on tongue, Heavy on the balance"),
-                      _buildDuaItem(
-                          "A dhikr which is light on tongue, Heavy on the balance",
-                          highlighted: true),
-                      _buildDuaItem(
-                          "A dhikr which is light on tongue, Heavy on the balance"),
-                      _buildDuaItem("A very beautiful Dua or Dhikr"),
-                      _buildDuaItem("About Lailatul Qadr"),
-                      _buildDuaItem("About meeting #1"),
-                      _buildDuaItem("About meeting #2"),
-                      _buildDuaItem(
-                          "After awaking at night, reciting some specific duas"),
-                      _buildDuaItem("After leaving the toilet"),
-                      _buildDuaItem("After leaving the toilet"),
-                    ],
+
+                  // Dua Items with Left Border for each character
+                  Container(
+                    margin: const EdgeInsets.only(left: 16),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        left: BorderSide(
+                          color: Colors.grey.shade300,
+                          width: 2,
+                          style: BorderStyle.solid,
+                        ),
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: items.map((item) {
+                        final isSelected =
+                            character == presenter.selectedCharacter.value;
+                        return _buildDuaItem(item, highlighted: isSelected);
+                      }).toList(),
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              );
+            },
           ),
         ),
 
         // Alphabet Index
         Container(
           width: 24,
-          padding: EdgeInsets.only(top: 8),
-          child: Column(
-            children: [
-              ..._buildAlphabetIndex(),
-            ],
-          ),
+          padding: const EdgeInsets.only(top: 10),
+          child: Obx(() => Column(
+                children: _buildAlphabetIndex(presenter),
+              )),
         ),
       ],
     );
@@ -125,8 +112,8 @@ class DuaListItem extends StatelessWidget {
 
   Widget _buildDuaItem(String text, {bool highlighted = false}) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 12),
-      margin: EdgeInsets.only(left: 24),
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      margin: const EdgeInsets.only(left: 24),
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
@@ -139,17 +126,19 @@ class DuaListItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            margin: EdgeInsets.only(top: 10),
+            margin: const EdgeInsets.only(top: 10),
             width: 23,
             height: 1,
             color: Colors.grey.shade300,
           ),
-          SizedBox(width: 2),
+          const SizedBox(width: 2),
           Expanded(
             child: Text(
               text,
               style: TextStyle(
-                color: highlighted ? Color(0xFF10B981) : Color(0xFF1F2937),
+                color: highlighted
+                    ? theme.colorScheme.primary
+                    : const Color(0xFF1F2937),
                 fontWeight: highlighted ? FontWeight.w500 : FontWeight.normal,
               ),
             ),
@@ -159,48 +148,23 @@ class DuaListItem extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildAlphabetIndex() {
-    List<String> alphabet = [
-      "#",
-      "A",
-      "B",
-      "C",
-      "D",
-      "E",
-      "F",
-      "G",
-      "H",
-      "I",
-      "J",
-      "K",
-      "L",
-      "M",
-      "N",
-      "O",
-      "P",
-      "Q",
-      "R",
-      "S",
-      "T",
-      "U",
-      "V",
-      "W",
-      "X",
-      "Y",
-      "Z"
-    ];
+  List<Widget> _buildAlphabetIndex(AllDuaPresenter presenter) {
+    return presenter.alphabetLetters.map((letter) {
+      final isActive = letter == presenter.selectedCharacter.value;
 
-    return alphabet.map((letter) {
-      bool isActive = letter == "A";
-
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 1),
-        child: Text(
-          letter,
-          style: TextStyle(
-            fontSize: 12,
-            color: isActive ? Color(0xFF10B981) : Colors.grey,
-            fontWeight: FontWeight.w500,
+      return GestureDetector(
+        onTap: () {
+          presenter.selectCharacter(letter);
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 1),
+          child: Text(
+            letter,
+            style: TextStyle(
+              fontSize: 12,
+              color: isActive ? const Color(0xFF10B981) : Colors.grey,
+              fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
+            ),
           ),
         ),
       );

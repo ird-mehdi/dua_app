@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dua/core/base/base_presenter.dart';
 import 'package:dua/data/error_message_handler_impl.dart';
 import 'package:dua/domain/service/error_message_handler.dart';
+import 'package:dua/presentation/all_dua/presenter/all_dua_presenter.dart';
 import 'package:dua/presentation/home/presenter/home_presenter.dart';
 import 'package:dua/presentation/scheduale/presenter/schedule_presenter.dart';
 import 'package:dua/presentation/subcategory/presenter/sub_category_presenter.dart';
@@ -88,8 +89,9 @@ class ServiceLocator {
         .registerLazySingleton(() => loadPresenter(SubCategoryPresenter()));
     _serviceLocator
         .registerLazySingleton(() => loadPresenter(SchedulePresenter()));
+    _serviceLocator
+        .registerLazySingleton(() => loadPresenter(AllDuaPresenter()));
   }
-
 
   Future<void> _setUpUseCase() async {
     // _serviceLocator
