@@ -84,8 +84,6 @@ class ServiceLocator {
 
   Future<void> _setUpPresenters() async {
     _serviceLocator.registerLazySingleton(() => loadPresenter(HomePresenter()));
-  
-    
     _serviceLocator
         .registerLazySingleton(() => loadPresenter(SubCategoryPresenter()));
     _serviceLocator

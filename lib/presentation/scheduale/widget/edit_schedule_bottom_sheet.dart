@@ -16,13 +16,19 @@ class EditScheduleBottomSheet extends StatelessWidget {
     required SchedulePresenter presenter,
   }) async {
     if (!context.mounted) return;
-
-    EditScheduleBottomSheet customBottomSheet =
-        EditScheduleBottomSheet(presenter: presenter);
-    await context.showBottomSheet(
-      customBottomSheet,
-      context,
-    );
+    
+    // Use microtask to avoid blocking the UI thread
+    // This will schedule the bottom sheet to show after the current frame is rendered
+    Future.microtask(() {
+      final EditScheduleBottomSheet customBottomSheet =
+          EditScheduleBottomSheet(presenter: presenter);
+      if (context.mounted) {
+        context.showBottomSheet(
+          customBottomSheet,
+          context,
+        );
+      }
+    });
   }
 
   @override

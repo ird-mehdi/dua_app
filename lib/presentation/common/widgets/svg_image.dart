@@ -13,6 +13,9 @@ class SvgImage extends StatelessWidget {
     this.color,
     this.onTap,
   });
+  
+  // Use a static cache map to avoid repeated asset loading
+  static final Map<String, SvgPicture> _cache = <String, SvgPicture>{};
 
   final String assetName;
   final double? width;
@@ -23,16 +26,22 @@ class SvgImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Create a unique key for this specific SVG with its properties
+    final String cacheKey = '$assetName-${width ?? 'default'}-${height ?? 'default'}-${color?.toARGB32() ?? 'nocolor'}';
+    
+    // Try to get from cache first
+    final svgWidget = _cache.putIfAbsent(cacheKey, () => SvgPicture.asset(
+      assetName,
+      fit: fit,
+      height: height ?? twentyFourPx,
+      width: width ?? twentyFourPx,
+      colorFilter: color == null ? null : buildColorFilterToChangeColor(color),
+      // SVG caching is handled automatically by the flutter_svg package
+    ));
+    
     return GestureDetector(
       onTap: onTap,
-      child: SvgPicture.asset(
-        assetName,
-        fit: fit,
-        height: height ?? twentyFourPx,
-        width: width ?? twentyFourPx,
-        colorFilter: color == null ? null : buildColorFilterToChangeColor(color),
-
-      ),
+      child: svgWidget,
     );
   }
 }

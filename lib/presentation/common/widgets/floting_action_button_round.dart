@@ -12,6 +12,7 @@ class FlotingButtonRounded extends StatelessWidget {
   final double? paddingRight;
   final double? width;
   final double? height;
+  final Object? heroTag;
   const FlotingButtonRounded({
     super.key,
     this.icon,
@@ -21,6 +22,7 @@ class FlotingButtonRounded extends StatelessWidget {
     this.paddingRight,
     this.width,
     this.height,
+    this.heroTag,
   });
 
   @override
@@ -37,6 +39,7 @@ class FlotingButtonRounded extends StatelessWidget {
         height: height ?? eightyPx,
         child: FloatingActionButton(
           onPressed: () {},
+          heroTag: heroTag ?? 'floatingBtn${DateTime.now().millisecondsSinceEpoch}',
           backgroundColor: context.color.primaryColor100,
           elevation: 0,
           shape: RoundedRectangleBorder(
