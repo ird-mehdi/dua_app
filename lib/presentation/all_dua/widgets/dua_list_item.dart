@@ -21,7 +21,7 @@ class DuaListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AllDuaPresenter presenter = locate<AllDuaPresenter>();
+    final AllDuasPresenter presenter = locate<AllDuasPresenter>();
 
     return Row(
       children: [
@@ -29,13 +29,17 @@ class DuaListItem extends StatelessWidget {
         Expanded(
           child: ListView.builder(
             padding: EdgeInsets.zero,
-            controller: presenter.scrollController,
-            itemCount: presenter.alphabetLetters.length,
+            controller: presenter.uiState.value.scrollController,
+            itemCount: presenter.uiState.value.alphabetLetters?.length ?? 0,
             itemBuilder: (context, index) {
-              final character = presenter.alphabetLetters[index];
-              final items = presenter.duaItems.value[character] ?? [];
+              final character = presenter.uiState.value.alphabetLetters?[index] ?? '';
+              final items = presenter.uiState.value.duas ?? [];
+              
+              final filteredItems = items.where((dua) => 
+                dua.name.isNotEmpty && dua.name[0].toUpperCase() == character
+              ).toList();
 
-              if (items.isEmpty) {
+              if (filteredItems.isEmpty) {
                 return const SizedBox.shrink();
               }
 
@@ -85,10 +89,10 @@ class DuaListItem extends StatelessWidget {
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: items.map((item) {
+                      children: filteredItems.map((item) {
                         final isSelected =
-                            character == presenter.selectedCharacter.value;
-                        return _buildDuaItem(item, highlighted: isSelected);
+                            character == presenter.uiState.value.selectedCharacter;
+                        return _buildDuaItem(item.name, highlighted: isSelected);
                       }).toList(),
                     ),
                   ),
@@ -148,9 +152,12 @@ class DuaListItem extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildAlphabetIndex(AllDuaPresenter presenter) {
-    return presenter.alphabetLetters.map((letter) {
-      final isActive = letter == presenter.selectedCharacter.value;
+  List<Widget> _buildAlphabetIndex(AllDuasPresenter presenter) {
+    final alphabetLetters = presenter.uiState.value.alphabetLetters ?? [];
+    final selectedCharacter = presenter.uiState.value.selectedCharacter ?? '';
+    
+    return alphabetLetters.map((letter) {
+      final isActive = letter == selectedCharacter;
 
       return GestureDetector(
         onTap: () {

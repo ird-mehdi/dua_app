@@ -2,6 +2,7 @@ import 'package:dua/core/base/base_presenter.dart';
 import 'package:dua/domain/entities/dua_entity.dart';
 import 'package:dua/domain/use_cases/dua/get_all_dua.dart';
 import 'package:dua/presentation/all_dua/presenter/all_dua_ui_state.dart';
+import 'package:flutter/material.dart';
 
 class AllDuasPresenter extends BasePresenter<AllDuasUiState> {
   final GetAllDuaUseCase getAllDuas;
@@ -65,6 +66,31 @@ class AllDuasPresenter extends BasePresenter<AllDuasUiState> {
     uiState.value = currentUiState.copyWith(
       isLoading: false,
       duas: filteredDuas,
+    );
+  }
+
+  
+
+  void selectCharacter(String character) {
+    uiState.value = currentUiState.copyWith(selectedCharacter: character);
+    // Scroll to the selected character's section
+    scrollToCharacter(character);
+  }
+
+  void scrollToCharacter(String character) {
+    // Calculate and find position to scroll
+    double position = 0;
+
+    // Simply calculate a rough position based on the character index
+    final int characterIndex = currentUiState.alphabetLetters?.indexOf(character) ?? 0;
+    // Rough estimation of position - we can refine this as needed
+    position = characterIndex * 100; // Estimated height per section
+
+    // Scroll to calculated position
+    currentUiState.scrollController?.animateTo(
+      position,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
     );
   }
 
