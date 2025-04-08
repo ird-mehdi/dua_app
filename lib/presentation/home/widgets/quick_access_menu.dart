@@ -6,7 +6,6 @@ import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/static/ui_const.dart';
 import 'package:dua/core/utility/utility.dart';
 import 'package:dua/presentation/coming_soon.dart';
-import 'package:dua/presentation/dhikr/ui/dhikr_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -106,7 +105,7 @@ final List<QuickAccessItem> quickAccessItems = [
     icon: AppImages.icTimer,
     label: 'Last Read',
     color: DuaColor.quickAccessColorLight1,
-    widget: DhikrPage(),
+    widget: ComingSoon(),
   ),
   QuickAccessItem(
     icon: AppImages.icCup,

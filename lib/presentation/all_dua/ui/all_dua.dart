@@ -2,6 +2,7 @@ import 'package:dua/core/config/app_images.dart';
 import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/static/svg_path.dart';
 import 'package:dua/core/utility/utility.dart';
+import 'package:dua/presentation/all_dua/widgets/dua_list_item.dart';
 import 'package:dua/presentation/all_dua/widgets/dua_sorting_bottom_sheet.dart';
 import 'package:dua/presentation/common/widgets/custom_app_bar.dart';
 import 'package:dua/presentation/common/widgets/svg_image.dart';
@@ -59,26 +60,26 @@ class AllDuaPage extends StatelessWidget {
                       width: fourteenPx,
                       height: fourteenPx,
                     ),
-
                   ),
                 ],
               ),
             ),
             // gapH10,
-            // Expanded(
-            //   child: ListView.builder(
-            //     padding: const EdgeInsets.symmetric(horizontal: 16),
-
-            //     itemCount: 20, // Replace with actual data length
-            //     itemBuilder: (BuildContext context, int index) {
-            //       return DuaListTile();
-            //     },
-            //   ),
-            // ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: 1, // Replace with actual data length
+                itemBuilder: (BuildContext context, int index) {
+                  return DuaListItem(
+                    number: 1,
+                    text:
+                        'A dhikr which is light on tongue, Heavyon the balance',
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 }
-
