@@ -6,9 +6,13 @@ class SectionCard extends StatelessWidget {
   const SectionCard({
     super.key,
     required this.theme,
+    required this.title,
+    required this.subtitle,
   });
 
   final ThemeData theme;
+  final String title;
+  final String subtitle;  
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +31,7 @@ class SectionCard extends StatelessWidget {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: 'Section: ',
+                      text: title,
                       style: theme.textTheme.bodyMedium?.copyWith(
                         fontWeight: FontWeight.w700,
                         color: context.color.primaryColor100,
@@ -35,7 +39,7 @@ class SectionCard extends StatelessWidget {
                       ),
                     ),
                     TextSpan(
-                      text: 'Morning & Evening Adhkar',
+                      text: subtitle,
                       style: theme.textTheme.bodyMedium?.copyWith(
                         fontSize: fifteenPx,
                         color: context.color.headingTextColor,

@@ -5,8 +5,7 @@ import 'package:dua/core/static/ui_const.dart';
 import 'package:dua/core/utility/utility.dart';
 import 'package:dua/presentation/common/widgets/custom_app_bar.dart';
 import 'package:dua/presentation/common/widgets/svg_image.dart';
-import 'package:dua/presentation/dua_vertial_move/widget/model.dart';
-import 'package:dua/presentation/plan_details/widget/single_plan_card.dart';
+import 'package:dua/presentation/plan_details/widget/dua_details_card.dart';
 import 'package:flutter/material.dart';
 
 class PlanDetailsPage extends StatelessWidget {
@@ -62,14 +61,11 @@ class PlanDetailsPage extends StatelessWidget {
                   ),
                 )
               : ListView.builder(
-                  itemCount: planDetailsDuaCardModelList.length,
+                  itemCount: 2,
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return SinglePlanCard(
-                      theme: theme,
-                      duaCardModel: planDetailsDuaCardModelList[index],
-                    );
+                    return DuaDetailsCard();
                   },
                 ),
         ));

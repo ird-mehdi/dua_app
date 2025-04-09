@@ -23,7 +23,11 @@ class SingleDuaCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SectionCard(theme: theme),
+        SectionCard(
+          theme: theme,
+          title: 'Section: ',
+          subtitle: 'Morning & Evening Adhkar',
+        ),
         gapH16,
         DuaNumberWidget(
           theme: theme,
