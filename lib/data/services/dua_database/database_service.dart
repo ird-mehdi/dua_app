@@ -32,7 +32,6 @@ class DuaDatabase extends _$DuaDatabase {
         verifyDatabase(),
         _initDatabase()
       ], eagerError: true);
-      
       // If both succeeded, mark as initialized
       if (results[0] == true && results[1] == true) {
         _isInitialized = true;
