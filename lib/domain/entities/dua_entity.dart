@@ -137,4 +137,44 @@ class DuaEntity extends Equatable {
     }
     return parsedGroups[index];
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'languageId': languageId,
+      'groups': groups,
+      'name': name,
+      'context': context,
+      'source': source,
+      'indopak': indopak,
+      'clean': clean,
+      'transliteration': transliteration,
+      'translation': translation,
+      'note': note,
+      'reference': reference,
+      'audio': audio,
+      'categoryId': categoryId,
+      'subcategoryId': subcategoryId,
+    };
+  }
+
+  factory DuaEntity.fromJson(Map<String, dynamic> json) {
+    return DuaEntity(
+      id: json['id'] as int,
+      languageId: json['languageId'] as String,
+      groups: json['groups'] as String,
+      name: json['name'] as String,
+      context: json['context'] as String,
+      source: json['source'] as String,
+      indopak: json['indopak'] as String,
+      clean: json['clean'] as String,
+      transliteration: json['transliteration'] as String,
+      translation: json['translation'] as String,
+      note: json['note'] as String,
+      reference: json['reference'] as String,
+      audio: json['audio'] as int,
+      categoryId: json['categoryId'] as int,
+      subcategoryId: json['subcategoryId'] as int,
+    );
+  }
 }

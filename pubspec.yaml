@@ -30,6 +30,7 @@ dependencies:
   share_plus: ^10.1.2
   logger: ^2.5.0
   drift_flutter: ^0.2.4
+  shared_preferences: ^2.2.2
 
 
 dev_dependencies:

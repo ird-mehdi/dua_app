@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:dua/core/base/base_presenter.dart';
+import 'package:dua/core/services/dua_cache_service.dart';
 import 'package:dua/data/datasource/local_data_source.dart';
 import 'package:dua/data/repositories/dua_repository_impl.dart';
 import 'package:dua/data/services/dua_database/database_service.dart';
@@ -14,6 +15,7 @@ import 'package:dua/presentation/home/presenter/home_presenter.dart';
 import 'package:dua/presentation/scheduale/presenter/schedule_presenter.dart';
 import 'package:dua/presentation/subcategory/presenter/sub_category_presenter.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final GetIt _serviceLocator = GetIt.instance;
 
@@ -46,6 +48,14 @@ class ServiceLocator {
         ErrorMessageHandlerImpl.new);
     _serviceLocator.registerLazySingleton<DuaDatabase>(
         DuaDatabase.new);
+    
+    // Register SharedPreferences
+    final sharedPreferences = await SharedPreferences.getInstance();
+    _serviceLocator.registerLazySingleton(() => sharedPreferences);
+    
+    // Register DuaCacheService
+    _serviceLocator.registerLazySingleton<DuaCacheService>(
+        () => DuaCacheService(locate()));
   }
 
   Future<void> _setUpDataSources() async {
@@ -62,7 +72,7 @@ class ServiceLocator {
     _serviceLocator
         .registerLazySingleton(() => loadPresenter(SchedulePresenter()));
     _serviceLocator
-        .registerLazySingleton(() => loadPresenter(AllDuasPresenter(locate())));
+        .registerLazySingleton(() => loadPresenter(AllDuasPresenter(locate(), locate())));
     _serviceLocator
         .registerLazySingleton(() => loadPresenter(BookmarkPresenter()));
   }

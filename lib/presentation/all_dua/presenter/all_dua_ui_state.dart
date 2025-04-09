@@ -28,36 +28,13 @@ class AllDuasUiState extends BaseUiState {
       duas: const [],
       selectedLanguage: 'en', // Default to English
       searchQuery: '',
-      selectedCharacter: 'A',
+      selectedCharacter: null,
       scrollController: ScrollController(),
+      // Keep full alphabet but it will be filtered based on available letters
       alphabetLetters: [
-        '#',
-        'A',
-        'B',
-        'C',
-        'D',
-        'E',
-        'F',
-        'G',
-        'H',
-        'I',
-        'J',
-        'K',
-        'L',
-        'M',
-        'N',
-        'O',
-        'P',
-        'Q',
-        'R',
-        'S',
-        'T',
-        'U',
-        'V',
-        'W',
-        'X',
-        'Y',
-        'Z'
+        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
+        'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
+        'U', 'V', 'W', 'X', 'Y', 'Z'
       ],
     );
   }

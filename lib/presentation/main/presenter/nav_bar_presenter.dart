@@ -1,6 +1,6 @@
 import 'package:dua/core/base/base_presenter.dart';
 import 'package:dua/core/utility/utility.dart';
-import 'package:dua/presentation/all_dua/ui/all_dua.dart';
+import 'package:dua/presentation/all_dua/ui/all_dua_page.dart';
 import 'package:dua/presentation/bookmark/ui/bookmark_screen.dart';
 import 'package:dua/presentation/home/ui/home_page.dart';
 import 'package:dua/presentation/main/presenter/nav_bar_ui_state.dart';
