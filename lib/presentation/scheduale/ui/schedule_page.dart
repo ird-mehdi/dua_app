@@ -15,7 +15,7 @@ import 'package:flutter/material.dart';
 class SchedulePage extends StatelessWidget {
   SchedulePage({super.key});
   final SchedulePresenter _presenter = locate<SchedulePresenter>();
-  
+
   // Pre-create a fixed list of indices to improve list performance
   final List<int> _indices = List.generate(2, (index) => index);
   @override
@@ -61,7 +61,8 @@ class SchedulePage extends StatelessWidget {
               // Use builder constructor with a fixed list for better performance
               child: ListView.builder(
                 itemCount: _indices.length,
-                physics: const BouncingScrollPhysics(),  // Smoother scrolling physics
+                physics:
+                    const BouncingScrollPhysics(), // Smoother scrolling physics
                 itemBuilder: (context, index) {
                   // Capture index value for better state management
                   final idx = _indices[index];
