@@ -12,6 +12,7 @@ import 'package:dua/presentation/all_dua/presenter/all_dua_presenter.dart';
 import 'package:dua/presentation/bookmark/presenter/bookmark_presenter.dart';
 import 'package:dua/presentation/home/presenter/home_presenter.dart';
 import 'package:dua/presentation/scheduale/presenter/schedule_presenter.dart';
+import 'package:dua/presentation/settings/presenter/settings_presenter.dart';
 import 'package:dua/presentation/subcategory/presenter/sub_category_presenter.dart';
 import 'package:get_it/get_it.dart';
 
@@ -44,8 +45,7 @@ class ServiceLocator {
   Future<void> _setUpServices() async {
     _serviceLocator.registerLazySingleton<ErrorMessageHandler>(
         ErrorMessageHandlerImpl.new);
-    _serviceLocator.registerLazySingleton<DuaDatabase>(
-        DuaDatabase.new);
+    _serviceLocator.registerLazySingleton<DuaDatabase>(DuaDatabase.new);
   }
 
   Future<void> _setUpDataSources() async {
@@ -65,12 +65,14 @@ class ServiceLocator {
         .registerLazySingleton(() => loadPresenter(AllDuasPresenter(locate())));
     _serviceLocator
         .registerLazySingleton(() => loadPresenter(BookmarkPresenter()));
+    _serviceLocator
+        .registerLazySingleton(() => loadPresenter(SettingsPresenter()));
   }
-
 
   Future<void> _setUpUseCase() async {
     // _serviceLocator
     //     .registerFactory(() => GetSettingsStateUseCase(locate(), locate()));
-    _serviceLocator.registerLazySingleton(() => GetAllDuaUseCase(duaRepository: locate()));
+    _serviceLocator
+        .registerLazySingleton(() => GetAllDuaUseCase(duaRepository: locate()));
   }
 }
