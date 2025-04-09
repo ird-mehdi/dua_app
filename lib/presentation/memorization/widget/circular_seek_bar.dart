@@ -153,90 +153,6 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
     }
   }
 
-  /// Get size of CircularSeekBar with RenderBox.
-  // Size _getSize(GlobalKey key) {
-  //   final RenderBox renderBox =
-  //       key.currentContext!.findRenderObject() as RenderBox;
-  //   Size size = renderBox.size;
-  //   return size;
-  // }
-
-  /// Converts the x and y coordinate values received by the onTapDown callback to progress.
-  // void _handleGesture(details) {
-  //   double dx = details.localPosition.dx;
-  //   double dy = details.localPosition.dy;
-  //   Size size = _getSize(_key);
-  //   double centerX = size.width / 2.0;
-  //   double centerY = size.height / 2.0;
-  //   double angle = _getTouchedDegrees(centerX, dx, centerY, dy);
-  //   double progress = (widget.dashWidth > 0 && widget.dashGap > 0)
-  //       ? _angleToDashedProgress(
-  //           angle > 0 ? angle : angle + 360,
-  //           widget.startAngle,
-  //           widget.sweepAngle,
-  //           widget.dashWidth,
-  //           widget.dashGap)
-  //       : _angleToProgress(angle > 0 ? angle : angle + 360, widget.startAngle,
-  //           widget.sweepAngle);
-  //   if (progress >= widget.minProgress && progress <= widget.maxProgress) {
-  //     setState(() {
-  //       _progress = progress;
-  //     });
-  //   }
-  // }
-
-  // /// Method to get relative angle of CircularSeekBar.
-  // double _getRelativeAngle(double angle, double startAngle) {
-  //   return (angle - startAngle) >= 0
-  //       ? (angle - startAngle)
-  //       : (360 - startAngle + angle);
-  // }
-
-  /// Convert (x, y) coordinates to an angle.
-  // double _getTouchedDegrees(
-  //     double centerX, double dx, double centerY, double dy) {
-  //   return _radiansToDegrees(atan2(centerX - dx, dy - centerY));
-  // }
-
-  /// Convert angle to progress.
-  // double _angleToProgress(double angle, double startAngle, double sweepAngle) {
-  //   double relativeAngle = _getRelativeAngle(angle, startAngle);
-  //   return (relativeAngle / sweepAngle) * 100;
-  // }
-
-  // /// Convert the angle of dashed seekbar to progress
-  // double _angleToDashedProgress(double angle, double startAngle,
-  //     double sweepAngle, double dashWidth, double dashGap) {
-  //   double relativeAngle = (angle - startAngle) >= 0
-  //       ? (angle - startAngle)
-  //       : (360 - startAngle + angle);
-  //   double dashSum = dashWidth + dashGap;
-
-  //   int trackDashCounts =
-  //       sweepAngle >= (sweepAngle ~/ dashSum) * dashSum + dashWidth
-  //           ? (sweepAngle ~/ dashSum) + 1
-  //           : (sweepAngle ~/ dashSum);
-  //   double totalTrackDashWidth = dashWidth * trackDashCounts;
-
-  //   for (int i = 0; i <= trackDashCounts; i++) {
-  //     double relativeDashStartAngle = dashSum * i;
-  //     double relativeDashEndAngle = (relativeDashStartAngle + dashWidth) % 360;
-
-  //     if (relativeAngle >= relativeDashStartAngle &&
-  //         relativeAngle <= relativeDashEndAngle) {
-  //       double totalFilledDashRatio =
-  //           (dashWidth * i) / totalTrackDashWidth.toDouble();
-  //       double totalHalfWidthDashRatio =
-  //           ((relativeAngle - dashSum * i) / dashWidth.toDouble()) /
-  //               trackDashCounts;
-
-  //       return _lerp(widget.minProgress, widget.maxProgress,
-  //           totalFilledDashRatio + totalHalfWidthDashRatio);
-  //     }
-  //   }
-  //   return -1;
-  // }
-
   @override
   Widget build(BuildContext context) {
     if (widget.animation) {
@@ -258,7 +174,12 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
             curve: widget.curves,
             onEnd: widget.onEnd,
             builder: (BuildContext context, double progress, __) {
-              widget.valueNotifier?.value = progress;
+              // Use SchedulerBinding to update value notifier outside of the build phase
+              if (widget.valueNotifier != null && widget.valueNotifier!.value != progress) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  widget.valueNotifier?.value = progress;
+                });
+              }
               return CustomPaint(
                 size: Size(widget.width, widget.height),
                 painter: _SeekBarPainter(
@@ -291,7 +212,12 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
             }),
       );
     } else {
-      widget.valueNotifier?.value = _progress!;
+      // Update valueNotifier outside the build phase for non-animated version as well
+      if (widget.valueNotifier != null && widget.valueNotifier!.value != _progress) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          widget.valueNotifier?.value = _progress!;
+        });
+      }
       return GestureDetector(
         key: _key,
         onTapDown: (details) {

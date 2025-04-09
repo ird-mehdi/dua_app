@@ -43,7 +43,12 @@ class UiHelper {
   }) {
     if (scrollNotification is! ScrollUpdateNotification) return false;
     final bool reachedAtTop = scrollNotification.metrics.pixels == 0;
-    onScrolled(toTop: reachedAtTop);
+    
+    // Use post-frame callback to avoid triggering a rebuild during frame
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      onScrolled(toTop: reachedAtTop);
+    });
+    
     return false;
   }
 

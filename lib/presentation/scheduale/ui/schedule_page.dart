@@ -61,7 +61,7 @@ class SchedulePage extends StatelessWidget {
               // Use builder constructor with a fixed list for better performance
               child: ListView.builder(
                 itemCount: _indices.length,
-                physics: const BouncingScrollPhysics(),  // Smoother scrolling physics
+                physics: const ClampingScrollPhysics(),  // Changed from BouncingScrollPhysics to prevent layout issues
                 itemBuilder: (context, index) {
                   // Capture index value for better state management
                   final idx = _indices[index];
