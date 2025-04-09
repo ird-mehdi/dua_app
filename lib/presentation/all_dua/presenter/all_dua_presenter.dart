@@ -1,95 +1,116 @@
 import 'package:dua/core/base/base_presenter.dart';
-import 'package:dua/presentation/all_dua/presenter/all_dua_state.dart';
+import 'package:dua/domain/entities/dua_entity.dart';
+import 'package:dua/domain/use_cases/dua/get_all_dua.dart';
+import 'package:dua/presentation/all_dua/presenter/all_dua_ui_state.dart';
 import 'package:flutter/material.dart';
 
-class AllDuaPresenter extends BasePresenter<AllDuaState> {
-  final selectedCharacter = Obs<String>('A');
-  final duaItems = Obs<Map<String, List<String>>>({
-    'A': [
-      'A dhikr which is light on tongue, Heavy on the balance',
-      'About Lailatul Qadr',
-      'After leaving the toilet'
-    ],
-    'B': [
-      'Beautiful Dua for morning',
-      'Before starting work',
-      'Best Dua for health'
-    ],
-    'C': [
-      'Correct way of asking Allah',
-      'Cure for sadness',
-      'Converting hardship to ease'
-    ],
-    'D': ['Dua for courage', 'Dua for forgiveness', 'Dua for knowledge'],
-    'E': [
-      'Easy way to remember Allah',
-      'Evening Dua',
-      'Essential Dua for travel'
-    ],
-    'F': ['Forgiveness Dua', 'Friday special Dua', 'Family unity Dua'],
-    'G': ['Guidance Dua', 'Gratitude to Allah', 'Good deeds Dua'],
-    'H': ['Hajj Dua', 'Health and wellness', 'Home entering Dua'],
-    'I': ['Istighfar Dua', 'Important daily Dua', 'Increase in faith'],
-    'J': ['Journey Dua', 'Joy and happiness', 'Justice seeking Dua'],
-    'K': ['Knowledge seeking Dua', 'Kind heart Dua', 'Keeping away from evil'],
-    'L': ['Laylatul Qadr Dua', 'Love for Allah', 'Last ten days of Ramadan'],
-    'M': ['Morning Dua', 'Masjid entrance Dua', 'Marriage Dua'],
-    'N': ['Night prayer Dua', 'New beginning', 'Need fulfillment'],
-    'O': [
-      'Obligatory prayer Dua',
-      'Offering help to others',
-      'Overcoming difficulty'
-    ],
-    'P': ['Protection Dua', 'Parents Dua', 'Patience in hardship'],
-    'Q': ['Quran recitation Dua', 'Quiet time with Allah', 'Quick relief Dua'],
-    'R': ['Ramadan Dua', 'Relief from anxiety', 'Rizq increase'],
-    'S': ['Sickness cure', 'Success in life', 'Seeking forgiveness'],
-    'T': ['Travel Dua', 'Thankfulness to Allah', 'Times of hardship'],
-    'U': ['Understanding Quran', 'Unity among Muslims', 'Upliftment of soul'],
-    'V': ['Victory over enemies', 'Virtuous deeds', 'Vision clarity'],
-    'W': ['Waking up Dua', 'Well-being Dua', 'Wisdom seeking'],
-    'X': [
-      'Extraordinary situations',
-      'Excessive worry relief',
-      'Exit from difficulties'
-    ],
-    'Y': ['Yearly blessings', 'Yielding to Allah\'s will', 'Youth guidance'],
-    'Z': ['Zakat giving Dua', 'Zeal for worship', 'Zealous faith']
-  });
+class AllDuasPresenter extends BasePresenter<AllDuasUiState> {
+  final GetAllDuaUseCase getAllDuas;
 
-  final scrollController = ScrollController();
-  final alphabetLetters = [
-    '#',
-    'A',
-    'B',
-    'C',
-    'D',
-    'E',
-    'F',
-    'G',
-    'H',
-    'I',
-    'J',
-    'K',
-    'L',
-    'M',
-    'N',
-    'O',
-    'P',
-    'Q',
-    'R',
-    'S',
-    'T',
-    'U',
-    'V',
-    'W',
-    'X',
-    'Y',
-    'Z'
-  ];
+  final Obs<AllDuasUiState> uiState = Obs(AllDuasUiState.empty());
+
+  AllDuasUiState get currentUiState => uiState.value;
+  List<DuaEntity> _allDuas = []; // Store all duas to filter locally
+  bool _isLoading = false;
+  int _retryCount = 0;
+  static const int _maxRetries = 3;
+
+  AllDuasPresenter(this.getAllDuas);
+
+  @override
+  void onInit() {
+    super.onInit();
+    _fetchAllDuas();
+  }
+
+  Future<void> _fetchAllDuas() async {
+    if (_isLoading) return;
+
+    _isLoading = true;
+    uiState.value = currentUiState.copyWith(isLoading: true);
+
+    try {
+      final result = await getAllDuas();
+
+      result.fold(
+        (error) {
+          uiState.value = currentUiState.copyWith(
+            isLoading: false,
+            userMessage: error,
+          );
+
+          // Retry if we still have attempts left and got an error
+          if (_retryCount < _maxRetries) {
+            _retryCount++;
+            Future.delayed(Duration(seconds: 1), _fetchAllDuas);
+          }
+        },
+        (duas) {
+          _allDuas = duas;
+
+          if (duas.isEmpty && _retryCount < _maxRetries) {
+            // Retry if we got an empty list
+            _retryCount++;
+            Future.delayed(Duration(seconds: 1), _fetchAllDuas);
+            return;
+          }
+
+          if (duas.isNotEmpty) {
+          } else {
+          }
+
+          _applyFilters();
+          _retryCount = 0; // Reset retry count on success
+        },
+      );
+    } catch (e) {
+      uiState.value = currentUiState.copyWith(
+        isLoading: false,
+        userMessage: 'Failed to load duas: $e',
+      );
+
+      // Retry if we still have attempts left
+      if (_retryCount < _maxRetries) {
+        _retryCount++;
+        Future.delayed(Duration(seconds: 1), _fetchAllDuas);
+      }
+    } finally {
+      _isLoading = false;
+    }
+  }
+
+  // Apply both language and search filters
+  void _applyFilters() {
+    if (_allDuas.isEmpty) {
+      uiState.value = currentUiState.copyWith(
+        isLoading: false,
+        duas: [],
+      );
+      return;
+    }
+
+
+    final filteredDuas = _allDuas.where((dua) {
+      // Filter by language
+      final languageMatches = dua.languageId == currentUiState.selectedLanguage;
+
+      // Filter by search query if provided
+      final searchQuery = currentUiState.searchQuery.toLowerCase();
+      final nameMatches =
+          searchQuery.isEmpty || dua.name.toLowerCase().contains(searchQuery);
+
+      return languageMatches && nameMatches;
+    }).toList();
+
+
+    uiState.value = currentUiState.copyWith(
+      isLoading: false,
+      duas: filteredDuas,
+    );
+  }
 
   void selectCharacter(String character) {
-    selectedCharacter.value = character;
+    uiState.value = currentUiState.copyWith(selectedCharacter: character);
     // Scroll to the selected character's section
     scrollToCharacter(character);
   }
@@ -98,35 +119,46 @@ class AllDuaPresenter extends BasePresenter<AllDuaState> {
     // Calculate and find position to scroll
     double position = 0;
 
-    // Calculate position based on characters before the selected one
-    for (var key in alphabetLetters) {
-      if (key == character) {
-        break;
-      }
-      if (duaItems.value.containsKey(key)) {
-        // Add height for section header
-        position += 48; // Estimated header height
-        // Add height for items in the section
-        position +=
-            (duaItems.value[key]?.length ?? 0) * 60; // Estimated item height
-      }
-    }
+    // Simply calculate a rough position based on the character index
+    final int characterIndex =
+        currentUiState.alphabetLetters?.indexOf(character) ?? 0;
+    // Rough estimation of position - we can refine this as needed
+    position = characterIndex * 100; // Estimated height per section
 
     // Scroll to calculated position
-    scrollController.animateTo(
+    currentUiState.scrollController?.animateTo(
       position,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
     );
   }
 
+  // Toggle between Bangla and English
+  void toggleLanguage() {
+    final newLanguage = currentUiState.selectedLanguage == 'bn' ? 'en' : 'bn';
+    uiState.value = currentUiState.copyWith(selectedLanguage: newLanguage);
+    _applyFilters();
+  }
+
+  // Update search query
+  void updateSearchQuery(String query) {
+    uiState.value = currentUiState.copyWith(searchQuery: query);
+    _applyFilters();
+  }
+
   @override
-  Future<void> toggleLoading({required bool loading}) async {
-    // Implementation for loading state
+  void refresh() {
+    _retryCount = 0;
+    _fetchAllDuas();
   }
 
   @override
   Future<void> addUserMessage(String message) async {
-    // Implementation for user message
+    uiState.value = currentUiState.copyWith(userMessage: message);
+  }
+
+  @override
+  Future<void> toggleLoading({required bool loading}) async {
+    uiState.value = currentUiState.copyWith(isLoading: loading);
   }
 }
