@@ -45,11 +45,11 @@ class OptimizedDuaList extends StatelessWidget {
   final ThemeData theme;
 
   const OptimizedDuaList({
-    Key? key,
+    super.key,
     required this.duas,
     required this.controller,
     required this.theme,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

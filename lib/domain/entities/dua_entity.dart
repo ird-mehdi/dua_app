@@ -124,6 +124,7 @@ class DuaEntity extends Equatable {
           .map((group) => group as Map<String, dynamic>)
           .toList();
     } catch (e) {
+      // ignore: avoid_print
       print('Error parsing groups JSON: $e');
       return [];
     }

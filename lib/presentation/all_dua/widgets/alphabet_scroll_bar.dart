@@ -20,7 +20,7 @@ class AlphabetScrollBar extends StatelessWidget {
       width: thirtyPx,
       margin: EdgeInsets.symmetric(horizontal: fourPx),
       decoration: BoxDecoration(
-        color: context.color.shadeColor.withOpacity(0.5),
+        color: context.color.shadeColor.withOpacityInt(0.5),
         borderRadius: BorderRadius.circular(fifteenPx),
       ),
       child: ListView.builder(
