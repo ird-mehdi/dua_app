@@ -1,6 +1,7 @@
 import 'package:dua/core/config/app_images.dart';
 import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/di/service_locator.dart';
+import 'package:dua/core/utility/utility.dart';
 import 'package:dua/presentation/bookmark/presenter/bookmark_presenter.dart';
 import 'package:dua/presentation/common/widgets/custom_app_bar.dart';
 import 'package:dua/presentation/common/widgets/custom_search_bar.dart';
@@ -54,7 +55,7 @@ class BookmarkScreen extends StatelessWidget {
                       return BookmarkItem(
                         folderName: folder.name,
                         duaCount: folder.duaCount,
-                        color: folder.color.withOpacity(0.2),
+                        color: folder.color.withOpacityInt(20),
                         iconColor: folder.color,
                         folderIndex: index,
                       );
@@ -100,7 +101,7 @@ class BookmarkItem extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withOpacityInt(5),
             blurRadius: 2,
             offset: const Offset(0, 1),
           ),

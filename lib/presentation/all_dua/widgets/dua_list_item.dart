@@ -1,4 +1,5 @@
 import 'package:dua/core/di/service_locator.dart';
+import 'package:dua/core/utility/utility.dart';
 import 'package:dua/presentation/all_dua/presenter/all_dua_presenter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -53,7 +54,7 @@ class DuaListItem extends StatelessWidget {
                           height: 32,
                           decoration: BoxDecoration(
                             color: theme.colorScheme.primaryContainer
-                                .withOpacity(0.1),
+                                .withOpacityInt(10),
                             borderRadius: BorderRadius.circular(16),
                           ),
                           child: Center(
