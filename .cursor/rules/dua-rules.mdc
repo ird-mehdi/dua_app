@@ -3,8 +3,13 @@ description:
 globs: 
 alwaysApply: true
 ---
+---
+description: 
+globs: 
+alwaysApply: true
+---
 
-- Always follow my [base_presenter.dart](mdc:lib/core/base/base_presenter.dart) andf [service_locator.dart](mdc:lib/core/di/service_locator.dart) 
+- Always follow my [base_presenter.dart](mdc:dua_app/lib/core/base/base_presenter.dart) andf [service_locator.dart](mdc:dua_app/lib/core/di/service_locator.dart) 
 
 
 ## 📂 Folder Structure
@@ -105,9 +110,9 @@ easier to change or add new features or make changes to a single layer without a
 ## 📋 General Guideline
 
 1. This project
-   uses [Clean Architecture - Clean Coder Blog - Uncle Bob](mdc:https:/blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+   uses [Clean Architecture - Clean Coder Blog - Uncle Bob](mdc:dua_app/https:/blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
    as project's main architecture. For `presentation` layer, it makes use
-   of [Model–view–controller](mdc:https:/en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller)
+   of [Model–view–controller](mdc:dua_app/https:/en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller)
    pattern. Please stick to this architecture.
    1. Create separate layers for the presentation, domain, and data layers.
    2. Use dependency injection to ensure that the layers are loosely coupled and can be easily
@@ -134,7 +139,7 @@ easier to change or add new features or make changes to a single layer without a
    has.
 5. Never use `dynamic` or `Object` type, always try to stick to strict type system.
 6. For commit messages, please
-   follow [Semantic Commit Messages](mdc:https:/gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716)
+   follow [Semantic Commit Messages](mdc:dua_app/https:/gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716)
    convention.
    1. Use a present tense imperative verb for the subject of the commit message. For example, "fix"
       instead of "fixed" or "fixes"
@@ -217,7 +222,7 @@ infrastructure dependencies.
 
 ### Drift
 
-For database management we used [Drift](mdc:https:/pub.dev/documentation/drift/latest), which is a
+For database management we used [Drift](mdc:dua_app/https:/pub.dev/documentation/drift/latest), which is a
 blazingly fast reactive persistence library for Flutter and Dart, built on top of sqlite. Reasons
 for using Drift:
 
@@ -230,7 +235,7 @@ for using Drift:
 
 ### Get
 
-For state and route management we used [Get](mdc:https:/pub.dev/documentation/get/latest), which
+For state and route management we used [Get](mdc:dua_app/https:/pub.dev/documentation/get/latest), which
 combines high-performance state management, intelligent dependency injection, and route management
 quickly and practically. **Thinking about switching to BLoC, due lack of maintainability, and
 anti-patterns in GetX.**
@@ -238,7 +243,7 @@ anti-patterns in GetX.**
 ### FPDart
 
 To introduce functional programming features in Dart we
-used [FPDart](mdc:https:/github.com/SandroMaglione/fpdart).
+used [FPDart](mdc:dua_app/https:/github.com/SandroMaglione/fpdart).
 
 FPDart provides functional programming utilities for Dart and Flutter, such as Option, Either, and
 Try for null safety, error handling, and data validation. IO, Task, and Validation make code
@@ -248,13 +253,13 @@ programming principles.
 
 ### Equatable
 
-For equality comparison, we used [Equatable](mdc:https:/github.com/felangel/equatable)
+For equality comparison, we used [Equatable](mdc:dua_app/https:/github.com/felangel/equatable)
 for equality comparison, overriding == and hashCode for you. Helps to minimize the amount of code,
 widget rebuilds, and memory allocations.
 
 ### get_it
 
-For dependency injection, we used [get_it](mdc:https:/pub.dev/packages/get_it), a simple and
+For dependency injection, we used [get_it](mdc:dua_app/https:/pub.dev/packages/get_it), a simple and
 easy-to-use DI library for Flutter that improves maintainability and testability. Separates concerns
 in the app, allowing easy swapping of objects and decoupling dependencies between classes.
 easy swapping of objects and decoupling dependencies between classes.

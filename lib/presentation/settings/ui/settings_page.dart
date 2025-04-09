@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import '../presenter/settings_presenter.dart';
 import 'package:dua/core/di/service_locator.dart';
-import 'package:get/get.dart';
 import 'package:dua/core/config/dua_color.dart';
 import 'package:dua/presentation/common/widgets/custom_app_bar.dart';
+import 'package:dua/core/external_libs/presentable_widget_builder.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -12,9 +12,9 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final presenter = locate<SettingsPresenter>();
 
-    return GetX<SettingsPresenter>(
-      init: presenter,
-      builder: (controller) => Scaffold(
+    return PresentableWidgetBuilder<SettingsPresenter>(
+      presenter: presenter,
+      builder: () => Scaffold(
         appBar: const CustomAppBar(
           title: 'Settings',
           showLeading: true,
@@ -31,11 +31,11 @@ class SettingsPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 24),
-                        _buildGeneralSettings(controller),
+                        _buildGeneralSettings(presenter),
                         const SizedBox(height: 24),
-                        _buildFontSettings(context, controller),
+                        _buildFontSettings(context, presenter),
                         const SizedBox(height: 24),
-                        _buildAppearanceSettings(context, controller),
+                        _buildAppearanceSettings(context, presenter),
                         const SizedBox(height: 24), // Space before footer area
                       ],
                     ),

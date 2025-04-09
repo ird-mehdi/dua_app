@@ -11,6 +11,8 @@ class SettingsUiState extends BaseUiState {
     required this.arabicFontSize,
     required this.translationFontSize,
     required this.selectedAppearance,
+    required this.selectedScriptType,
+    required this.selectedFont,
   });
 
   final bool showArabic;
@@ -20,6 +22,8 @@ class SettingsUiState extends BaseUiState {
   final double arabicFontSize;
   final double translationFontSize;
   final int selectedAppearance;
+  final String selectedScriptType;
+  final String selectedFont;
 
   // Factory to create the initial state
   factory SettingsUiState.initial() => const SettingsUiState(
@@ -32,6 +36,8 @@ class SettingsUiState extends BaseUiState {
         arabicFontSize: 28.0,
         translationFontSize: 28.0,
         selectedAppearance: 0,
+        selectedScriptType: 'Uthmanic',
+        selectedFont: 'KFG Hafs',
       );
 
   // Copy with method to create a new instance with updated values
@@ -45,6 +51,8 @@ class SettingsUiState extends BaseUiState {
     double? arabicFontSize,
     double? translationFontSize,
     int? selectedAppearance,
+    String? selectedScriptType,
+    String? selectedFont,
   }) {
     return SettingsUiState(
       isLoading: isLoading ?? this.isLoading,
@@ -56,6 +64,8 @@ class SettingsUiState extends BaseUiState {
       arabicFontSize: arabicFontSize ?? this.arabicFontSize,
       translationFontSize: translationFontSize ?? this.translationFontSize,
       selectedAppearance: selectedAppearance ?? this.selectedAppearance,
+      selectedScriptType: selectedScriptType ?? this.selectedScriptType,
+      selectedFont: selectedFont ?? this.selectedFont,
     );
   }
 
@@ -70,5 +80,7 @@ class SettingsUiState extends BaseUiState {
         arabicFontSize,
         translationFontSize,
         selectedAppearance,
+        selectedScriptType,
+        selectedFont,
       ];
 }

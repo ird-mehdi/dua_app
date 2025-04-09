@@ -48,4 +48,12 @@ class SettingsPresenter extends BasePresenter<SettingsUiState> {
   void setSelectedAppearance(int value) {
     _state.value = state.copyWith(selectedAppearance: value);
   }
+
+  void setSelectedScriptType(String value) {
+    _state.value = state.copyWith(selectedScriptType: value);
+  }
+
+  void setSelectedFont(String value) {
+    _state.value = state.copyWith(selectedFont: value);
+  }
 }
