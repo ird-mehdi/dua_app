@@ -115,7 +115,7 @@ class DuaDetailsPage extends StatelessWidget {
                                 ),
 
                               // Divider before translation
-                              Divider(color: Colors.grey.withOpacity(0.3)),
+                              Divider(color: Color.fromRGBO(158, 158, 158, 0.3)),
 
                               // Translation
                               if (dua.translation.isNotEmpty) ...[
@@ -205,7 +205,7 @@ class DuaDetailsPage extends StatelessWidget {
                           decoration: BoxDecoration(
                             border: Border(
                               top: BorderSide(
-                                color: Colors.grey.withOpacity(0.2),
+                                color: Color.fromRGBO(158, 158, 158, 0.2),
                                 width: 1,
                               ),
                             ),

@@ -58,7 +58,6 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
 
   Future<void> loadBookmarkedDuas() async {
     await toggleLoading(loading: true);
-    // TODO: Implement loading bookmarked duas
     _state.value = currentUiState.copyWith(
       bookmarkedDuas: ['Dua 1', 'Dua 2', 'Dua 3'], // Dummy data
     );
@@ -73,7 +72,6 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
       folderName: folderName ?? 'Example Folder Name',
       folderColor: folderColor ?? Colors.blue,
       onSave: (String name, Color color) {
-        // TODO: Implement save bookmark folder logic
         update();
       },
     );

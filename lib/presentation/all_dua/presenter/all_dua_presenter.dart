@@ -30,12 +30,10 @@ class AllDuasPresenter extends BasePresenter<AllDuasUiState> {
     uiState.value = currentUiState.copyWith(isLoading: true);
 
     try {
-      print('AllDuasPresenter: Fetching all duas');
       final result = await getAllDuas();
 
       result.fold(
         (error) {
-          print('AllDuasPresenter: Error fetching duas: $error');
           uiState.value = currentUiState.copyWith(
             isLoading: false,
             userMessage: error,
@@ -44,28 +42,21 @@ class AllDuasPresenter extends BasePresenter<AllDuasUiState> {
           // Retry if we still have attempts left and got an error
           if (_retryCount < _maxRetries) {
             _retryCount++;
-            print(
-                'AllDuasPresenter: Retrying fetch ($_retryCount/$_maxRetries)');
             Future.delayed(Duration(seconds: 1), _fetchAllDuas);
           }
         },
         (duas) {
-          print('AllDuasPresenter: Received ${duas.length} duas');
           _allDuas = duas;
 
           if (duas.isEmpty && _retryCount < _maxRetries) {
             // Retry if we got an empty list
             _retryCount++;
-            print(
-                'AllDuasPresenter: Received empty list, retrying ($_retryCount/$_maxRetries)');
             Future.delayed(Duration(seconds: 1), _fetchAllDuas);
             return;
           }
 
           if (duas.isNotEmpty) {
-            print('AllDuasPresenter: First dua: ${duas[0].name}');
           } else {
-            print('AllDuasPresenter: No duas received');
           }
 
           _applyFilters();
@@ -73,7 +64,6 @@ class AllDuasPresenter extends BasePresenter<AllDuasUiState> {
         },
       );
     } catch (e) {
-      print('AllDuasPresenter: Exception during fetch: $e');
       uiState.value = currentUiState.copyWith(
         isLoading: false,
         userMessage: 'Failed to load duas: $e',
@@ -82,8 +72,6 @@ class AllDuasPresenter extends BasePresenter<AllDuasUiState> {
       // Retry if we still have attempts left
       if (_retryCount < _maxRetries) {
         _retryCount++;
-        print(
-            'AllDuasPresenter: Retrying fetch due to exception ($_retryCount/$_maxRetries)');
         Future.delayed(Duration(seconds: 1), _fetchAllDuas);
       }
     } finally {
@@ -94,7 +82,6 @@ class AllDuasPresenter extends BasePresenter<AllDuasUiState> {
   // Apply both language and search filters
   void _applyFilters() {
     if (_allDuas.isEmpty) {
-      print('AllDuasPresenter: No duas to filter');
       uiState.value = currentUiState.copyWith(
         isLoading: false,
         duas: [],
@@ -102,10 +89,6 @@ class AllDuasPresenter extends BasePresenter<AllDuasUiState> {
       return;
     }
 
-    print('AllDuasPresenter: Applying filters');
-    print(
-        'AllDuasPresenter: Language filter: ${currentUiState.selectedLanguage}');
-    print('AllDuasPresenter: Search query: ${currentUiState.searchQuery}');
 
     final filteredDuas = _allDuas.where((dua) {
       // Filter by language
@@ -119,7 +102,6 @@ class AllDuasPresenter extends BasePresenter<AllDuasUiState> {
       return languageMatches && nameMatches;
     }).toList();
 
-    print('AllDuasPresenter: Filtered to ${filteredDuas.length} duas');
 
     uiState.value = currentUiState.copyWith(
       isLoading: false,
@@ -154,21 +136,18 @@ class AllDuasPresenter extends BasePresenter<AllDuasUiState> {
   // Toggle between Bangla and English
   void toggleLanguage() {
     final newLanguage = currentUiState.selectedLanguage == 'bn' ? 'en' : 'bn';
-    print('AllDuasPresenter: Toggling language to $newLanguage');
     uiState.value = currentUiState.copyWith(selectedLanguage: newLanguage);
     _applyFilters();
   }
 
   // Update search query
   void updateSearchQuery(String query) {
-    print('AllDuasPresenter: Updating search query to: $query');
     uiState.value = currentUiState.copyWith(searchQuery: query);
     _applyFilters();
   }
 
   @override
   void refresh() {
-    print('AllDuasPresenter: Refreshing data');
     _retryCount = 0;
     _fetchAllDuas();
   }
