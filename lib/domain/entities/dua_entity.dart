@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'dart:convert';
 
 class DuaEntity extends Equatable {
   final int id;
@@ -34,7 +35,6 @@ class DuaEntity extends Equatable {
     required this.categoryId,
     required this.subcategoryId,
   });
-
 
   factory DuaEntity.empty() {
     return DuaEntity(
@@ -109,5 +109,32 @@ class DuaEntity extends Equatable {
       categoryId: categoryId ?? this.categoryId,
       subcategoryId: subcategoryId ?? this.subcategoryId,
     );
+  }
+
+  // Parse the groups JSON string into a list of maps
+  List<Map<String, dynamic>> parseGroups() {
+    if (groups.isEmpty) {
+      return [];
+    }
+
+    try {
+      // Parse the JSON string into a List of Maps
+      final List<dynamic> parsedGroups = jsonDecode(groups);
+      return parsedGroups
+          .map((group) => group as Map<String, dynamic>)
+          .toList();
+    } catch (e) {
+      print('Error parsing groups JSON: $e');
+      return [];
+    }
+  }
+
+  // Get a specific group object by index
+  Map<String, dynamic>? getGroupByIndex(int index) {
+    final parsedGroups = parseGroups();
+    if (parsedGroups.isEmpty || index >= parsedGroups.length) {
+      return null;
+    }
+    return parsedGroups[index];
   }
 }

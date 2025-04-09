@@ -15,6 +15,7 @@ class DuaDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final List<Map<String, dynamic>> groupsList = dua.parseGroups();
 
     return Scaffold(
       backgroundColor: Color(0xFFF9FAFB),
@@ -65,7 +66,73 @@ class DuaDetailsPage extends StatelessWidget {
                             ],
                           ),
                         ),
-
+                        if (groupsList.isNotEmpty)
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: groupsList.length,
+                            itemBuilder: (context, index) {
+                              final group = groupsList[index];
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  if (group['name'] != null)
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: sixteenPx, vertical: eightPx),
+                                      child: Text(
+                                        group['name'] as String,
+                                        style: TextStyle(
+                                          fontSize: sixteenPx,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  if (group['context'] != null)
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: sixteenPx, vertical: fourPx),
+                                      child: Text(group['context'] as String),
+                                    ),
+                                  if (group['indopak'] != null)
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: sixteenPx, vertical: eightPx),
+                                      child: Text(
+                                        group['indopak'] as String,
+                                        style: TextStyle(
+                                          fontFamily: 'KFGQ',
+                                          fontSize: twentyFourPx,
+                                        ),
+                                        textDirection: TextDirection.rtl,
+                                      ),
+                                    ),
+                                  if (group['transliteration'] != null)
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: sixteenPx, vertical: fourPx),
+                                      child: Text(
+                                        group['transliteration'] as String,
+                                        style: TextStyle(fontStyle: FontStyle.italic),
+                                      ),
+                                    ),
+                                  if (group['translation'] != null)
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: sixteenPx, vertical: fourPx),
+                                      child: Text(group['translation'] as String),
+                                    ),
+                                  if (group['reference'] != null)
+                                    Padding(
+                                      padding: EdgeInsets.all(sixteenPx),
+                                      child: Text(
+                                        group['reference'] as String,
+                                        style: TextStyle(
+                                          fontSize: thirteenPx,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ),
+                                  Divider(),
+                                ],
+                              );
+                            },
+                          ),
                         // Main content area
                         Padding(
                           padding: EdgeInsets.symmetric(
@@ -75,6 +142,14 @@ class DuaDetailsPage extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
+                              if (dua.context.isNotEmpty)
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: sixteenPx,
+                                    horizontal: eightPx,
+                                  ),
+                                  child: Text(dua.context),
+                                ),
                               // Indopak (Arabic text)
                               if (dua.indopak.isNotEmpty)
                                 Padding(
@@ -115,7 +190,8 @@ class DuaDetailsPage extends StatelessWidget {
                                 ),
 
                               // Divider before translation
-                              Divider(color: Color.fromRGBO(158, 158, 158, 0.3)),
+                              Divider(
+                                  color: Color.fromRGBO(158, 158, 158, 0.3)),
 
                               // Translation
                               if (dua.translation.isNotEmpty) ...[
