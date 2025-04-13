@@ -49,7 +49,7 @@ class ServiceLocator {
 
     // Register bookmark repository
     _serviceLocator.registerLazySingleton<DuaBookmarkRepository>(
-        () => DuaBookmarkRepositoryImpl(locate()));
+        () => DuaBookmarkRepositoryImpl());
   }
 
   Future<void> _setUpServices() async {

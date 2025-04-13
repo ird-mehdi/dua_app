@@ -1,7 +1,6 @@
 import 'package:dua/core/base/base_presenter.dart';
 import 'package:dua/core/base/base_ui_state.dart';
 import 'package:dua/core/di/service_locator.dart';
-import 'package:dua/domain/entities/dua_bookmark_entity.dart';
 import 'package:dua/domain/entities/dua_bookmark_folder_entity.dart';
 import 'package:dua/domain/entities/dua_entity.dart';
 import 'package:dua/domain/repositories/dua_bookmark_repository.dart';
@@ -97,8 +96,6 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
   final _state = BookmarkUiState.initial().obs;
   final List<BookmarkFolder> _allBookmarkFolders = [];
   bool _wasBookmarkJustAdded = false;
-  final String _searchQuery = '';
-  final String _lastBookmarkQuery = '';
 
   // Use cases
   late final SaveBookmarksToDuaUseCase _saveBookmarksToDuaUseCase;

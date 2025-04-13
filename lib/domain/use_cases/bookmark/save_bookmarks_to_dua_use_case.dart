@@ -2,8 +2,6 @@ import 'package:dua/core/base/base_use_case.dart';
 import 'package:dua/domain/entities/dua_bookmark_entity.dart';
 import 'package:dua/domain/entities/dua_bookmark_folder_entity.dart';
 import 'package:dua/domain/repositories/dua_bookmark_repository.dart';
-import 'package:dua/domain/service/error_message_handler.dart';
-import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 
 class SaveBookmarksToDuaUseCase extends BaseUseCase<String> {

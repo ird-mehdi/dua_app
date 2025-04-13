@@ -1,4 +1,3 @@
-import 'package:dua/data/datasource/local_data_source.dart';
 import 'package:dua/domain/entities/dua_bookmark_entity.dart';
 import 'package:dua/domain/entities/dua_bookmark_folder_entity.dart';
 import 'package:dua/domain/repositories/dua_bookmark_repository.dart';
@@ -7,7 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 class DuaBookmarkRepositoryImpl implements DuaBookmarkRepository {
-  final LocalDataSource _localDataSource;
   static const String _bookmarksKey = 'dua_bookmarks';
   static const String _foldersKey = 'dua_bookmark_folders';
 
@@ -15,7 +13,7 @@ class DuaBookmarkRepositoryImpl implements DuaBookmarkRepository {
   List<DuaBookmarkEntity>? _cachedBookmarks;
   List<DuaBookmarkFolderEntity>? _cachedFolders;
 
-  DuaBookmarkRepositoryImpl(this._localDataSource);
+  DuaBookmarkRepositoryImpl();
 
   @override
   Future<void> createBookmarkFolder({
