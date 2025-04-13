@@ -28,10 +28,8 @@ class DuaDatabase extends _$DuaDatabase {
   Future<void> _initializeDatabase() async {
     try {
       // Run verification and initialization in parallel
-      final results = await Future.wait([
-        verifyDatabase(),
-        _initDatabase()
-      ], eagerError: true);
+      final results = await Future.wait([verifyDatabase(), _initDatabase()],
+          eagerError: true);
       // If both succeeded, mark as initialized
       if (results[0] == true && results[1] == true) {
         _isInitialized = true;
@@ -157,7 +155,8 @@ class DuaDatabase extends _$DuaDatabase {
     try {
       // If database is not initialized, try to initialize it
       if (!_isInitialized) {
-        print('getAllDuas: Database not yet fully initialized, initializing...');
+        print(
+            'getAllDuas: Database not yet fully initialized, initializing...');
         await _initializeDatabase();
       }
 

@@ -15,14 +15,14 @@ LazyDatabase loadDatabase() {
     // Get the database file path
     final dbFolder = await getApplicationDocumentsDirectory();
     final file = File(p.join(dbFolder.path, AppConstant.dbName));
-    
+
     // Create database file if it doesn't exist
     if (!file.existsSync()) {
       await _copyDatabaseFromAssets(file);
     } else if (await file.length() == 0) {
       await _copyDatabaseFromAssets(file);
     }
-    
+
     // Create a DriftIsolate
     final isolate = await _createDriftIsolate(file.path);
     return isolate.connect();
@@ -36,7 +36,7 @@ Future<DriftIsolate> _createDriftIsolate(String path) async {
     _startBackground,
     _IsolateStartRequest(receivePort.sendPort, path),
   );
-  
+
   // Wait for the isolate to send us the DriftIsolate
   return await receivePort.first as DriftIsolate;
 }
@@ -57,7 +57,7 @@ void _startBackground(_IsolateStartRequest request) {
 class _IsolateStartRequest {
   final SendPort sendPort;
   final String path;
-  
+
   _IsolateStartRequest(this.sendPort, this.path);
 }
 
@@ -69,18 +69,23 @@ Future<void> _copyDatabaseFromAssets(File file) async {
     // Try to load from primary path
     try {
       final ByteData data = await rootBundle.load(AppConstant.dbAssetPath);
-      final List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+      final List<int> bytes =
+          data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
       await file.writeAsBytes(bytes);
     } catch (e) {
       // Try alternate paths as fallback
       try {
-        final ByteData data = await rootBundle.load('assets/databases/database.sqlite');
-        final List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+        final ByteData data =
+            await rootBundle.load('assets/databases/database.sqlite');
+        final List<int> bytes =
+            data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
         await file.writeAsBytes(bytes);
       } catch (e2) {
         try {
-          final ByteData data = await rootBundle.load('assets/database/database.sqlite');
-          final List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+          final ByteData data =
+              await rootBundle.load('assets/database/database.sqlite');
+          final List<int> bytes =
+              data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
           await file.writeAsBytes(bytes);
         } catch (e3) {
           await file.writeAsString('');

@@ -19,7 +19,7 @@ class NavBarPresenter extends BasePresenter<NavBarUiState> {
   final List<Widget> pages = [
     HomePage(),
     AllDuaPage(),
-    const BookmarkScreen(),
+    BookmarkScreen(),
     SchedulePage(),
     MemorizationPage(),
   ];

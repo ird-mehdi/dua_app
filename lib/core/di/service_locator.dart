@@ -46,13 +46,12 @@ class ServiceLocator {
   Future<void> _setUpServices() async {
     _serviceLocator.registerLazySingleton<ErrorMessageHandler>(
         ErrorMessageHandlerImpl.new);
-    _serviceLocator.registerLazySingleton<DuaDatabase>(
-        DuaDatabase.new);
-    
+    _serviceLocator.registerLazySingleton<DuaDatabase>(DuaDatabase.new);
+
     // Register SharedPreferences
     final sharedPreferences = await SharedPreferences.getInstance();
     _serviceLocator.registerLazySingleton(() => sharedPreferences);
-    
+
     // Register DuaCacheService
     _serviceLocator.registerLazySingleton<DuaCacheService>(
         () => DuaCacheService(locate()));
@@ -71,16 +70,16 @@ class ServiceLocator {
         .registerLazySingleton(() => loadPresenter(SubCategoryPresenter()));
     _serviceLocator
         .registerLazySingleton(() => loadPresenter(SchedulePresenter()));
-    _serviceLocator
-        .registerLazySingleton(() => loadPresenter(AllDuasPresenter(locate(), locate())));
+    _serviceLocator.registerLazySingleton(
+        () => loadPresenter(AllDuasPresenter(locate(), locate())));
     _serviceLocator
         .registerLazySingleton(() => loadPresenter(BookmarkPresenter()));
   }
 
-
   Future<void> _setUpUseCase() async {
     // _serviceLocator
     //     .registerFactory(() => GetSettingsStateUseCase(locate(), locate()));
-    _serviceLocator.registerLazySingleton(() => GetAllDuaUseCase(duaRepository: locate()));
+    _serviceLocator
+        .registerLazySingleton(() => GetAllDuaUseCase(duaRepository: locate()));
   }
 }

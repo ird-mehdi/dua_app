@@ -24,5 +24,4 @@ class PrayerTimeRepositoryImpl implements PrayerTimeRepository {
       isNotificationEnabled: !_prayerTimes[index].isNotificationEnabled,
     );
   }
-  
 }
