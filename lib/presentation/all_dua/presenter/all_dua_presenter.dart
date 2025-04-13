@@ -4,81 +4,106 @@ import 'package:dua/domain/entities/dua_entity.dart';
 import 'package:dua/domain/use_cases/dua/get_all_dua.dart';
 import 'package:dua/presentation/all_dua/presenter/all_dua_ui_state.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:dua/core/external_libs/scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:dua/core/utility/ui_helper.dart';
+
+// Static class for filter parameters
+class _FilterParams {
+  final List<DuaEntity> duas;
+  final String languageId;
+  final String searchQuery;
+  _FilterParams({
+    required this.duas,
+    required this.languageId,
+    required this.searchQuery,
+  });
+}
 
 class AllDuasPresenter extends BasePresenter<AllDuasUiState> {
   final GetAllDuaUseCase getAllDuas;
   final DuaCacheService _cacheService;
 
+  final ItemScrollController itemScrollController = ItemScrollController();
+  final ItemPositionsListener itemPositionsListener =
+      ItemPositionsListener.create();
+
   final Obs<AllDuasUiState> uiState = Obs(AllDuasUiState.empty());
 
   AllDuasUiState get currentUiState => uiState.value;
   List<DuaEntity> _allDuas = [];
+  List<_ListSection> _groupedData = [];
   bool _isLoading = false;
   int _retryCount = 0;
   static const int _maxRetries = 3;
 
-  // Improve caching with memory management
-  final Map<String, double> _letterPositions = {};
+  // Cache for filtered results
   final Map<String, List<DuaEntity>> _filteredCache = {};
-
-  // Optimize memory usage with lazy loading
+  // Cache for letter indices (index of the header in _groupedData)
+  final Map<String, int> _letterIndices = {};
 
   AllDuasPresenter(this.getAllDuas, this._cacheService);
 
   @override
   void onInit() {
     super.onInit();
-    currentUiState.scrollController?.addListener(_optimizedScrollListener);
+    // Listener to update selected character based on scroll position
+    itemPositionsListener.itemPositions
+        .addListener(_updateSelectedCharacterFromScroll);
     _fetchAllDuas();
   }
 
   @override
   void onClose() {
-    currentUiState.scrollController?.removeListener(_optimizedScrollListener);
-    currentUiState.scrollController?.dispose();
+    itemPositionsListener.itemPositions
+        .removeListener(_updateSelectedCharacterFromScroll);
     _clearCaches();
+    currentUiState.overlayEntry?.remove();
     super.onClose();
   }
 
-  // Use throttled scroll listener to improve performance
-  DateTime _lastScrollUpdate = DateTime.now();
-  void _optimizedScrollListener() {
-    // Skip processing if scrolling too frequently (throttling)
-    final now = DateTime.now();
-    if (now.difference(_lastScrollUpdate).inMilliseconds < 100) {
-      return;
-    }
-    _lastScrollUpdate = now;
+  // Update selected character based on visible items
+  void _updateSelectedCharacterFromScroll() {
+    if (_isLoading || !itemScrollController.isAttached) return;
 
-    _handleScroll();
-  }
+    final positions = itemPositionsListener.itemPositions.value;
+    if (positions.isEmpty) return;
 
-  void _clearCaches() {
-    _letterPositions.clear();
-    _filteredCache.clear();
-  }
+    // Find the first visible item's index
+    final firstVisibleItemIndex = positions
+        .where((position) => position.itemLeadingEdge < 1)
+        .map((position) => position.index)
+        .reduce((min, index) => index < min ? index : min);
 
-  void _handleScroll() {
-    if (_isLoading || currentUiState.scrollController == null) return;
-
-    final scrollPosition = currentUiState.scrollController!.offset;
+    // Find the corresponding letter for this index
     String? activeChar;
-
-    // Use cached letter positions if available
-    if (_letterPositions.isNotEmpty) {
-      for (final entry in _letterPositions.entries) {
-        if (scrollPosition >= entry.value &&
-            (scrollPosition < entry.value + 100 ||
-                entry.key == _letterPositions.keys.last)) {
-          activeChar = entry.key;
+    if (firstVisibleItemIndex >= 0 &&
+        firstVisibleItemIndex < _groupedData.length) {
+      for (int i = firstVisibleItemIndex; i >= 0; i--) {
+        if (_groupedData[i].isHeader) {
+          activeChar = _groupedData[i].letter;
           break;
         }
+      }
+      if (activeChar == null && _groupedData[firstVisibleItemIndex].isHeader) {
+        activeChar = _groupedData[firstVisibleItemIndex].letter;
       }
     }
 
     if (activeChar != null && activeChar != currentUiState.selectedCharacter) {
-      uiState.value = currentUiState.copyWith(selectedCharacter: activeChar);
+      UiHelper.doOnPageLoaded(() {
+        if (activeChar != currentUiState.selectedCharacter) {
+          uiState.value =
+              currentUiState.copyWith(selectedCharacter: () => activeChar);
+        }
+      });
     }
+  }
+
+  void _clearCaches() {
+    _letterIndices.clear();
+    _filteredCache.clear();
+    _groupedData.clear();
   }
 
   Future<void> _fetchAllDuas() async {
@@ -88,12 +113,12 @@ class AllDuasPresenter extends BasePresenter<AllDuasUiState> {
     uiState.value = currentUiState.copyWith(isLoading: true);
 
     try {
-      // Try to get cached data first
       final cachedDuas = await _cacheService.getCachedDuas();
-      if (cachedDuas != null) {
+      if (cachedDuas != null && cachedDuas.isNotEmpty) {
         _allDuas = cachedDuas;
-        await _updateUiStateWithDuas(cachedDuas);
+        await _processAndUpdateUiState(_allDuas);
         _isLoading = false;
+        _retryCount = 0;
         return;
       }
 
@@ -101,113 +126,120 @@ class AllDuasPresenter extends BasePresenter<AllDuasUiState> {
 
       result.fold(
         (error) {
-          uiState.value = currentUiState.copyWith(
-            isLoading: false,
-            userMessage: error,
-          );
-
-          if (_retryCount < _maxRetries) {
-            _retryCount++;
-            Future.delayed(Duration(seconds: 1), _fetchAllDuas);
-          }
+          _handleFetchError(error);
         },
         (duas) async {
           _allDuas = duas;
           await _cacheService.cacheDuas(duas);
-          await _updateUiStateWithDuas(duas);
+          await _processAndUpdateUiState(duas);
           _retryCount = 0;
         },
       );
     } catch (e) {
-      uiState.value = currentUiState.copyWith(
-        isLoading: false,
-        userMessage: 'Failed to load duas: $e',
-      );
-
-      if (_retryCount < _maxRetries) {
-        _retryCount++;
-        Future.delayed(Duration(seconds: 1), _fetchAllDuas);
-      }
+      _handleFetchError('Failed to load duas: $e');
     } finally {
-      _isLoading = false;
+      if (_retryCount >= _maxRetries || !_isLoading) {
+        UiHelper.doOnPageLoaded(() {
+          if (uiState.value.isLoading) {
+            uiState.value = currentUiState.copyWith(isLoading: false);
+          }
+        });
+        _isLoading = false;
+      }
     }
   }
 
-  // Use compute to move heavy processing to a separate isolate
-  Future<void> _updateUiStateWithDuas(List<DuaEntity> duas) async {
+  void _handleFetchError(String error) {
+    _isLoading = false;
+    if (_retryCount < _maxRetries) {
+      _retryCount++;
+      uiState.value = currentUiState.copyWith(
+        isLoading: false,
+        userMessage: () => '$error Retrying (${_retryCount}/${_maxRetries})...',
+      );
+      Future.delayed(const Duration(seconds: 2), _fetchAllDuas);
+      _isLoading = true;
+    } else {
+      uiState.value = currentUiState.copyWith(
+        isLoading: false,
+        userMessage: () => error,
+        duas: [],
+        alphabetLetters: [],
+      );
+    }
+  }
+
+  Future<void> _processAndUpdateUiState(List<DuaEntity> duas) async {
     if (duas.isEmpty) {
-      uiState.value = currentUiState.copyWith(isLoading: false, duas: []);
+      _groupedData = [];
+      _letterIndices.clear();
+      uiState.value = currentUiState.copyWith(
+        isLoading: false,
+        duas: [],
+        alphabetLetters: [],
+        selectedCharacter: () => null,
+      );
       return;
     }
 
-    // Process alphabet data in a separate isolate for large datasets
-    final result = await compute(_processAlphabetData, duas);
+    final result = await compute(_computeGroupedDataAndAlphabet, duas);
+
+    _groupedData = result.groupedData;
+    _letterIndices.clear();
+    _letterIndices.addAll(result.letterIndices);
 
     uiState.value = currentUiState.copyWith(
       isLoading: false,
       duas: duas,
       alphabetLetters: result.letters,
+      selectedCharacter:
+          result.letters.isNotEmpty ? () => result.letters.first : () => null,
     );
-
-    _letterPositions.clear();
-    _letterPositions.addAll(result.positions);
 
     await _applyFilters();
   }
 
-  // This is a separate pure function that can run in an isolate
-  static _AlphabetProcessResult _processAlphabetData(List<DuaEntity> duas) {
+  static _ProcessResult _computeGroupedDataAndAlphabet(List<DuaEntity> duas) {
+    final Map<String, List<DuaEntity>> groupedDuasMap = {};
     final availableLetters = <String>{};
-    final Map<String, double> positions = {};
 
     for (var dua in duas) {
       if (dua.name.isNotEmpty) {
-        availableLetters.add(dua.name[0].toUpperCase());
+        final firstLetter = dua.name[0].toUpperCase();
+        availableLetters.add(firstLetter);
+        groupedDuasMap.putIfAbsent(firstLetter, () => []).add(dua);
       }
     }
 
-    final letters = availableLetters.toList()..sort();
+    final sortedLetters = availableLetters.toList()..sort();
+    final List<_ListSection> groupedDataList = [];
+    final Map<String, int> letterIndices = {};
 
-    // Pre-calculate letter positions
-    final Map<String, int> letterCounts = {};
-    for (var dua in duas) {
-      if (dua.name.isNotEmpty) {
-        final letter = dua.name[0].toUpperCase();
-        letterCounts[letter] = (letterCounts[letter] ?? 0) + 1;
+    for (final letter in sortedLetters) {
+      letterIndices[letter] = groupedDataList.length;
+      groupedDataList.add(_ListSection(letter: letter, isHeader: true));
+
+      for (final dua in groupedDuasMap[letter]!) {
+        groupedDataList.add(_ListSection(dua: dua, isHeader: false));
       }
     }
 
-    double position = 0;
-    for (final letter in letters) {
-      positions[letter] = position;
-      final count = letterCounts[letter] ?? 0;
-      position += 50 + (count * 60); // header + items
-    }
-
-    return _AlphabetProcessResult(letters, positions);
+    return _ProcessResult(
+      groupedData: groupedDataList,
+      letters: sortedLetters,
+      letterIndices: letterIndices,
+    );
   }
 
   Future<void> _applyFilters() async {
-    if (_allDuas.isEmpty) {
-      uiState.value = currentUiState.copyWith(
-        isLoading: false,
-        duas: [],
-      );
-      return;
-    }
-
-    // Check if we have cached results for this filter combination
     final cacheKey =
         '${currentUiState.selectedLanguage}_${currentUiState.searchQuery}';
     if (_filteredCache.containsKey(cacheKey)) {
-      uiState.value = currentUiState.copyWith(
-        isLoading: false,
-        duas: _filteredCache[cacheKey],
-      );
+      final cachedFilteredDuas = _filteredCache[cacheKey]!;
+      await _processAndUpdateUiState(cachedFilteredDuas);
       return;
     }
 
-    // For large datasets, use compute to filter in a separate isolate
     final filteredDuas = await compute(
       _filterDuas,
       _FilterParams(
@@ -217,38 +249,45 @@ class AllDuasPresenter extends BasePresenter<AllDuasUiState> {
       ),
     );
 
-    // Cache the filtered results
     _filteredCache[cacheKey] = filteredDuas;
 
-    uiState.value = currentUiState.copyWith(
-      isLoading: false,
-      duas: filteredDuas,
-    );
+    await _processAndUpdateUiState(filteredDuas);
   }
 
-  // Pure function for filtering in an isolate
   static List<DuaEntity> _filterDuas(_FilterParams params) {
+    if (params.searchQuery.isEmpty) {
+      return params.duas
+          .where((dua) => dua.languageId == params.languageId)
+          .toList();
+    }
+
+    final searchQueryLower = params.searchQuery.toLowerCase();
     return params.duas.where((dua) {
       final languageMatches = dua.languageId == params.languageId;
-      final searchQuery = params.searchQuery.toLowerCase();
-      final nameMatches =
-          searchQuery.isEmpty || dua.name.toLowerCase().contains(searchQuery);
-
+      final nameMatches = dua.name.toLowerCase().contains(searchQueryLower);
       return languageMatches && nameMatches;
     }).toList();
   }
 
   void selectCharacter(String character) {
-    if (currentUiState.scrollController == null) return;
+    if (!itemScrollController.isAttached) return;
 
-    final position = _letterPositions[character] ?? 0;
-    currentUiState.scrollController?.jumpTo(position);
-
-    uiState.value = currentUiState.copyWith(selectedCharacter: character);
+    final index = _letterIndices[character];
+    if (index != null) {
+      itemScrollController.scrollTo(
+        index: index,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOutCubic,
+        alignment: 0,
+      );
+      uiState.value =
+          currentUiState.copyWith(selectedCharacter: () => character);
+    }
   }
 
   void toggleLanguage() {
     final newLanguage = currentUiState.selectedLanguage == 'bn' ? 'en' : 'bn';
+    _filteredCache.clear();
     uiState.value = currentUiState.copyWith(selectedLanguage: newLanguage);
     _applyFilters();
   }
@@ -262,36 +301,154 @@ class AllDuasPresenter extends BasePresenter<AllDuasUiState> {
   void refresh() {
     _retryCount = 0;
     _clearCaches();
+    _allDuas.clear();
+    uiState.value = AllDuasUiState.empty().copyWith(isLoading: true);
     _fetchAllDuas();
   }
 
   @override
   Future<void> addUserMessage(String message) async {
-    uiState.value = currentUiState.copyWith(userMessage: message);
+    UiHelper.doOnPageLoaded(() {
+      uiState.value = currentUiState.copyWith(userMessage: () => message);
+    });
   }
 
   @override
   Future<void> toggleLoading({required bool loading}) async {
-    uiState.value = currentUiState.copyWith(isLoading: loading);
+    UiHelper.doOnPageLoaded(() {
+      uiState.value = currentUiState.copyWith(isLoading: loading);
+    });
   }
+
+  String? get currentDragLetter => currentUiState.currentDragLetter;
+  List<String> get letters => currentUiState.alphabetLetters;
+
+  void handleDragStart(DragStartDetails details, BuildContext context) {
+    _handleDragUpdate(details.globalPosition, context);
+  }
+
+  void handleDragUpdate(DragUpdateDetails details, BuildContext context) {
+    _handleDragUpdate(details.globalPosition, context);
+  }
+
+  void handleTapDown(TapDownDetails details, BuildContext context) {
+    _handleDragUpdate(details.globalPosition, context);
+  }
+
+  void _handleDragUpdate(Offset globalPosition, BuildContext context) {
+    final RenderBox? box = context.findRenderObject() as RenderBox?;
+    if (box == null || letters.isEmpty) return;
+
+    final Offset localPosition = box.globalToLocal(globalPosition);
+    final double totalHeight = box.size.height;
+    final double letterHeight = totalHeight / letters.length;
+
+    int letterIndex =
+        (localPosition.dy / letterHeight).floor().clamp(0, letters.length - 1);
+
+    final String letter = letters[letterIndex];
+
+    if (letter != currentDragLetter) {
+      UiHelper.doOnPageLoaded(() {
+        uiState.value =
+            currentUiState.copyWith(currentDragLetter: () => letter);
+      });
+
+      final index = _letterIndices[letter];
+      if (index != null && itemScrollController.isAttached) {
+        itemScrollController.jumpTo(index: index);
+      }
+
+      showOverlay(context, letter, globalPosition, box);
+    }
+  }
+
+  void showOverlay(BuildContext context, String letter, Offset globalPosition,
+      RenderBox scrollBarBox) {
+    UiHelper.doOnPageLoaded(() {
+      currentUiState.overlayEntry?.remove();
+
+      final Offset scrollBarPosition = scrollBarBox.localToGlobal(Offset.zero);
+      final Offset overlayPosition =
+          Offset(scrollBarPosition.dx - 60, globalPosition.dy - 30);
+
+      final OverlayEntry overlayEntry = OverlayEntry(
+        builder: (BuildContext context) => Positioned(
+          left: overlayPosition.dx,
+          top: overlayPosition.dy,
+          child: IgnorePointer(
+            child: Material(
+              color: Colors.transparent,
+              child: Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                    color:
+                        Theme.of(context).colorScheme.surface.withOpacity(0.8),
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 4,
+                        offset: const Offset(0, 2),
+                      )
+                    ]),
+                child: Center(
+                  child: Text(
+                    letter,
+                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                          color: Theme.of(context).colorScheme.primary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      Overlay.of(context).insert(overlayEntry);
+      uiState.value = currentUiState.copyWith(overlayEntry: () => overlayEntry);
+    });
+  }
+
+  void removeOverlay() {
+    UiHelper.doOnPageLoaded(() {
+      currentUiState.overlayEntry?.remove();
+      if (uiState.value.overlayEntry != null ||
+          uiState.value.currentDragLetter != null) {
+        uiState.value = currentUiState.copyWith(
+          overlayEntry: () => null,
+          currentDragLetter: () => null,
+        );
+      }
+    });
+  }
+
+  List<_ListSection> get groupedListSections => _groupedData;
 }
 
-// Helper classes for isolate processing
-class _AlphabetProcessResult {
+class _ProcessResult {
+  final List<_ListSection> groupedData;
   final List<String> letters;
-  final Map<String, double> positions;
+  final Map<String, int> letterIndices;
 
-  _AlphabetProcessResult(this.letters, this.positions);
+  _ProcessResult({
+    required this.groupedData,
+    required this.letters,
+    required this.letterIndices,
+  });
 }
 
-class _FilterParams {
-  final List<DuaEntity> duas;
-  final String languageId;
-  final String searchQuery;
+class _ListSection {
+  final String letter;
+  final DuaEntity? dua;
+  final bool isHeader;
 
-  _FilterParams({
-    required this.duas,
-    required this.languageId,
-    required this.searchQuery,
+  _ListSection({
+    this.letter = '',
+    this.dua,
+    required this.isHeader,
   });
 }

@@ -6,36 +6,34 @@ class AllDuasUiState extends BaseUiState {
   const AllDuasUiState({
     required super.isLoading,
     super.userMessage,
-    this.duas,
+    this.duas = const [], // Default to empty list
     this.selectedLanguage = 'en', // Default to English
     this.searchQuery = '',
     this.selectedCharacter,
-    this.scrollController,
-    this.alphabetLetters,
+    this.alphabetLetters = const [], // Default to empty list
+    this.currentDragLetter, // Added
+    this.overlayEntry, // Added
   });
 
-  final List<DuaEntity>? duas;
+  final List<DuaEntity> duas;
   final String selectedLanguage; // 'en' for English, 'bn' for Bangla
   final String searchQuery;
   final String? selectedCharacter;
-  final ScrollController? scrollController;
-  final List<String>? alphabetLetters;
+  final List<String> alphabetLetters;
+  final String? currentDragLetter; // Added: Letter being dragged over scrollbar
+  final OverlayEntry? overlayEntry; // Added: Overlay for dragged letter
 
   factory AllDuasUiState.empty() {
-    return AllDuasUiState(
+    return const AllDuasUiState(
       isLoading: false,
-      userMessage: '',
-      duas: const [],
-      selectedLanguage: 'en', // Default to English
+      userMessage: null, // Use null for no message
+      duas: [],
+      selectedLanguage: 'en',
       searchQuery: '',
       selectedCharacter: null,
-      scrollController: ScrollController(),
-      // Keep full alphabet but it will be filtered based on available letters
-      alphabetLetters: [
-        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
-        'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
-        'U', 'V', 'W', 'X', 'Y', 'Z'
-      ],
+      alphabetLetters: [], // Initialize as empty, presenter calculates it
+      currentDragLetter: null, // Added
+      overlayEntry: null, // Added
     );
   }
 
@@ -47,29 +45,41 @@ class AllDuasUiState extends BaseUiState {
         selectedLanguage,
         searchQuery,
         selectedCharacter,
-        scrollController,
         alphabetLetters,
+        currentDragLetter, // Added
+        overlayEntry, // Added
       ];
 
   AllDuasUiState copyWith({
     bool? isLoading,
-    String? userMessage,
+    // Allow clearing userMessage by passing null explicitly
+    ValueGetter<String?>? userMessage,
     List<DuaEntity>? duas,
     String? selectedLanguage,
     String? searchQuery,
-    String? selectedCharacter,
-    ScrollController? scrollController,
+    // Allow clearing selectedCharacter by passing null explicitly
+    ValueGetter<String?>? selectedCharacter,
     List<String>? alphabetLetters,
+    // Allow clearing currentDragLetter by passing null explicitly
+    ValueGetter<String?>? currentDragLetter,
+    // Allow clearing overlayEntry by passing null explicitly
+    ValueGetter<OverlayEntry?>? overlayEntry,
   }) {
     return AllDuasUiState(
       isLoading: isLoading ?? this.isLoading,
-      userMessage: userMessage ?? this.userMessage,
+      // Use ValueGetter pattern for nullable fields to allow setting them to null
+      userMessage: userMessage != null ? userMessage() : this.userMessage,
       duas: duas ?? this.duas,
       selectedLanguage: selectedLanguage ?? this.selectedLanguage,
       searchQuery: searchQuery ?? this.searchQuery,
-      selectedCharacter: selectedCharacter ?? this.selectedCharacter,
-      scrollController: scrollController ?? this.scrollController,
+      selectedCharacter: selectedCharacter != null
+          ? selectedCharacter()
+          : this.selectedCharacter,
       alphabetLetters: alphabetLetters ?? this.alphabetLetters,
+      currentDragLetter: currentDragLetter != null
+          ? currentDragLetter()
+          : this.currentDragLetter,
+      overlayEntry: overlayEntry != null ? overlayEntry() : this.overlayEntry,
     );
   }
 }
