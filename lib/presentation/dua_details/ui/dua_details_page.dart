@@ -1,10 +1,13 @@
 import 'package:dua/core/config/dua_color.dart';
 import 'package:dua/core/config/dua_screen.dart';
+import 'package:dua/core/di/service_locator.dart';
 import 'package:dua/domain/entities/dua_entity.dart';
+import 'package:dua/domain/repositories/dua_bookmark_repository.dart';
+import 'package:dua/presentation/bookmark/ui/collection_bottom_sheet.dart';
 import 'package:dua/presentation/common/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 
-class DuaDetailsPage extends StatelessWidget {
+class DuaDetailsPage extends StatefulWidget {
   final DuaEntity dua;
 
   const DuaDetailsPage({
@@ -13,9 +16,38 @@ class DuaDetailsPage extends StatelessWidget {
   });
 
   @override
+  State<DuaDetailsPage> createState() => _DuaDetailsPageState();
+}
+
+class _DuaDetailsPageState extends State<DuaDetailsPage> {
+  bool _isBookmarked = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkIfBookmarked();
+  }
+
+  Future<void> _checkIfBookmarked() async {
+    try {
+      final bookmarkRepository = locate<DuaBookmarkRepository>();
+      final bookmarks =
+          await bookmarkRepository.getBookmarksByDuaID(widget.dua.id);
+
+      if (mounted) {
+        setState(() {
+          _isBookmarked = bookmarks.isNotEmpty;
+        });
+      }
+    } catch (e) {
+      print('Error checking bookmark status: $e');
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final List<Map<String, dynamic>> groupsList = dua.parseGroups();
+    final List<Map<String, dynamic>> groupsList = widget.dua.parseGroups();
 
     return Scaffold(
       backgroundColor: Color(0xFFF9FAFB),
@@ -54,7 +86,7 @@ class DuaDetailsPage extends StatelessWidget {
                               SizedBox(width: eightPx),
                               Expanded(
                                 child: Text(
-                                  "${dua.id}. ${dua.name}",
+                                  "${widget.dua.id}. ${widget.dua.name}",
                                   style: theme.textTheme.titleMedium?.copyWith(
                                     fontWeight: FontWeight.w500,
                                     color: Color(0xFF1E7167),
@@ -78,7 +110,9 @@ class DuaDetailsPage extends StatelessWidget {
                                 children: [
                                   if (group['name'] != null)
                                     Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: sixteenPx, vertical: eightPx),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: sixteenPx,
+                                          vertical: eightPx),
                                       child: Text(
                                         group['name'] as String,
                                         style: TextStyle(
@@ -89,12 +123,16 @@ class DuaDetailsPage extends StatelessWidget {
                                     ),
                                   if (group['context'] != null)
                                     Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: sixteenPx, vertical: fourPx),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: sixteenPx,
+                                          vertical: fourPx),
                                       child: Text(group['context'] as String),
                                     ),
                                   if (group['indopak'] != null)
                                     Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: sixteenPx, vertical: eightPx),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: sixteenPx,
+                                          vertical: eightPx),
                                       child: Text(
                                         group['indopak'] as String,
                                         style: TextStyle(
@@ -106,16 +144,22 @@ class DuaDetailsPage extends StatelessWidget {
                                     ),
                                   if (group['transliteration'] != null)
                                     Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: sixteenPx, vertical: fourPx),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: sixteenPx,
+                                          vertical: fourPx),
                                       child: Text(
                                         group['transliteration'] as String,
-                                        style: TextStyle(fontStyle: FontStyle.italic),
+                                        style: TextStyle(
+                                            fontStyle: FontStyle.italic),
                                       ),
                                     ),
                                   if (group['translation'] != null)
                                     Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: sixteenPx, vertical: fourPx),
-                                      child: Text(group['translation'] as String),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: sixteenPx,
+                                          vertical: fourPx),
+                                      child:
+                                          Text(group['translation'] as String),
                                     ),
                                   if (group['reference'] != null)
                                     Padding(
@@ -142,23 +186,23 @@ class DuaDetailsPage extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              if (dua.context.isNotEmpty)
+                              if (widget.dua.context.isNotEmpty)
                                 Padding(
                                   padding: EdgeInsets.symmetric(
                                     vertical: sixteenPx,
                                     horizontal: eightPx,
                                   ),
-                                  child: Text(dua.context),
+                                  child: Text(widget.dua.context),
                                 ),
                               // Indopak (Arabic text)
-                              if (dua.indopak.isNotEmpty)
+                              if (widget.dua.indopak.isNotEmpty)
                                 Padding(
                                   padding: EdgeInsets.symmetric(
                                     vertical: sixteenPx,
                                     horizontal: eightPx,
                                   ),
                                   child: Text(
-                                    dua.indopak,
+                                    widget.dua.indopak,
                                     style: TextStyle(
                                       fontFamily: 'KFGQ',
                                       fontSize: twentyEightPx,
@@ -171,14 +215,14 @@ class DuaDetailsPage extends StatelessWidget {
                                 ),
 
                               // Transliteration
-                              if (dua.transliteration.isNotEmpty)
+                              if (widget.dua.transliteration.isNotEmpty)
                                 Padding(
                                   padding: EdgeInsets.only(
                                     top: eightPx,
                                     bottom: sixteenPx,
                                   ),
                                   child: Text(
-                                    dua.transliteration,
+                                    widget.dua.transliteration,
                                     style: TextStyle(
                                       fontSize: sixteenPx,
                                       fontStyle: FontStyle.italic,
@@ -194,7 +238,7 @@ class DuaDetailsPage extends StatelessWidget {
                                   color: Color.fromRGBO(158, 158, 158, 0.3)),
 
                               // Translation
-                              if (dua.translation.isNotEmpty) ...[
+                              if (widget.dua.translation.isNotEmpty) ...[
                                 Padding(
                                   padding: EdgeInsets.only(
                                     top: sixteenPx,
@@ -215,7 +259,7 @@ class DuaDetailsPage extends StatelessWidget {
                                 Padding(
                                   padding: EdgeInsets.only(bottom: sixteenPx),
                                   child: Text(
-                                    dua.translation,
+                                    widget.dua.translation,
                                     style: TextStyle(
                                       fontSize: sixteenPx,
                                       color: Colors.black87,
@@ -227,11 +271,11 @@ class DuaDetailsPage extends StatelessWidget {
                               ],
 
                               // Context (if available)
-                              if (dua.context.isNotEmpty) ...[
+                              if (widget.dua.context.isNotEmpty) ...[
                                 Padding(
                                   padding: EdgeInsets.only(bottom: sixteenPx),
                                   child: Text(
-                                    dua.context,
+                                    widget.dua.context,
                                     style: TextStyle(
                                       fontSize: fifteenPx,
                                       color: Colors.black87,
@@ -242,7 +286,7 @@ class DuaDetailsPage extends StatelessWidget {
                               ],
 
                               // Reference
-                              if (dua.reference.isNotEmpty)
+                              if (widget.dua.reference.isNotEmpty)
                                 Container(
                                   width: double.infinity,
                                   padding: EdgeInsets.symmetric(
@@ -262,7 +306,7 @@ class DuaDetailsPage extends StatelessWidget {
                                       ),
                                       SizedBox(height: fourPx),
                                       Text(
-                                        dua.reference,
+                                        widget.dua.reference,
                                         style: TextStyle(
                                           fontSize: thirteenPx,
                                           color: Colors.grey.shade600,
@@ -295,9 +339,13 @@ class DuaDetailsPage extends StatelessWidget {
                                 onTap: () {},
                               ),
                               _buildActionButton(
-                                icon: Icons.bookmark_outline,
+                                icon: _isBookmarked
+                                    ? Icons.bookmark
+                                    : Icons.bookmark_outline,
                                 color: DuaColor.primaryColorLight100,
-                                onTap: () {},
+                                onTap: () {
+                                  _onBookmarkTap(context);
+                                },
                               ),
                               _buildActionButton(
                                 icon: Icons.copy_rounded,
@@ -345,6 +393,28 @@ class DuaDetailsPage extends StatelessWidget {
           size: twentyFourPx,
         ),
       ),
+    );
+  }
+
+  void _onBookmarkTap(BuildContext context) async {
+    await CollectionBottomSheet.show(
+      context: context,
+      duaID: widget.dua.id,
+      title: 'Add Bookmark',
+      collectionType: CollectionType.bookmark,
+      onBookmarkToggled: (count, {required bool isBookmarked}) {
+        // Update the UI to reflect the bookmark state
+        setState(() {
+          _isBookmarked = isBookmarked;
+        });
+
+        final String message =
+            isBookmarked ? "Dua bookmarked" : "Bookmark removed";
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text(message), duration: const Duration(seconds: 2)),
+        );
+      },
     );
   }
 }

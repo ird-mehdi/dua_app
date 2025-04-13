@@ -1,0 +1,413 @@
+
+Let me search for the bookmark functionality code in your application.
+
+Search files...
+Let me look for more bookmarks functionality code to give you a complete picture:
+
+Search files...
+Let me also search for bookmark use cases to understand the functionality more completely:
+
+Search files...
+Now let me search for one more thing to complete the picture - implementation of saving/retrieving bookmarks:
+
+Search files...
+এখানে আপনার অ্যাপ্লিকেশনের সমস্ত বুকমার্ক ফাংশনালিটি কোড দেয়া হলো:
+
+## বুকমার্ক এনটিটি কোড
+
+### BookmarkEntity
+```
+class BookmarkEntity extends Equatable {
+  const BookmarkEntity({
+    this.id = -1,
+    required this.folderName,
+    required this.color,
+    required this.surahID,
+    required this.ayahID,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+
+  factory BookmarkEntity.placeholder({
+    required String folderName,
+    required Color color,
+    required int surahID,
+    required int ayahID,
+  }) {
+    return BookmarkEntity(
+      folderName: folderName,
+      color: color,
+      surahID: surahID,
+      ayahID: ayahID,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+    );
+  }
+
+  final int id;
+  final String folderName;
+  final int surahID;
+  final int ayahID;
+  final Color color;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+}
+```
+
+### BookmarkFolderEntity
+```
+class BookmarkFolderEntity extends Equatable {
+  const BookmarkFolderEntity({
+    required this.id,
+    required this.name,
+    required this.color,
+    required this.count,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+
+  factory BookmarkFolderEntity.favourites() {
+    return BookmarkFolderEntity(
+      id: 28938,
+      name: "Favourites",
+      color: const Color(0xff17B686),
+      count: 0,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+    );
+  }
+  
+  final int id;
+  final String name;
+  final Color color;
+  final int count;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+}
+```
+
+## বুকমার্ক সম্পর্কিত ইউজকেস
+
+### SaveBookmarksToAyahUseCase
+```
+class SaveBookmarksToAyahUseCase extends BaseUseCase<String> {
+  SaveBookmarksToAyahUseCase(
+    super.errorMessageHandler,
+    this._userDataRepository,
+  );
+
+  final UserDataRepository _userDataRepository;
+
+  Future<Either<String, String>> execute({
+    required int surahID,
+    required int ayahID,
+    required List<BookmarkFolderEntity> savingFolders,
+  }) async {
+    return mapResultToEither(() async {
+      final List<BookmarkEntity> generatedBookmarks =
+          await _mapBookmarkFoldersIntoBookmarks(savingFolders, surahID, ayahID);
+      await _userDataRepository.saveBookmarksToAyah(
+        surahID: surahID,
+        ayahID: ayahID,
+        bookmarks: generatedBookmarks,
+      );
+      return savingFolders.isNotEmpty ? "Collection saved" : "";
+    });
+  }
+}
+```
+
+### CreateBookmarkFolderUseCase
+```
+class CreateBookmarkFolderUseCase extends BaseUseCase<String> {
+  CreateBookmarkFolderUseCase(
+    this._userDataRepository,
+    ErrorMessageHandler errorMessageHandler,
+  ) : super(errorMessageHandler);
+
+  final UserDataRepository _userDataRepository;
+
+  Future<Either<String, String>> execute({
+    required String name,
+    required Color color,
+    required int surahID,
+    required int ayahID,
+  }) async {
+    return mapResultToEither(() async {
+      await _saveAPlaceholderBookmark(
+        name: name,
+        color: color,
+        surahID: surahID,
+        ayahID: ayahID,
+      );
+      return "";
+    });
+  }
+}
+```
+
+### GetAllBookmarkEntries
+```
+class GetAllBookmarkEntries extends BaseUseCase<List<BookmarkEntity>> {
+  GetAllBookmarkEntries(
+    this._userDataRepository,
+    super._errorMessageHandler,
+  );
+
+  final UserDataRepository _userDataRepository;
+
+  Future<Either<String, List<BookmarkEntity>>> execute() async {
+    final Either<String, List<BookmarkEntity>> result =
+        await mapResultToEither(
+      () async => _userDataRepository.getAllBookmarks(),
+    );
+    return result;
+  }
+}
+```
+
+## বুকমার্ক প্রেজেন্টার থেকে মূল ফাংশন
+
+### বুকমার্ক যোগ করার ফাংশন
+```
+Future<void> onClickAddBookmarkButton({
+  required int surahID,
+  required int ayahID,
+}) async {
+  final BuildContext context = QuranMajeed.globalContext;
+  await CollectionBottomSheet.show(
+    context: context,
+    surahID: surahID,
+    ayahID: ayahID,
+    title: context.l10n.addBookmarks,
+    collectionType: CollectionType.bookmark,
+    onBookmarkToggled: (count, {required bool isBookmarked}) async {
+      await _ayahPresenter.updateAyahDataWithBookmark(
+        surahID: surahID,
+        ayahID: ayahID,
+        isBookmarked: isBookmarked,
+        isMultiBookmarked: count > 1,
+      );
+      _ayahPresenter.uiState.refresh();
+    },
+  );
+}
+```
+
+### বুকমার্ক সেভ করার ফাংশন
+```
+Future<void> saveBookmarksForAyah({
+  required int surahID,
+  required int ayahID,
+  required void Function(int, {required bool isBookmarked}) onSaved,
+  required BuildContext context,
+}) async {
+  final Set<String> selectedBookmarkFolderNames = currentUiState.selectedBookmarkFolderNames;
+  
+  uiState.value = uiState.value.copyWith(isBookmarkChanged: true);
+
+  final String bookmarkSavedMessage = context.l10n.bookmarkSaved;
+  final String bookmarkRemovedMessage = context.l10n.removeBookmark;
+
+  final List<BookmarkFolderEntity> bookmarkFolders =
+      currentUiState.bookmarkFolders.filter((f) => selectedBookmarkFolderNames.contains(f.name)).toList();
+
+  await executeMessageOnlyUseCase(
+    () async => _saveBookmarksToAyahUseCase.execute(
+      surahID: surahID,
+      ayahID: ayahID,
+      savingFolders: bookmarkFolders,
+    ),
+    onSuccess: () async {
+      await syncCollectionsWithRemote();
+
+      onSaved(
+        bookmarkFolders.length,
+        isBookmarked: bookmarkFolders.isNotEmpty,
+      );
+      
+      if (bookmarkFolders.isEmpty) {
+        addUserMessage(bookmarkRemovedMessage);
+      } else if (!_wasBookmarkJustAdded || selectedBookmarkFolderNames.length > 1) {
+        addUserMessage(bookmarkSavedMessage);
+      }
+    },
+    showMessage: false,
+  );
+
+  _wasBookmarkJustAdded = false;
+  await _clearSelection();
+}
+```
+
+### বুকমার্ক ফোল্ডার আপডেট করার ফাংশন
+```
+Future<bool> updateBookmarkFolder({
+  required BookmarkFolderEntity folder,
+  required String newName,
+  required Color newColor,
+}) async {
+  final bool isValid = folder.name == newName ||
+      await _validateFolderName(
+        name: newName.trim(),
+      );
+  if (!isValid) return false;
+  await executeMessageOnlyUseCase(
+    () async => _updateBookmarkFolderUseCase.execute(
+      folderName: folder.name.trim(),
+      newFolderName: newName.trim(),
+      color: newColor,
+    ),
+    onSuccess: () async {
+      await syncCollectionsWithRemote();
+    },
+  );
+  await fetchBookmarks();
+  return true;
+}
+```
+
+### বুকমার্ক ফোল্ডার ডিলিট করার ফাংশন
+```
+Future<void> deleteBookmarkFolder({
+  required BookmarkFolderEntity folder,
+}) async {
+  await parseDataFromEitherWithUserMessage(
+    task: () => _deleteBookmarkFolderUseCase.execute(folder: folder),
+    onDataLoaded: (message) async {
+      final List<BookmarkFolderEntity> bookmarks = currentUiState.bookmarkFolders.toList(growable: true)
+        ..remove(folder);
+
+      if (_searchQuery.isNotEmpty) {
+        clearSearch();
+      }
+
+      uiState.value = currentUiState.copyWith(bookmarkFolders: bookmarks);
+      await syncCollectionsWithRemote();
+      await fetchBookmarks();
+      await addUserMessage(message);
+    },
+  );
+}
+```
+
+### বুকমার্ক সার্চ করার ফাংশন
+```
+Future<void> searchBookmarks({required String query}) async {
+  final String trimmedQuery = query.trim();
+  _searchQuery = trimmedQuery;
+
+  if (trimmedQuery.isEmpty) {
+    await fetchBookmarks();
+    return;
+  }
+
+  if (trimmedQuery == _lastBookmarkQuery) return;
+
+  await parseDataFromEitherWithUserMessage(
+    task: () => _searchBookmarkUseCase.execute(
+      query: trimmedQuery,
+      allFolders: _allBookmarkFolders,
+    ),
+    onDataLoaded: (bookmarks) {
+      uiState.value = currentUiState.copyWith(
+        filteredBookmarkFolders: bookmarks,
+      );
+    },
+  );
+  _lastBookmarkQuery = trimmedQuery;
+}
+```
+
+### বুকমার্ক সিঙ্ক করার ফাংশন
+```
+Future<void> syncCollectionsWithRemote() async {
+  await _syncBookmarksWithRemoteUseCase.execute();
+}
+```
+
+### বুকমার্ক সর্ট করার ফাংশন
+```
+Future<void> sortBookmarks(SortOptionEntity option) async {
+  await _sortBookmarks(option);
+  await _saveSortOptionUseCase.execute(option);
+  uiState.refresh();
+}
+
+Future<void> _sortBookmarks(SortOptionEntity option) async {
+  await parseDataFromEitherWithUserMessage(
+    task: () => _sortBookmarkUseCase.execute(
+      folders: _originalBookmarkFolders,
+      option: option,
+    ),
+    onDataLoaded: (sortedFolders) {
+      _allBookmarkFolders = sortedFolders;
+      uiState.value = uiState.value.copyWith(
+        selectedSort: option,
+        bookmarkFolders: sortedFolders,
+      );
+      uiState.refresh();
+    },
+  );
+}
+```
+
+## ডাটা স্টোরেজ এবং প্রসেসিং ফাংশন
+
+### লোকাল ডাটা স্টোরেজ
+```
+Future<void> addAyahToBookmarkFolder({
+  required BookmarkEntity bookmark,
+  bool isImport = false,
+}) async {
+  return synchronized(() async {
+    if (!isImport) {
+      final existingBookmark = await _userDataStorage.getBookmarksOfSameFolderWithSameAyah(
+        surahID: bookmark.surahID,
+        folderName: bookmark.folderName,
+        ayahID: bookmark.ayahID,
+      );
+
+      if (existingBookmark != null) {
+        return; // Skip if already exists
+      }
+    }
+
+    final String colorHex = getHexFromColor(bookmark.color);
+
+    await _userDataStorage.addAyahToBookmarkFolder(
+      surahID: bookmark.surahID,
+      ayahID: bookmark.ayahID,
+      folderName: bookmark.folderName,
+      color: colorHex,
+      createdAt: bookmark.createdAt,
+      updatedAt: bookmark.updatedAt,
+    );
+  });
+}
+```
+
+### রিমোট ডাটা স্টোরেজ
+```
+Future<void> saveBookmarksToAyah({
+  required int surahID,
+  required int ayahID,
+  required List<BookmarkEntity> bookmarks,
+}) async {
+  await catchFutureOrVoid(() async {
+    await deleteAyahFromBookmark(surahID: surahID, ayahID: ayahID);
+    if (bookmarks.isEmpty) return;
+
+    final List<Map<String, Object?>> bookmarkMaps = await Future.wait(bookmarks.map((b) async => b
+        .copyWith(
+          createdAt: b.createdAt,
+          updatedAt: b.updatedAt,
+        )
+        .toMap()));
+
+    await _backendAsAService.saveBookmarks(bookmarks: bookmarkMaps);
+  });
+}
+```
+
+এই কোড গুলো আপনার অ্যাপে বুকমার্ক ফাংশনালিটি সম্পর্কিত মূল অংশ, যা ক্লিন আর্কিটেকচার ফলো করে ইমপ্লিমেন্ট করা হয়েছে।

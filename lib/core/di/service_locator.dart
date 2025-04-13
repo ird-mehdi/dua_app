@@ -3,11 +3,16 @@ import 'dart:async';
 import 'package:dua/core/base/base_presenter.dart';
 import 'package:dua/core/services/dua_cache_service.dart';
 import 'package:dua/data/datasource/local_data_source.dart';
+import 'package:dua/data/repositories/dua_bookmark_repository_impl.dart';
 import 'package:dua/data/repositories/dua_repository_impl.dart';
 import 'package:dua/data/services/dua_database/database_service.dart';
 import 'package:dua/data/services/error_message_handler_impl.dart';
+import 'package:dua/domain/repositories/dua_bookmark_repository.dart';
 import 'package:dua/domain/repositories/dua_repository.dart';
 import 'package:dua/domain/service/error_message_handler.dart';
+import 'package:dua/domain/use_cases/bookmark/create_bookmark_folder_use_case.dart';
+import 'package:dua/domain/use_cases/bookmark/get_all_bookmark_folders_use_case.dart';
+import 'package:dua/domain/use_cases/bookmark/save_bookmarks_to_dua_use_case.dart';
 import 'package:dua/domain/use_cases/dua/get_all_dua.dart';
 import 'package:dua/presentation/all_dua/presenter/all_dua_presenter.dart';
 import 'package:dua/presentation/bookmark/presenter/bookmark_presenter.dart';
@@ -41,6 +46,10 @@ class ServiceLocator {
     // );
     _serviceLocator.registerLazySingleton<DuaRepository>(
         () => DuaRepositoryImpl(localDataSource: locate()));
+
+    // Register bookmark repository
+    _serviceLocator.registerLazySingleton<DuaBookmarkRepository>(
+        () => DuaBookmarkRepositoryImpl(locate()));
   }
 
   Future<void> _setUpServices() async {
@@ -81,5 +90,13 @@ class ServiceLocator {
     //     .registerFactory(() => GetSettingsStateUseCase(locate(), locate()));
     _serviceLocator
         .registerLazySingleton(() => GetAllDuaUseCase(duaRepository: locate()));
+
+    // Register bookmark use cases
+    _serviceLocator.registerLazySingleton(
+        () => SaveBookmarksToDuaUseCase(locate(), locate()));
+    _serviceLocator.registerLazySingleton(
+        () => CreateBookmarkFolderUseCase(locate(), locate()));
+    _serviceLocator.registerLazySingleton(
+        () => GetAllBookmarkFoldersUseCase(locate(), locate()));
   }
 }

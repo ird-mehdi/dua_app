@@ -38,9 +38,9 @@ class EditBookmarkBottomSheet {
       builder: (BuildContext context) {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
-            return Padding(
+            return Container(
               padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom,
+                bottom: MediaQuery.of(context).viewInsets.bottom + 16,
                 left: 16,
                 right: 16,
                 top: 16,
@@ -49,15 +49,21 @@ class EditBookmarkBottomSheet {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Text(
-                    'Edit Bookmark Folder',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                  // Header
+                  const Padding(
+                    padding: EdgeInsets.all(12.0),
+                    child: Text(
+                      'Edit Bookmark Folder',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 24),
+
+                  // Folder name input
                   const Text(
                     'Change Folder Name',
                     style: TextStyle(
@@ -97,6 +103,8 @@ class EditBookmarkBottomSheet {
                     ),
                   ),
                   const SizedBox(height: 24),
+
+                  // Color selection
                   const Text(
                     'Change color for folder',
                     style: TextStyle(
@@ -107,8 +115,8 @@ class EditBookmarkBottomSheet {
                   ),
                   const SizedBox(height: 16),
                   Wrap(
-                    spacing: 8,
-                    runSpacing: 10,
+                    spacing: 12,
+                    runSpacing: 12,
                     children: List.generate(
                       colorOptions.length,
                       (index) => GestureDetector(
@@ -126,6 +134,15 @@ class EditBookmarkBottomSheet {
                             border: selectedColor == colorOptions[index]
                                 ? Border.all(color: Colors.white, width: 2)
                                 : null,
+                            boxShadow: selectedColor == colorOptions[index]
+                                ? [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.2),
+                                      blurRadius: 4,
+                                      offset: Offset(0, 2),
+                                    )
+                                  ]
+                                : null,
                           ),
                           child: selectedColor == colorOptions[index]
                               ? const Icon(
@@ -139,18 +156,19 @@ class EditBookmarkBottomSheet {
                     ),
                   ),
                   const SizedBox(height: 32),
+
+                  // Action buttons
                   Row(
                     children: [
                       Expanded(
-                        child: ElevatedButton(
+                        child: OutlinedButton(
                           onPressed: () => Navigator.pop(context),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFF3F4F6),
-                            foregroundColor: const Color(0xFF6B7280),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
+                          style: OutlinedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            side: BorderSide(color: Colors.grey.shade300),
                           ),
                           child: const Text('Cancel'),
                         ),
@@ -163,10 +181,10 @@ class EditBookmarkBottomSheet {
                             Navigator.pop(context);
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF4B876C),
+                            backgroundColor: Colors.green.shade700,
                             foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+                              borderRadius: BorderRadius.circular(30),
                             ),
                             padding: const EdgeInsets.symmetric(vertical: 12),
                           ),
@@ -175,7 +193,6 @@ class EditBookmarkBottomSheet {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
                 ],
               ),
             );
