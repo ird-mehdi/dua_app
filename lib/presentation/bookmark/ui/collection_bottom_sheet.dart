@@ -282,97 +282,18 @@ class _BookmarkCollectionContentState extends State<BookmarkCollectionContent> {
   }
 
   Future<void> _showCreateFolderDialog(BuildContext context) async {
-    final TextEditingController nameController = TextEditingController();
-    Color selectedColor = Colors.blue;
-
-    final List<Color> colorOptions = [
-      const Color(0xFFFF9F9F), // Pink
-      const Color(0xFF72CD9C), // Green
-      const Color(0xFF5282FF), // Blue
-      const Color(0xFFF178B6), // Magenta
-      const Color(0xFF7DDDD8), // Cyan
-      const Color(0xFF5B68FA), // Indigo
-      const Color(0xFF8CAC5B), // Olive
-      const Color(0xFF9A78FA), // Purple
-    ];
-
-    await showDialog(
-      context: context,
-      builder: (context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return AlertDialog(
-              title: const Text("Create New Folder"),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextField(
-                    controller: nameController,
-                    decoration: const InputDecoration(
-                      labelText: "Folder Name",
-                      hintText: "Enter folder name",
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  const Text("Select Color"),
-                  const SizedBox(height: 8),
-                  Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: colorOptions.map((color) {
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            selectedColor = color;
-                          });
-                        },
-                        child: Container(
-                          width: 36,
-                          height: 36,
-                          decoration: BoxDecoration(
-                            color: color,
-                            shape: BoxShape.circle,
-                            border: selectedColor == color
-                                ? Border.all(color: Colors.black, width: 2)
-                                : null,
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ],
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text("Cancel"),
-                ),
-                TextButton(
-                  onPressed: () async {
-                    if (nameController.text.trim().isNotEmpty) {
-                      final newFolderName = nameController.text.trim();
-                      final isCreated = await presenter.createBookmarkFolder(
-                        name: newFolderName,
-                        color: selectedColor,
-                        duaID: widget.duaID,
-                      );
-
-                      if (isCreated && mounted) {
-                        setState(() {
-                          selectedFolderNames.add(newFolderName);
-                        });
-                        Navigator.pop(context);
-                      }
-                    }
-                  },
-                  child: const Text("Create"),
-                ),
-              ],
-            );
-          },
-        );
-      },
+    final isCreated = await presenter.showCreateBookmarkFolderSheet(
+      context,
+      duaID: widget.duaID,
     );
+
+    if (isCreated && mounted) {
+      // Refresh the list of folders
+      await presenter.loadBookmarkFolders();
+
+      // Update the UI
+      setState(() {});
+    }
   }
 
   Future<void> _saveBookmarks() async {

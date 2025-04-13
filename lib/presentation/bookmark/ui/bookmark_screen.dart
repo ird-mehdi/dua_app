@@ -5,90 +5,143 @@ import 'package:dua/core/utility/utility.dart';
 import 'package:dua/domain/entities/dua_entity.dart';
 import 'package:dua/presentation/bookmark/presenter/bookmark_presenter.dart';
 import 'package:dua/presentation/bookmark/ui/bookmark_folder_detail_page.dart';
+import 'package:dua/presentation/bookmark/ui/create_bookmark_folder_sheet.dart';
 import 'package:dua/presentation/common/widgets/custom_app_bar.dart';
 import 'package:dua/presentation/common/widgets/custom_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class BookmarkScreen extends StatelessWidget {
+class BookmarkScreen extends StatefulWidget {
   const BookmarkScreen({super.key});
 
   @override
+  _BookmarkScreenState createState() => _BookmarkScreenState();
+}
+
+class _BookmarkScreenState extends State<BookmarkScreen> {
+  final BookmarkPresenter presenter = locate<BookmarkPresenter>();
+
+  @override
+  void initState() {
+    super.initState();
+    presenter.loadBookmarkFolders();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Reset current folder name when returning to this screen
+    if (presenter.currentUiState.currentFolderName.isNotEmpty) {
+      presenter.resetCurrentFolder();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    Theme.of(context);
-    final presenter = locate<BookmarkPresenter>();
-
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.all(eightPx),
-        child: Column(
-          children: [
-            CustomAppBar(
-              paddingLeft: 0,
-              title: 'Bookmark',
-              icon: AppImages.icCategory2,
-              titleSpacing: eightPx,
-              titleFontSize: eighteenPx,
-              onLeadingPressed:
-                  presenter.currentUiState.currentFolderName.isNotEmpty
-                      ? () {
-                          // Go back to folder list
-                          presenter.loadBookmarkFolders();
-                        }
-                      : null,
-            ),
-            CustomSearchBar(
-              hintText: 'Search bookmarked duas',
-            ),
-            const SizedBox(height: 10), // 10px gap after search bar
-            Expanded(
-              child: GetBuilder<BookmarkPresenter>(
-                builder: (controller) {
-                  if (controller.currentUiState.isLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
+      appBar: AppBar(
+        title: const Text('Bookmarks'),
+        centerTitle: true,
+      ),
+      body: AnimatedBuilder(
+        animation: presenter,
+        builder: (context, child) {
+          return presenter.currentUiState.isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : _buildContent();
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final isCreated = await presenter.showCreateBookmarkFolderSheet(
+            context,
+            duaID:
+                -1, // No specific dua ID for folder creation from bookmarks screen
+          );
 
-                  // Display folder content if a folder is selected
-                  if (controller.currentUiState.currentFolderName.isNotEmpty) {
-                    return _buildFolderContent(context, controller);
-                  }
+          if (isCreated) {
+            // Refresh the folder list
+            presenter.loadBookmarkFolders();
+          }
+        },
+        backgroundColor: const Color(0xFF386A20),
+        child: const Icon(Icons.add, color: Colors.white),
+      ),
+    );
+  }
 
-                  // Display folder list
-                  if (controller.currentUiState.bookmarkFolders.isEmpty) {
-                    return _buildEmptyState();
-                  }
+  Widget _buildContent() {
+    Theme.of(context);
 
-                  return ListView.separated(
-                    itemCount: controller.currentUiState.bookmarkFolders.length,
-                    separatorBuilder: (context, index) =>
-                        const SizedBox(height: 10), // 10px gap between items
-                    itemBuilder: (context, index) {
-                      final folder =
-                          controller.currentUiState.bookmarkFolders[index];
-                      return BookmarkItem(
-                        folderName: folder.name,
-                        duaCount: folder.duaCount,
-                        color: folder.color.withOpacityInt(20),
-                        iconColor: folder.color,
-                        folderIndex: index,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => BookmarkFolderDetailPage(
-                                folder: folder,
-                              ),
+    return Padding(
+      padding: EdgeInsets.all(eightPx),
+      child: Column(
+        children: [
+          CustomAppBar(
+            paddingLeft: 0,
+            title: 'Bookmark',
+            icon: AppImages.icCategory2,
+            titleSpacing: eightPx,
+            titleFontSize: eighteenPx,
+            onLeadingPressed:
+                presenter.currentUiState.currentFolderName.isNotEmpty
+                    ? () {
+                        // Go back to folder list
+                        presenter.loadBookmarkFolders();
+                      }
+                    : null,
+          ),
+          CustomSearchBar(
+            hintText: 'Search bookmarked duas',
+          ),
+          const SizedBox(height: 10), // 10px gap after search bar
+          Expanded(
+            child: GetBuilder<BookmarkPresenter>(
+              builder: (controller) {
+                if (controller.currentUiState.isLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                // Display folder content if a folder is selected
+                if (controller.currentUiState.currentFolderName.isNotEmpty) {
+                  return _buildFolderContent(context, controller);
+                }
+
+                // Display folder list
+                if (controller.currentUiState.bookmarkFolders.isEmpty) {
+                  return _buildEmptyState();
+                }
+
+                return ListView.separated(
+                  itemCount: controller.currentUiState.bookmarkFolders.length,
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 10), // 10px gap between items
+                  itemBuilder: (context, index) {
+                    final folder =
+                        controller.currentUiState.bookmarkFolders[index];
+                    return BookmarkItem(
+                      folderName: folder.name,
+                      duaCount: folder.duaCount,
+                      color: folder.color.withOpacityInt(20),
+                      iconColor: folder.color,
+                      folderIndex: index,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BookmarkFolderDetailPage(
+                              folder: folder,
                             ),
-                          );
-                        },
-                      );
-                    },
-                  );
-                },
-              ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                );
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

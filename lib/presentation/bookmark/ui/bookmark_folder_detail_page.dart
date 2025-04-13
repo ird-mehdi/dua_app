@@ -86,7 +86,10 @@ class _BookmarkFolderDetailPageState extends State<BookmarkFolderDetailPage> {
         backgroundColor: Colors.transparent,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.green.shade800),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            presenter.resetCurrentFolder();
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           widget.folder.name,

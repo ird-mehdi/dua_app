@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 
-class EditBookmarkBottomSheet {
-  static Future<void> show({
+class CreateBookmarkFolderSheet {
+  static Future<Map<String, dynamic>?> show({
     required BuildContext context,
-    required String folderName,
-    required Color folderColor,
-    required Function(String, Color) onSave,
   }) async {
-    final TextEditingController nameController =
-        TextEditingController(text: folderName);
-    Color selectedColor = folderColor;
+    final TextEditingController nameController = TextEditingController();
+    Color selectedColor = const Color(0xFFFF9F9F); // Default color
 
     final List<Color> colorOptions = [
       const Color(0xFFFF9F9F), // Light Red
@@ -29,7 +25,7 @@ class EditBookmarkBottomSheet {
       const Color(0xFFFAA356), // Amber
     ];
 
-    return showModalBottomSheet(
+    final result = await showModalBottomSheet<Map<String, dynamic>>(
       context: context,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
@@ -53,7 +49,7 @@ class EditBookmarkBottomSheet {
                   const Padding(
                     padding: EdgeInsets.all(12.0),
                     child: Text(
-                      'Edit Bookmark Folder',
+                      'Create Bookmark Folder',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -65,7 +61,7 @@ class EditBookmarkBottomSheet {
 
                   // Folder name input
                   const Text(
-                    'Change Folder Name',
+                    'Folder Name',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -106,7 +102,7 @@ class EditBookmarkBottomSheet {
 
                   // Color selection
                   const Text(
-                    'Change color for folder',
+                    'Choose color for folder',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -170,8 +166,12 @@ class EditBookmarkBottomSheet {
                       Expanded(
                         child: ElevatedButton(
                           onPressed: () {
-                            onSave(nameController.text, selectedColor);
-                            Navigator.pop(context);
+                            if (nameController.text.trim().isNotEmpty) {
+                              Navigator.pop(context, {
+                                'name': nameController.text.trim(),
+                                'color': selectedColor,
+                              });
+                            }
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF386A20),
@@ -194,5 +194,7 @@ class EditBookmarkBottomSheet {
         );
       },
     );
+
+    return result;
   }
 }

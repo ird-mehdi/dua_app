@@ -9,6 +9,7 @@ import 'package:dua/domain/use_cases/bookmark/create_bookmark_folder_use_case.da
 import 'package:dua/domain/use_cases/bookmark/get_all_bookmark_folders_use_case.dart';
 import 'package:dua/domain/use_cases/bookmark/save_bookmarks_to_dua_use_case.dart';
 import 'package:dua/presentation/bookmark/ui/edit_bookmark_bottom_sheet.dart';
+import 'package:dua/presentation/bookmark/ui/create_bookmark_folder_sheet.dart';
 import 'package:dua/presentation/dua_details/ui/dua_details_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -157,6 +158,7 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
 
         _state.value = currentUiState.copyWith(
           bookmarkFolders: bookmarkFolders,
+          currentFolderName: '',
         );
       },
     );
@@ -308,6 +310,28 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
     );
   }
 
+  Future<bool> showCreateBookmarkFolderSheet(
+    BuildContext context, {
+    required int duaID,
+  }) async {
+    final result = await CreateBookmarkFolderSheet.show(
+      context: context,
+    );
+
+    if (result != null) {
+      final String name = result['name'];
+      final Color color = result['color'];
+
+      return await createBookmarkFolder(
+        name: name,
+        color: color,
+        duaID: duaID,
+      );
+    }
+
+    return false;
+  }
+
   Future<void> loadDuasFromFolder(String folderName) async {
     await toggleLoading(loading: true);
 
@@ -328,10 +352,19 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
       // Get all duas
       final allDuas = await _duaRepository.getAllDua();
 
-      // Filter duas that match the bookmarked dua IDs
+      // Filter duas that match the bookmarked dua IDs and ensure no duplicates
       final bookmarkedDuaIds = bookmarks.map((b) => b.duaID).toSet();
-      final bookmarkedDuas =
-          allDuas.where((dua) => bookmarkedDuaIds.contains(dua.id)).toList();
+
+      // Use a map to ensure each dua only appears once based on its ID
+      final Map<int, DuaEntity> uniqueDuas = {};
+      for (var dua in allDuas) {
+        if (bookmarkedDuaIds.contains(dua.id) &&
+            !uniqueDuas.containsKey(dua.id)) {
+          uniqueDuas[dua.id] = dua;
+        }
+      }
+
+      final bookmarkedDuas = uniqueDuas.values.toList();
 
       _state.value = currentUiState.copyWith(
         bookmarkedDuas: bookmarkedDuas,
@@ -410,5 +443,13 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
         update();
       }
     }
+  }
+
+  void resetCurrentFolder() {
+    _state.value = currentUiState.copyWith(
+      currentFolderName: '',
+      bookmarkedDuas: [],
+    );
+    update();
   }
 }
