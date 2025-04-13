@@ -63,7 +63,7 @@ class OptimizedDuaList extends StatelessWidget {
       cacheExtent: 500, // Increase cache to reduce rebuilds when scrolling
       itemBuilder: (context, index) {
         final section = groupedData[index];
-        
+
         if (section.isHeader) {
           // Render section header
           return _buildSectionHeader(context, section.letter);
@@ -79,7 +79,7 @@ class OptimizedDuaList extends StatelessWidget {
   List<_ListSection> _computeGroupedData() {
     final result = <_ListSection>[];
     final Map<String, List<DuaEntity>> groupedDuas = {};
-    
+
     // Group duas by first letter
     for (var dua in duas) {
       if (dua.name.isNotEmpty) {
@@ -87,20 +87,20 @@ class OptimizedDuaList extends StatelessWidget {
         groupedDuas.putIfAbsent(firstLetter, () => []).add(dua);
       }
     }
-    
+
     // Create flat list with headers and items
     final sortedLetters = groupedDuas.keys.toList()..sort();
-    
+
     for (final letter in sortedLetters) {
       // Add header section
       result.add(_ListSection(letter: letter, isHeader: true));
-      
+
       // Add all duas in this section
       for (final dua in groupedDuas[letter]!) {
         result.add(_ListSection(dua: dua, isHeader: false));
       }
     }
-    
+
     return result;
   }
 

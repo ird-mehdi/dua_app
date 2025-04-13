@@ -38,7 +38,8 @@ class DraggableScrollbarPositionedList extends StatefulWidget {
     this.scrollbarAnimationDuration = const Duration(milliseconds: 300),
     this.scrollbarTimeToFade = const Duration(milliseconds: 600),
     this.onDragging,
-  }) : scrollThumbBuilder = _thumbArrowBuilder(scrollThumbKey, alwaysVisibleScrollThumb);
+  }) : scrollThumbBuilder =
+            _thumbArrowBuilder(scrollThumbKey, alwaysVisibleScrollThumb);
 
   final ScrollablePositionedList child;
 
@@ -61,7 +62,8 @@ class DraggableScrollbarPositionedList extends StatefulWidget {
   final void Function({required bool dragging})? onDragging;
 
   @override
-  DraggableScrollbarPositionedListState createState() => DraggableScrollbarPositionedListState();
+  DraggableScrollbarPositionedListState createState() =>
+      DraggableScrollbarPositionedListState();
 
   static Widget buildScrollThumb({
     required Widget scrollThumb,
@@ -123,7 +125,8 @@ class DraggableScrollbarPositionedList extends StatefulWidget {
   }
 }
 
-class DraggableScrollbarPositionedListState extends State<DraggableScrollbarPositionedList>
+class DraggableScrollbarPositionedListState
+    extends State<DraggableScrollbarPositionedList>
     with TickerProviderStateMixin {
   BoxConstraints? _constraints;
   late double _barOffset;
@@ -161,7 +164,8 @@ class DraggableScrollbarPositionedListState extends State<DraggableScrollbarPosi
 
   double get barMaxScrollExtent {
     if (_constraints == null) return 0;
-    return (_constraints!.maxHeight - widget.heightScrollThumb - 100).clamp(0, double.infinity);
+    return (_constraints!.maxHeight - widget.heightScrollThumb - 100)
+        .clamp(0, double.infinity);
   }
 
   double get barMinScrollExtent => 0;
@@ -174,7 +178,8 @@ class DraggableScrollbarPositionedListState extends State<DraggableScrollbarPosi
     if (!scrollController.position.hasViewportDimension) {
       return 0;
     }
-    return (scrollController.position.maxScrollExtent - scrollController.position.minScrollExtent);
+    return (scrollController.position.maxScrollExtent -
+        scrollController.position.minScrollExtent);
   }
 
   double get viewMinScrollExtent {
@@ -207,7 +212,8 @@ class DraggableScrollbarPositionedListState extends State<DraggableScrollbarPosi
                 RepaintBoundary(
                   key: const Key("RepaintBoundaryScrollbarDraggableListView"),
                   child: GestureDetector(
-                    key: const Key("RepaintBoundaryScrollbarDraggableListViewGD"),
+                    key: const Key(
+                        "RepaintBoundaryScrollbarDraggableListViewGD"),
                     onVerticalDragStart: _onVerticalDragStart,
                     onVerticalDragUpdate: _onVerticalDragUpdate,
                     onVerticalDragEnd: _onVerticalDragEnd,
@@ -262,7 +268,8 @@ class DraggableScrollbarPositionedListState extends State<DraggableScrollbarPosi
           );
         }
 
-        if (notification is ScrollUpdateNotification || notification is OverscrollNotification) {
+        if (notification is ScrollUpdateNotification ||
+            notification is OverscrollNotification) {
           if (_thumbAnimationController.status != AnimationStatus.forward) {
             _thumbAnimationController.forward();
           }
@@ -319,7 +326,8 @@ class DraggableScrollbarPositionedListState extends State<DraggableScrollbarPosi
       }
 
       if (_isDragInProcess) {
-        _barOffset = (_barOffset + details.delta.dy).clamp(barMinScrollExtent, barMaxScrollExtent);
+        _barOffset = (_barOffset + details.delta.dy)
+            .clamp(barMinScrollExtent, barMaxScrollExtent);
 
         final double viewDelta = getScrollViewDelta(
           details.delta.dy,
@@ -332,8 +340,11 @@ class DraggableScrollbarPositionedListState extends State<DraggableScrollbarPosi
           viewMaxScrollExtent,
         );
 
-        final double indexRatio = barMaxScrollExtent > 0 ? _barOffset / barMaxScrollExtent : 0;
-        final int targetIndex = (indexRatio * widget.child.itemCount).clamp(0, widget.child.itemCount - 1).toInt();
+        final double indexRatio =
+            barMaxScrollExtent > 0 ? _barOffset / barMaxScrollExtent : 0;
+        final int targetIndex = (indexRatio * widget.child.itemCount)
+            .clamp(0, widget.child.itemCount - 1)
+            .toInt();
 
         widget.controller.jumpTo(index: targetIndex);
       }

@@ -38,7 +38,10 @@ class AllDuaPage extends StatelessWidget {
                       onPressed: () {
                         presenter.toggleLanguage();
                       },
-                      child: Text(presenter.uiState.value.selectedLanguage == 'bn' ? 'En' : 'Ba'),
+                      child: Text(
+                          presenter.uiState.value.selectedLanguage == 'bn'
+                              ? 'En'
+                              : 'Ba'),
                     ),
                   ],
                 ),
@@ -76,8 +79,12 @@ class AllDuaPage extends StatelessWidget {
                             ),
                             RepaintBoundary(
                               child: AlphabetScrollBar(
-                                letters: presenter.uiState.value.alphabetLetters ?? [],
-                                selectedLetter: presenter.uiState.value.selectedCharacter ?? 'A',
+                                letters:
+                                    presenter.uiState.value.alphabetLetters ??
+                                        [],
+                                selectedLetter:
+                                    presenter.uiState.value.selectedCharacter ??
+                                        'A',
                                 onLetterSelected: (letter) {
                                   presenter.selectCharacter(letter);
                                 },
@@ -96,10 +103,11 @@ class AllDuaPage extends StatelessWidget {
       ),
     );
   }
-  
-  Function(String) _debounce(Function(String) callback, [Duration delay = const Duration(milliseconds: 300)]) {
+
+  Function(String) _debounce(Function(String) callback,
+      [Duration delay = const Duration(milliseconds: 300)]) {
     DateTime? lastCallTime;
-    
+
     return (String query) {
       final now = DateTime.now();
       if (lastCallTime == null || now.difference(lastCallTime!) > delay) {
