@@ -25,7 +25,14 @@ LazyDatabase loadDatabase() {
 
     // Create a DriftIsolate
     final isolate = await _createDriftIsolate(file.path);
-    return isolate.connect();
+    final connection = await isolate.connect();
+
+    // Add a cleanup handler
+    connection.close().then((_) {
+      isolate.shutdownAll();
+    });
+
+    return connection;
   });
 }
 
