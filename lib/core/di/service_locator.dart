@@ -19,6 +19,7 @@ import 'package:dua/presentation/all_dua/presenter/all_dua_presenter.dart';
 import 'package:dua/presentation/bookmark/presenter/bookmark_presenter.dart';
 import 'package:dua/presentation/home/presenter/home_presenter.dart';
 import 'package:dua/presentation/scheduale/presenter/schedule_presenter.dart';
+import 'package:dua/presentation/settings/presenter/settings_presenter.dart';
 import 'package:dua/presentation/subcategory/presenter/sub_category_presenter.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -88,6 +89,9 @@ class ServiceLocator {
         () => loadPresenter(AllDuasPresenter(locate(), locate())));
     _serviceLocator
         .registerLazySingleton(() => loadPresenter(BookmarkPresenter()));
+
+    _serviceLocator
+        .registerLazySingleton(() => loadPresenter(SettingsPresenter()));
   }
 
   Future<void> _setUpUseCase() async {
