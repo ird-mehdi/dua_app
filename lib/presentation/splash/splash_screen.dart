@@ -73,21 +73,6 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // App logo or icon
-            Image.asset(
-              'assets/images/png/app_icon.png',
-              width: 120,
-              height: 120,
-              errorBuilder: (context, error, stackTrace) {
-                return const Icon(
-                  Icons.menu_book_rounded,
-                  size: 120,
-                  color: Colors.white,
-                );
-              },
-            ),
-            const SizedBox(height: 32),
-            // App name
             Text(
               'Dua & Ruqyah',
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(

@@ -4,6 +4,7 @@ import 'package:dua/core/di/service_locator.dart';
 import 'package:dua/core/utility/utility.dart';
 import 'package:dua/domain/entities/dua_entity.dart';
 import 'package:dua/presentation/bookmark/presenter/bookmark_presenter.dart';
+import 'package:dua/presentation/bookmark/presenter/bookmark_ui_state.dart';
 import 'package:dua/presentation/bookmark/ui/bookmark_folder_detail_page.dart';
 import 'package:dua/presentation/common/widgets/custom_app_bar.dart';
 import 'package:dua/presentation/common/widgets/custom_search_bar.dart';
@@ -65,8 +66,20 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
       padding: EdgeInsets.all(eightPx),
       child: Column(
         children: [
-          CustomSearchBar(
-            hintText: 'Search bookmarked duas',
+          Row(
+            children: [
+              Expanded(
+                child: CustomSearchBar(
+                  hintText: 'Search bookmarked duas',
+                  controller: presenter.searchController,
+                  onChanged: (query) {
+                    // The controller listener will handle this
+                  },
+                ),
+              ),
+              SizedBox(width: 8),
+              _buildSortButton(),
+            ],
           ),
           const SizedBox(height: 10), // 10px gap after search bar
           Expanded(
@@ -231,6 +244,81 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
           controller.navigateToDuaDetails(context, dua);
         },
       ),
+    );
+  }
+
+  // Add the sort button widget
+  Widget _buildSortButton() {
+    return PopupMenuButton<BookmarkSortOption>(
+      icon: Icon(
+        Icons.sort,
+        color: Theme.of(context).primaryColor,
+      ),
+      tooltip: 'Sort',
+      onSelected: (BookmarkSortOption option) {
+        presenter.setSortOption(option);
+      },
+      itemBuilder: (BuildContext context) =>
+          <PopupMenuEntry<BookmarkSortOption>>[
+        PopupMenuItem<BookmarkSortOption>(
+          value: BookmarkSortOption.recent,
+          child: Row(
+            children: [
+              Icon(
+                Icons.access_time,
+                color: presenter.currentUiState.sortOption ==
+                        BookmarkSortOption.recent
+                    ? Theme.of(context).primaryColor
+                    : Colors.grey,
+                size: 18,
+              ),
+              SizedBox(width: 8),
+              Text(
+                'Recent',
+                style: TextStyle(
+                  color: presenter.currentUiState.sortOption ==
+                          BookmarkSortOption.recent
+                      ? Theme.of(context).primaryColor
+                      : null,
+                  fontWeight: presenter.currentUiState.sortOption ==
+                          BookmarkSortOption.recent
+                      ? FontWeight.bold
+                      : null,
+                ),
+              ),
+            ],
+          ),
+        ),
+        PopupMenuItem<BookmarkSortOption>(
+          value: BookmarkSortOption.alphabetical,
+          child: Row(
+            children: [
+              Icon(
+                Icons.sort_by_alpha,
+                color: presenter.currentUiState.sortOption ==
+                        BookmarkSortOption.alphabetical
+                    ? Theme.of(context).primaryColor
+                    : Colors.grey,
+                size: 18,
+              ),
+              SizedBox(width: 8),
+              Text(
+                'A-Z',
+                style: TextStyle(
+                  color: presenter.currentUiState.sortOption ==
+                          BookmarkSortOption.alphabetical
+                      ? Theme.of(context).primaryColor
+                      : null,
+                  fontWeight: presenter.currentUiState.sortOption ==
+                          BookmarkSortOption.alphabetical
+                      ? FontWeight.bold
+                      : null,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

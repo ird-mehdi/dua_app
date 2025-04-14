@@ -45,6 +45,15 @@ class CustomSearchBar extends StatelessWidget {
             ],
           ),
         ),
+        suffixIcon: controller != null && controller!.text.isNotEmpty
+            ? IconButton(
+                icon: const Icon(Icons.clear),
+                onPressed: () {
+                  controller!.clear();
+                  if (onChanged != null) onChanged!('');
+                },
+              )
+            : null,
         filled: true,
         fillColor: context.color.shadeColor,
         contentPadding: EdgeInsets.symmetric(

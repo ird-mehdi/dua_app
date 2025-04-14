@@ -3,6 +3,7 @@ import 'package:dua/core/di/service_locator.dart';
 import 'package:dua/domain/entities/dua_entity.dart';
 import 'package:dua/presentation/bookmark/presenter/bookmark_presenter.dart';
 import 'package:dua/presentation/bookmark/presenter/bookmark_ui_state.dart';
+import 'package:dua/presentation/common/widgets/custom_search_bar.dart';
 import 'package:flutter/material.dart';
 
 class BookmarkFolderDetailPage extends StatefulWidget {
@@ -100,6 +101,7 @@ class _BookmarkFolderDetailPageState extends State<BookmarkFolderDetailPage> {
           ),
         ),
         actions: [
+          _buildSortButton(),
           IconButton(
             icon: Icon(Icons.settings, color: Colors.green.shade800),
             onPressed: _showSettingsBottomSheet,
@@ -143,6 +145,20 @@ class _BookmarkFolderDetailPageState extends State<BookmarkFolderDetailPage> {
                     ),
                   ),
                 ),
+
+                // Search bar
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: sixteenPx),
+                  child: CustomSearchBar(
+                    hintText: 'Search in ${widget.folder.name}',
+                    controller: presenter.searchController,
+                    onChanged: (query) {
+                      // The controller listener will handle this
+                    },
+                  ),
+                ),
+
+                SizedBox(height: eightPx),
 
                 // Duas List
                 Expanded(
@@ -365,5 +381,80 @@ class _BookmarkFolderDetailPageState extends State<BookmarkFolderDetailPage> {
         Navigator.pop(context); // Return to bookmark list
       }
     }
+  }
+
+  // Add the sort button widget
+  Widget _buildSortButton() {
+    return PopupMenuButton<BookmarkSortOption>(
+      icon: Icon(
+        Icons.sort,
+        color: Colors.green.shade800,
+      ),
+      tooltip: 'Sort',
+      onSelected: (BookmarkSortOption option) {
+        presenter.setSortOption(option);
+      },
+      itemBuilder: (BuildContext context) =>
+          <PopupMenuEntry<BookmarkSortOption>>[
+        PopupMenuItem<BookmarkSortOption>(
+          value: BookmarkSortOption.recent,
+          child: Row(
+            children: [
+              Icon(
+                Icons.access_time,
+                color: presenter.currentUiState.sortOption ==
+                        BookmarkSortOption.recent
+                    ? Colors.green.shade800
+                    : Colors.grey,
+                size: 18,
+              ),
+              SizedBox(width: 8),
+              Text(
+                'Recent',
+                style: TextStyle(
+                  color: presenter.currentUiState.sortOption ==
+                          BookmarkSortOption.recent
+                      ? Colors.green.shade800
+                      : null,
+                  fontWeight: presenter.currentUiState.sortOption ==
+                          BookmarkSortOption.recent
+                      ? FontWeight.bold
+                      : null,
+                ),
+              ),
+            ],
+          ),
+        ),
+        PopupMenuItem<BookmarkSortOption>(
+          value: BookmarkSortOption.alphabetical,
+          child: Row(
+            children: [
+              Icon(
+                Icons.sort_by_alpha,
+                color: presenter.currentUiState.sortOption ==
+                        BookmarkSortOption.alphabetical
+                    ? Colors.green.shade800
+                    : Colors.grey,
+                size: 18,
+              ),
+              SizedBox(width: 8),
+              Text(
+                'A-Z',
+                style: TextStyle(
+                  color: presenter.currentUiState.sortOption ==
+                          BookmarkSortOption.alphabetical
+                      ? Colors.green.shade800
+                      : null,
+                  fontWeight: presenter.currentUiState.sortOption ==
+                          BookmarkSortOption.alphabetical
+                      ? FontWeight.bold
+                      : null,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }

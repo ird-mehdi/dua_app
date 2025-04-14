@@ -18,6 +18,7 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
   final _state = BookmarkUiState.initial().obs;
   final List<BookmarkFolder> _allBookmarkFolders = [];
   bool _wasBookmarkJustAdded = false;
+  final TextEditingController searchController = TextEditingController();
 
   // Default folder name constant
   static const String defaultFolderName = "Favorites";
@@ -43,6 +44,80 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
     super.onInit();
     _initUseCases();
     loadBookmarkFolders();
+    // Listen to search controller changes
+    searchController.addListener(_onSearchChanged);
+  }
+
+  @override
+  void onClose() {
+    searchController.removeListener(_onSearchChanged);
+    searchController.dispose();
+    super.onClose();
+  }
+
+  void _onSearchChanged() {
+    _state.value = currentUiState.copyWith(searchQuery: searchController.text);
+    _filterBookmarksBySearch();
+    update();
+  }
+
+  void _filterBookmarksBySearch() {
+    final query = currentUiState.searchQuery.toLowerCase().trim();
+
+    if (query.isEmpty) {
+      // If search is empty, restore all folders with sorting
+      final sortedFolders = _sortFolders(List.from(_allBookmarkFolders));
+
+      _state.value = currentUiState.copyWith(
+        bookmarkFolders: sortedFolders,
+      );
+
+      // If in folder view, also reset bookmarked duas with sorting
+      if (currentUiState.currentFolderName.isNotEmpty) {
+        loadDuasFromFolder(currentUiState.currentFolderName);
+      }
+    } else {
+      if (currentUiState.currentFolderName.isEmpty) {
+        // Filter folders
+        final filteredFolders = _allBookmarkFolders
+            .where((folder) => folder.name.toLowerCase().contains(query))
+            .toList();
+
+        // Sort filtered folders
+        final sortedFilteredFolders = _sortFolders(filteredFolders);
+
+        _state.value = currentUiState.copyWith(
+          bookmarkFolders: sortedFilteredFolders,
+        );
+      } else {
+        // We're in a folder, filter duas
+        final unfilteredDuas =
+            _folderDuasCache[currentUiState.currentFolderName] ?? [];
+        final filteredDuas = unfilteredDuas
+            .where((dua) =>
+                dua.name.toLowerCase().contains(query) ||
+                dua.context.toLowerCase().contains(query) ||
+                dua.translation.toLowerCase().contains(query) ||
+                dua.reference.toLowerCase().contains(query))
+            .toList();
+
+        // Sort filtered duas
+        final sortedFilteredDuas = _sortDuas(filteredDuas);
+
+        _state.value = currentUiState.copyWith(
+          bookmarkedDuas: sortedFilteredDuas,
+        );
+      }
+    }
+    update();
+  }
+
+  // Clear search
+  void clearSearch() {
+    searchController.clear();
+    _state.value = currentUiState.copyWith(searchQuery: '');
+    _filterBookmarksBySearch();
+    update();
   }
 
   void _initUseCases() {
@@ -79,16 +154,25 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
                   name: folder.name,
                   color: folder.color,
                   duaCount: folder.count,
+                  createdAt: folder.createdAt,
                 ))
             .toList();
 
         _allBookmarkFolders.clear();
         _allBookmarkFolders.addAll(bookmarkFolders);
 
-        _state.value = currentUiState.copyWith(
-          bookmarkFolders: bookmarkFolders,
-          currentFolderName: '',
-        );
+        // Apply any current search filter and sorting
+        if (currentUiState.searchQuery.isNotEmpty) {
+          _filterBookmarksBySearch();
+        } else {
+          // Apply sorting
+          final sortedFolders = _sortFolders(List.from(bookmarkFolders));
+
+          _state.value = currentUiState.copyWith(
+            bookmarkFolders: sortedFolders,
+            currentFolderName: '',
+          );
+        }
       },
     );
 
@@ -220,6 +304,7 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
     required int duaID,
   }) async {
     bool isSuccess = false;
+    final DateTime createdAt = DateTime.now();
 
     await executeMessageOnlyUseCase(
       () async => _createBookmarkFolderUseCase.execute(
@@ -236,9 +321,26 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
         final Set<String> updatedSelected =
             Set.from(currentUiState.selectedBookmarkFolderNames);
         updatedSelected.add(name);
-        _state.value = currentUiState.copyWith(
-          selectedBookmarkFolderNames: updatedSelected,
-        );
+
+        // Find the folder that was just created and update its creation date
+        final folderIndex =
+            _allBookmarkFolders.indexWhere((folder) => folder.name == name);
+        if (folderIndex != -1) {
+          _allBookmarkFolders[folderIndex] =
+              _allBookmarkFolders[folderIndex].copyWith(
+            createdAt: createdAt,
+          );
+
+          // Update the folders list in UI state
+          _state.value = currentUiState.copyWith(
+            selectedBookmarkFolderNames: updatedSelected,
+            bookmarkFolders: List.from(_allBookmarkFolders),
+          );
+        } else {
+          _state.value = currentUiState.copyWith(
+            selectedBookmarkFolderNames: updatedSelected,
+          );
+        }
 
         // Clear caches after creating folder
         _folderDuasCache.clear();
@@ -352,57 +454,69 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
 
     try {
       // Check cache first
+      List<DuaEntity> bookmarkedDuas;
+
       if (_folderDuasCache.containsKey(folderName)) {
-        _state.value = currentUiState.copyWith(
-          bookmarkedDuas: _folderDuasCache[folderName],
-          currentFolderName: folderName,
-        );
-        await toggleLoading(loading: false);
-        return;
-      }
-
-      // Get bookmarks for this folder
-      final bookmarks = await (_duaBookmarkRepository as dynamic)
-          .getBookmarksByFolderName(folderName);
-
-      if (bookmarks.isEmpty) {
-        _folderDuasCache[folderName] = [];
-        _state.value = currentUiState.copyWith(
-          bookmarkedDuas: [],
-          currentFolderName: folderName,
-        );
-        await toggleLoading(loading: false);
-        return;
-      }
-
-      // Get all duas (use cache if available)
-      final List<DuaEntity> allDuas;
-      if (_allDuasCache != null) {
-        allDuas = _allDuasCache!;
+        bookmarkedDuas = _folderDuasCache[folderName]!;
       } else {
-        allDuas = await _duaRepository.getAllDua();
-        _allDuasCache = allDuas;
-      }
+        // Get bookmarks for this folder
+        final bookmarks = await (_duaBookmarkRepository as dynamic)
+            .getBookmarksByFolderName(folderName);
 
-      // Filter duas that match the bookmarked dua IDs and ensure no duplicates
-      final bookmarkedDuaIds = bookmarks.map((b) => b.duaID).toSet();
-
-      // Use a map to ensure each dua only appears once based on its ID
-      final Map<int, DuaEntity> uniqueDuas = {};
-      for (var dua in allDuas) {
-        if (bookmarkedDuaIds.contains(dua.id) &&
-            !uniqueDuas.containsKey(dua.id)) {
-          uniqueDuas[dua.id] = dua;
+        if (bookmarks.isEmpty) {
+          _folderDuasCache[folderName] = [];
+          _state.value = currentUiState.copyWith(
+            bookmarkedDuas: [],
+            currentFolderName: folderName,
+          );
+          await toggleLoading(loading: false);
+          return;
         }
+
+        // Get all duas (use cache if available)
+        final List<DuaEntity> allDuas;
+        if (_allDuasCache != null) {
+          allDuas = _allDuasCache!;
+        } else {
+          allDuas = await _duaRepository.getAllDua();
+          _allDuasCache = allDuas;
+        }
+
+        // Filter duas that match the bookmarked dua IDs and ensure no duplicates
+        final bookmarkedDuaIds = bookmarks.map((b) => b.duaID).toSet();
+
+        // Use a map to ensure each dua only appears once based on its ID
+        final Map<int, DuaEntity> uniqueDuas = {};
+        for (var dua in allDuas) {
+          if (bookmarkedDuaIds.contains(dua.id) &&
+              !uniqueDuas.containsKey(dua.id)) {
+            uniqueDuas[dua.id] = dua;
+          }
+        }
+
+        bookmarkedDuas = uniqueDuas.values.toList();
+
+        // Cache the results
+        _folderDuasCache[folderName] = bookmarkedDuas;
       }
 
-      final bookmarkedDuas = uniqueDuas.values.toList();
+      // Apply search filter if needed
+      if (currentUiState.searchQuery.isNotEmpty) {
+        final query = currentUiState.searchQuery.toLowerCase();
+        bookmarkedDuas = bookmarkedDuas
+            .where((dua) =>
+                dua.name.toLowerCase().contains(query) ||
+                dua.context.toLowerCase().contains(query) ||
+                dua.translation.toLowerCase().contains(query) ||
+                dua.reference.toLowerCase().contains(query))
+            .toList();
+      }
 
-      // Cache the results
-      _folderDuasCache[folderName] = bookmarkedDuas;
+      // Apply sorting
+      final sortedDuas = _sortDuas(bookmarkedDuas);
 
       _state.value = currentUiState.copyWith(
-        bookmarkedDuas: bookmarkedDuas,
+        bookmarkedDuas: sortedDuas,
         currentFolderName: folderName,
       );
     } catch (e) {
@@ -504,5 +618,69 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
     _folderDuasCache.clear();
     _allDuasCache = null;
     _duaBookmarkFoldersCache.clear();
+  }
+
+  // Replace the setCurrentFolder method with this one
+  void setCurrentFolder(String folderName) {
+    loadDuasFromFolder(folderName);
+  }
+
+  // Method to change sort option
+  void setSortOption(BookmarkSortOption option) {
+    _state.value = currentUiState.copyWith(sortOption: option);
+    _applySorting();
+    update();
+  }
+
+  // Apply current sorting to both folders and duas
+  void _applySorting() {
+    if (currentUiState.currentFolderName.isEmpty) {
+      // Sort folders
+      final sortedFolders =
+          _sortFolders(List.from(currentUiState.bookmarkFolders));
+      _state.value = currentUiState.copyWith(bookmarkFolders: sortedFolders);
+    } else {
+      // Sort duas in current folder
+      final sortedDuas = _sortDuas(List.from(currentUiState.bookmarkedDuas));
+      _state.value = currentUiState.copyWith(bookmarkedDuas: sortedDuas);
+    }
+  }
+
+  // Sort folders based on current sort option
+  List<BookmarkFolder> _sortFolders(List<BookmarkFolder> folders) {
+    switch (currentUiState.sortOption) {
+      case BookmarkSortOption.recent:
+        // Sort by created date (newest first)
+        folders.sort((a, b) {
+          if (a.createdAt == null && b.createdAt == null) return 0;
+          if (a.createdAt == null) return 1;
+          if (b.createdAt == null) return -1;
+          return b.createdAt!.compareTo(a.createdAt!);
+        });
+        break;
+      case BookmarkSortOption.alphabetical:
+        // Sort alphabetically
+        folders.sort(
+            (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+        break;
+    }
+    return folders;
+  }
+
+  // Sort duas based on current sort option
+  List<DuaEntity> _sortDuas(List<DuaEntity> duas) {
+    switch (currentUiState.sortOption) {
+      case BookmarkSortOption.recent:
+        // For duas, we might not have created date directly,
+        // so we'll use ID as a proxy (assuming higher IDs are newer)
+        duas.sort((a, b) => b.id.compareTo(a.id));
+        break;
+      case BookmarkSortOption.alphabetical:
+        // Sort alphabetically by name
+        duas.sort(
+            (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+        break;
+    }
+    return duas;
   }
 }
