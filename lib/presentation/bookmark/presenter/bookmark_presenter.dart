@@ -19,6 +19,9 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
   final List<BookmarkFolder> _allBookmarkFolders = [];
   bool _wasBookmarkJustAdded = false;
 
+  // Default folder name constant
+  static const String defaultFolderName = "Favorites";
+
   // Use cases
   late final SaveBookmarksToDuaUseCase _saveBookmarksToDuaUseCase;
   late final CreateBookmarkFolderUseCase _createBookmarkFolderUseCase;
@@ -29,9 +32,9 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
   late final DuaRepository _duaRepository;
 
   // Memory caches for better performance
-  static Map<String, List<DuaEntity>> _folderDuasCache = {};
+  static final Map<String, List<DuaEntity>> _folderDuasCache = {};
   static List<DuaEntity>? _allDuasCache;
-  static Map<int, List<BookmarkFolder>> _duaBookmarkFoldersCache = {};
+  static final Map<int, List<BookmarkFolder>> _duaBookmarkFoldersCache = {};
 
   BookmarkUiState get currentUiState => _state.value;
 
@@ -120,6 +123,70 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
     return matchingFolders;
   }
 
+  // Get the default Favorites folder
+  BookmarkFolder? getDefaultFolder() {
+    return _allBookmarkFolders
+        .firstWhereOrNull((folder) => folder.name == defaultFolderName);
+  }
+
+  // Add a bookmark directly to Favorites folder
+  Future<void> addToFavorites({
+    required int duaID,
+    required void Function(int, {required bool isBookmarked}) onSaved,
+    required BuildContext context,
+  }) async {
+    // Find the Favorites folder
+    final favoritesFolder = getDefaultFolder();
+
+    if (favoritesFolder == null) {
+      addUserMessage("Error: Favorites folder not found");
+      return;
+    }
+
+    // Create a set with just the Favorites folder
+    final Set<String> folderNames = {defaultFolderName};
+
+    // Use the existing saveBookmarksForDua method with this folder
+    await saveBookmarksForDua(
+      duaID: duaID,
+      onSaved: onSaved,
+      context: context,
+      selectedFolderNames: folderNames,
+    );
+  }
+
+  // Toggle a bookmark in the Favorites folder
+  Future<void> toggleFavorite({
+    required int duaID,
+    required void Function(int, {required bool isBookmarked}) onSaved,
+    required BuildContext context,
+  }) async {
+    // Check if dua is already in Favorites
+    final folders = await getBookmarkFoldersForDua(duaID);
+    final isAlreadyInFavorites =
+        folders.any((f) => f.name == defaultFolderName);
+
+    // Check if context is still valid before proceeding
+    if (context.mounted) {
+      if (isAlreadyInFavorites) {
+        // Remove from favorites by saving with empty folders list
+        await saveBookmarksForDua(
+          duaID: duaID,
+          onSaved: onSaved,
+          context: context,
+          selectedFolderNames: {},
+        );
+      } else {
+        // Add to favorites
+        await addToFavorites(
+          duaID: duaID,
+          onSaved: onSaved,
+          context: context,
+        );
+      }
+    }
+  }
+
   Future<void> updateBookmarkFolder(int index, String name, Color color) async {
     final List<BookmarkFolder> updatedFolders =
         List.from(currentUiState.bookmarkFolders);
@@ -133,7 +200,7 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
     await _duaBookmarkRepository.updateBookmarkFolder(
       folderName: oldName,
       newFolderName: name,
-      colorValue: color.value,
+      colorValue: color.toARGB32(),
     );
 
     _state.value = currentUiState.copyWith(
@@ -357,6 +424,12 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
   }
 
   Future<void> deleteFolder(BuildContext context, BookmarkFolder folder) async {
+    // Don't allow deleting the Favorites folder
+    if (folder.name == defaultFolderName) {
+      addUserMessage("The Favorites folder cannot be deleted");
+      return;
+    }
+
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -376,7 +449,8 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
       ),
     );
 
-    if (confirm == true) {
+    // Check if context is still valid before proceeding
+    if (confirm == true && context.mounted) {
       await toggleLoading(loading: true);
 
       try {

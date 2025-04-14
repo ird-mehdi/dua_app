@@ -13,6 +13,10 @@ class DuaBookmarkRepositoryImpl implements DuaBookmarkRepository {
   List<DuaBookmarkEntity>? _cachedBookmarks;
   List<DuaBookmarkFolderEntity>? _cachedFolders;
 
+  // Default folder constants
+  static const String _defaultFolderName = "Favorites";
+  static const int _defaultFolderColor = 0xFFF44336; // Red color
+
   DuaBookmarkRepositoryImpl();
 
   @override
@@ -54,6 +58,11 @@ class DuaBookmarkRepositoryImpl implements DuaBookmarkRepository {
     // Get all folders
     final folders = await getAllBookmarkFolders();
     final bookmarks = await getAllBookmarks();
+
+    // Can't delete default Favorites folder
+    if (folder.name == _defaultFolderName) {
+      return;
+    }
 
     // Remove folder
     _cachedFolders = folders.where((f) => f.name != folder.name).toList();
@@ -109,32 +118,9 @@ class DuaBookmarkRepositoryImpl implements DuaBookmarkRepository {
     final foldersJson = prefs.getString(_foldersKey);
 
     if (foldersJson == null || foldersJson.isEmpty) {
-      // Add default folders
+      // Create just the default Favorites folder
       _cachedFolders = [
-        DuaBookmarkFolderEntity(
-          id: 1,
-          name: 'Morning Duas',
-          color: const Color(0xFF72CD9C),
-          count: 0,
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-        ),
-        DuaBookmarkFolderEntity(
-          id: 2,
-          name: 'Evening Duas',
-          color: const Color(0xFF5282FF),
-          count: 0,
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-        ),
-        DuaBookmarkFolderEntity(
-          id: 3,
-          name: 'Favorites',
-          color: const Color(0xFFF178B6),
-          count: 0,
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-        ),
+        _createDefaultFavoriteFolder(),
       ];
 
       // Save default folders
@@ -151,15 +137,39 @@ class DuaBookmarkRepositoryImpl implements DuaBookmarkRepository {
           .map((json) => DuaBookmarkFolderEntity.fromMap(json))
           .toList();
 
+      // Ensure default Favorites folder exists
+      if (!_cachedFolders!.any((f) => f.name == _defaultFolderName)) {
+        _cachedFolders!.add(_createDefaultFavoriteFolder());
+
+        // Save updated folders with the Favorites folder
+        final folderMaps =
+            _cachedFolders!.map((folder) => folder.toMap()).toList();
+        await prefs.setString(_foldersKey, jsonEncode(folderMaps));
+      }
+
       // Update folder counts
       await _updateFolderCounts();
 
       return _cachedFolders!;
     } catch (e) {
       print('Error loading folders: $e');
-      _cachedFolders = [];
-      return [];
+
+      // Create default Favorites folder on error
+      _cachedFolders = [_createDefaultFavoriteFolder()];
+      return _cachedFolders!;
     }
+  }
+
+  // Helper method to create the default Favorites folder
+  DuaBookmarkFolderEntity _createDefaultFavoriteFolder() {
+    return DuaBookmarkFolderEntity(
+      id: DateTime.now().millisecondsSinceEpoch,
+      name: _defaultFolderName,
+      color: const Color(_defaultFolderColor),
+      count: 0,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+    );
   }
 
   @override
@@ -168,7 +178,7 @@ class DuaBookmarkRepositoryImpl implements DuaBookmarkRepository {
     return allBookmarks.where((bookmark) => bookmark.duaID == duaID).toList();
   }
 
-  // New method to get bookmarks by folder name
+  // Get bookmarks by folder name
   Future<List<DuaBookmarkEntity>> getBookmarksByFolderName(
       String folderName) async {
     final allBookmarks = await getAllBookmarks();
@@ -256,6 +266,29 @@ class DuaBookmarkRepositoryImpl implements DuaBookmarkRepository {
   }) async {
     final folders = await getAllBookmarkFolders();
     final bookmarks = await getAllBookmarks();
+
+    // Prevent renaming the default Favorites folder
+    if (folderName == _defaultFolderName) {
+      // Allow changing color but not the name
+      final updatedFolders = folders.map((folder) {
+        if (folder.name == _defaultFolderName) {
+          return folder.copyWith(
+            color: Color(colorValue),
+            updatedAt: DateTime.now(),
+          );
+        }
+        return folder;
+      }).toList();
+
+      _cachedFolders = updatedFolders;
+
+      // Save updated folders
+      final prefs = await SharedPreferences.getInstance();
+      final folderMaps =
+          _cachedFolders!.map((folder) => folder.toMap()).toList();
+      await prefs.setString(_foldersKey, jsonEncode(folderMaps));
+      return;
+    }
 
     // Update folder
     _cachedFolders = folders.map((folder) {

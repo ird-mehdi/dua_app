@@ -418,9 +418,15 @@ class AllDuasPresenter extends BasePresenter<AllDuasUiState> {
       currentUiState.overlayEntry?.remove();
       if (uiState.value.overlayEntry != null ||
           uiState.value.currentDragLetter != null) {
+        // Store the current drag letter before clearing it
+        final String? letterToSelect = uiState.value.currentDragLetter;
+
         uiState.value = currentUiState.copyWith(
           overlayEntry: () => null,
           currentDragLetter: () => null,
+          // Update the selectedCharacter with the last dragged letter if it exists
+          selectedCharacter:
+              letterToSelect != null ? () => letterToSelect : null,
         );
       }
     });

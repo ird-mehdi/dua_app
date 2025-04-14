@@ -48,13 +48,20 @@ class AlphabetScrollBar extends StatelessWidget {
             return Container(
               height: twentyPx,
               alignment: Alignment.center,
+              decoration: isSelected
+                  ? BoxDecoration(
+                      color: context.color.primaryColor100.withOpacityInt(0.3),
+                      shape: BoxShape.circle,
+                    )
+                  : null,
               child: Text(
                 letter,
                 style: TextStyle(
                   fontSize: twelvePx,
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                  color:
-                      isSelected ? context.color.titleColor : Colors.grey[600],
+                  color: isSelected
+                      ? context.color.primaryColor100
+                      : Colors.grey[600],
                 ),
               ),
             );
