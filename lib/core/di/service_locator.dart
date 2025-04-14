@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:dua/core/base/base_presenter.dart';
+import 'package:dua/core/services/bookmark_sync_service.dart';
 import 'package:dua/core/services/dua_cache_service.dart';
 import 'package:dua/data/datasource/local_data_source.dart';
 import 'package:dua/data/repositories/dua_bookmark_repository_impl.dart';
@@ -64,6 +65,10 @@ class ServiceLocator {
     // Register DuaCacheService
     _serviceLocator.registerLazySingleton<DuaCacheService>(
         () => DuaCacheService(locate()));
+
+    // Register BookmarkSyncService
+    _serviceLocator.registerLazySingleton<BookmarkSyncService>(
+        () => BookmarkSyncService(locate()));
   }
 
   Future<void> _setUpDataSources() async {

@@ -52,13 +52,19 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
             padding: EdgeInsets.all(tenPx),
             child: Row(
               children: [
-                SvgImage(
-                  assetName: SvgPath.icFolderFavorate,
+                InkWell(
+                  onTap: () {
+                    presenter.showBackupOptionsMenu(context);
+                  },
+                  child: SvgImage(
+                    assetName: SvgPath.icFolderFavorate,
+                  ),
                 ),
                 gapW20,
                 SvgImage(
                   assetName: SvgPath.icLogin,
                 ),
+                gapW20,
               ],
             ),
           ),
@@ -481,9 +487,11 @@ class OptionsBottomSheet extends StatelessWidget {
           OptionItem(
             icon: Icons.delete,
             title: 'Delete',
-            onTap: () {
+            onTap: () async {
               Navigator.pop(context);
-              presenter.deleteFolder(context, folder);
+              await presenter.deleteFolder(context, folder);
+              // Force refresh the bookmark folders list
+              presenter.loadBookmarkFolders();
             },
           ),
         ],

@@ -1,5 +1,6 @@
 import 'package:dua/core/base/base_presenter.dart';
 import 'package:dua/core/di/service_locator.dart';
+import 'package:dua/core/services/bookmark_sync_service.dart';
 import 'package:dua/domain/entities/dua_bookmark_folder_entity.dart';
 import 'package:dua/domain/entities/dua_entity.dart';
 import 'package:dua/domain/repositories/dua_bookmark_repository.dart';
@@ -11,6 +12,7 @@ import 'package:dua/presentation/bookmark/presenter/bookmark_ui_state.dart';
 import 'package:dua/presentation/bookmark/widgets/edit_bookmark_bottom_sheet.dart';
 import 'package:dua/presentation/bookmark/widgets/create_bookmark_folder_sheet.dart';
 import 'package:dua/presentation/dua_details/ui/dua_details_page.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -36,6 +38,8 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
   static final Map<String, List<DuaEntity>> _folderDuasCache = {};
   static List<DuaEntity>? _allDuasCache;
   static final Map<int, List<BookmarkFolder>> _duaBookmarkFoldersCache = {};
+
+  late final BookmarkSyncService _bookmarkSyncService;
 
   BookmarkUiState get currentUiState => _state.value;
 
@@ -128,6 +132,7 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
       _getAllBookmarkFoldersUseCase = locate<GetAllBookmarkFoldersUseCase>();
       _duaBookmarkRepository = locate<DuaBookmarkRepository>();
       _duaRepository = locate<DuaRepository>();
+      _bookmarkSyncService = locate<BookmarkSyncService>();
     } catch (e) {
       print('Error initializing use cases or repositories: $e');
     }
@@ -682,5 +687,182 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
         break;
     }
     return duas;
+  }
+
+  // Export bookmarks to JSON file
+  Future<String> exportBookmarksToJson() async {
+    toggleLoading(loading: true);
+    try {
+      final filePath = await _bookmarkSyncService.exportBookmarksToJson();
+
+      // Extract just the filename from the path
+      final fileName = filePath.split('/').last;
+
+      // Check if the file is in the Download folder
+      final isInDownloads =
+          filePath.contains('/Download/') || filePath.contains('/Downloads/');
+
+      if (isInDownloads) {
+        addUserMessage(
+            'Bookmarks exported successfully to Downloads folder as "$fileName"');
+      } else {
+        addUserMessage('Bookmarks exported successfully as "$fileName"');
+      }
+
+      toggleLoading(loading: false);
+      update();
+      return filePath;
+    } catch (e) {
+      addUserMessage('Failed to export bookmarks: $e');
+      toggleLoading(loading: false);
+      update();
+      rethrow;
+    }
+  }
+
+  // Import bookmarks from JSON file
+  Future<bool> importBookmarksFromJson(String filePath) async {
+    toggleLoading(loading: true);
+    try {
+      final result =
+          await _bookmarkSyncService.importBookmarksFromJson(filePath);
+      if (result) {
+        addUserMessage('Bookmarks imported successfully');
+        await loadBookmarkFolders(); // Refresh the folders
+      } else {
+        addUserMessage('Failed to import bookmarks');
+      }
+      toggleLoading(loading: false);
+      update();
+      return result;
+    } catch (e) {
+      addUserMessage('Failed to import bookmarks: $e');
+      toggleLoading(loading: false);
+      update();
+      return false;
+    }
+  }
+
+  // Show import file picker
+  void showImportFilePicker(BuildContext context) async {
+    toggleLoading(loading: true);
+    try {
+      // Remove the explanation dialog and directly open the file picker
+
+      // Allow all file types but with .json extension filter
+      final FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.any, // Changed from FileType.custom to FileType.any
+        // allowedExtensions: ['json'], // Removed this restriction
+        allowMultiple: false,
+        dialogTitle: 'Select a JSON bookmark file',
+      );
+
+      if (result != null && result.files.isNotEmpty) {
+        final String? filePath = result.files.first.path;
+        if (filePath != null) {
+          // Verify if it's actually a JSON file
+          if (!filePath.toLowerCase().endsWith('.json')) {
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Please select a JSON file')),
+              );
+            }
+            toggleLoading(loading: false);
+            update();
+            return;
+          }
+
+          final success = await importBookmarksFromJson(filePath);
+          if (success && context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Bookmarks imported successfully')),
+            );
+          } else if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Failed to import bookmarks')),
+            );
+          }
+        }
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error selecting file: $e')),
+        );
+      }
+    } finally {
+      toggleLoading(loading: false);
+      update();
+    }
+  }
+
+  // Show backup options menu
+  void showBackupOptionsMenu(BuildContext context) {
+    // Store a reference to the BuildContext
+    final scaffoldContext = context;
+
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ListTile(
+            leading: const Icon(Icons.file_upload),
+            title: const Text('Export Bookmarks'),
+            subtitle: const Text(
+                'Save your bookmarks as a JSON file to Downloads folder'),
+            onTap: () async {
+              Navigator.pop(context);
+              try {
+                final filePath = await exportBookmarksToJson();
+
+                // Extract the filename and folder information
+                final fileName = filePath.split('/').last;
+                final isInDownloads = filePath.contains('/Download/') ||
+                    filePath.contains('/Downloads/');
+                final locationMessage =
+                    isInDownloads ? 'in Downloads folder' : 'in app storage';
+
+                // Use the stored context instead of trying to get a new one
+                if (scaffoldContext.mounted) {
+                  ScaffoldMessenger.of(scaffoldContext).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                          'Bookmarks exported as "$fileName" $locationMessage'),
+                      duration: const Duration(seconds: 5),
+                      action: SnackBarAction(
+                        label: 'OK',
+                        onPressed: () {
+                          ScaffoldMessenger.of(scaffoldContext)
+                              .hideCurrentSnackBar();
+                        },
+                      ),
+                    ),
+                  );
+                }
+              } catch (e) {
+                if (scaffoldContext.mounted) {
+                  ScaffoldMessenger.of(scaffoldContext).showSnackBar(
+                    SnackBar(content: Text('Error exporting bookmarks: $e')),
+                  );
+                }
+              }
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.file_download),
+            title: const Text('Import Bookmarks'),
+            subtitle: const Text('Import bookmarks from a JSON file (.json)'),
+            onTap: () {
+              Navigator.pop(context);
+              showImportFilePicker(scaffoldContext);
+            },
+          ),
+        ],
+      ),
+    );
   }
 }

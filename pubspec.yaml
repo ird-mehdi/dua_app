@@ -32,6 +32,8 @@ dependencies:
   drift_flutter: ^0.2.4
   shared_preferences: ^2.2.2
   shimmer: ^3.0.0
+  file_picker: ^10.1.0
+  permission_handler: ^11.3.0
 
 
 dev_dependencies:
