@@ -3,7 +3,7 @@ import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/di/service_locator.dart';
 import 'package:dua/domain/entities/dua_entity.dart';
 import 'package:dua/domain/repositories/dua_bookmark_repository.dart';
-import 'package:dua/presentation/bookmark/ui/collection_bottom_sheet.dart';
+import 'package:dua/presentation/bookmark/widgets/collection_bottom_sheet.dart';
 import 'package:dua/presentation/common/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 

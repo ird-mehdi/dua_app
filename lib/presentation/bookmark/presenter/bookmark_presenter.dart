@@ -8,8 +8,8 @@ import 'package:dua/domain/use_cases/bookmark/create_bookmark_folder_use_case.da
 import 'package:dua/domain/use_cases/bookmark/get_all_bookmark_folders_use_case.dart';
 import 'package:dua/domain/use_cases/bookmark/save_bookmarks_to_dua_use_case.dart';
 import 'package:dua/presentation/bookmark/presenter/bookmark_ui_state.dart';
-import 'package:dua/presentation/bookmark/ui/edit_bookmark_bottom_sheet.dart';
-import 'package:dua/presentation/bookmark/ui/create_bookmark_folder_sheet.dart';
+import 'package:dua/presentation/bookmark/widgets/edit_bookmark_bottom_sheet.dart';
+import 'package:dua/presentation/bookmark/widgets/create_bookmark_folder_sheet.dart';
 import 'package:dua/presentation/dua_details/ui/dua_details_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
