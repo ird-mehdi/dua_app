@@ -3,7 +3,6 @@ import 'package:dua/core/di/service_locator.dart';
 import 'package:dua/domain/entities/dua_entity.dart';
 import 'package:dua/presentation/bookmark/presenter/bookmark_presenter.dart';
 import 'package:dua/presentation/bookmark/presenter/bookmark_ui_state.dart';
-import 'package:dua/presentation/common/widgets/custom_search_bar.dart';
 import 'package:flutter/material.dart';
 
 class BookmarkFolderDetailPage extends StatefulWidget {
@@ -143,18 +142,6 @@ class _BookmarkFolderDetailPageState extends State<BookmarkFolderDetailPage> {
                         ),
                       ],
                     ),
-                  ),
-                ),
-
-                // Search bar
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: sixteenPx),
-                  child: CustomSearchBar(
-                    hintText: 'Search in ${widget.folder.name}',
-                    controller: presenter.searchController,
-                    onChanged: (query) {
-                      // The controller listener will handle this
-                    },
                   ),
                 ),
 
