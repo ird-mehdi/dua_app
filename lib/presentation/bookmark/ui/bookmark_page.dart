@@ -487,11 +487,10 @@ class OptionsBottomSheet extends StatelessWidget {
           OptionItem(
             icon: Icons.delete,
             title: 'Delete',
-            onTap: () async {
-              Navigator.pop(context);
-              await presenter.deleteFolder(context, folder);
-              // Force refresh the bookmark folders list
-              presenter.loadBookmarkFolders();
+            onTap: () {
+              Navigator.pop(context); // Close the bottom sheet first
+              // This will handle showing the confirmation dialog and deleting if confirmed
+              presenter.deleteFolder(context, folder);
             },
           ),
         ],

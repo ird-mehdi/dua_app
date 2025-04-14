@@ -133,9 +133,7 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
       _duaBookmarkRepository = locate<DuaBookmarkRepository>();
       _duaRepository = locate<DuaRepository>();
       _bookmarkSyncService = locate<BookmarkSyncService>();
-    } catch (e) {
-      print('Error initializing use cases or repositories: $e');
-    }
+    } catch (e) {}
   }
 
   @override
@@ -525,7 +523,6 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
         currentFolderName: folderName,
       );
     } catch (e) {
-      print('Error loading duas from folder: $e');
       addUserMessage('Failed to load duas: $e');
     } finally {
       await toggleLoading(loading: false);
@@ -549,6 +546,11 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
       return;
     }
 
+    // Store necessary information before showing dialog
+    final String folderName = folder.name;
+    final Color folderColor = folder.color;
+    final int folderCount = folder.duaCount;
+
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -568,16 +570,16 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
       ),
     );
 
-    // Check if context is still valid before proceeding
-    if (confirm == true && context.mounted) {
+    // If user confirmed deletion, proceed regardless of context
+    if (confirm == true) {
       await toggleLoading(loading: true);
 
       try {
         final folderEntity = DuaBookmarkFolderEntity(
           id: -1,
-          name: folder.name,
-          color: folder.color,
-          count: folder.duaCount,
+          name: folderName,
+          color: folderColor,
+          count: folderCount,
           createdAt: DateTime.now(),
           updatedAt: DateTime.now(),
         );
@@ -585,14 +587,14 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
         await _duaBookmarkRepository.deleteBookmarkFolder(folder: folderEntity);
 
         // Clear caches after deleting folder
-        _folderDuasCache.remove(folder.name);
+        _folderDuasCache.remove(folderName);
         _duaBookmarkFoldersCache.clear();
 
         // Refresh folders
         await loadBookmarkFolders();
 
         // Clear current folder if it was deleted
-        if (currentUiState.currentFolderName == folder.name) {
+        if (currentUiState.currentFolderName == folderName) {
           _state.value = currentUiState.copyWith(
             bookmarkedDuas: [],
             currentFolderName: '',
@@ -601,13 +603,12 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
 
         addUserMessage('Folder deleted');
       } catch (e) {
-        print('Error deleting folder: $e');
         addUserMessage('Failed to delete folder: $e');
       } finally {
         await toggleLoading(loading: false);
         update();
       }
-    }
+    } else {}
   }
 
   void resetCurrentFolder() {
