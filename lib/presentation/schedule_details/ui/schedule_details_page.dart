@@ -4,7 +4,7 @@ import 'package:dua/core/utility/utility.dart';
 import 'package:dua/presentation/common/widgets/custom_app_bar.dart';
 import 'package:dua/presentation/common/widgets/svg_image.dart';
 import 'package:dua/presentation/dua_vertial_move/widget/model.dart';
-import 'package:dua/presentation/schedule_details/widget/schedule_details_dua_list.dart';
+import 'package:dua/presentation/plan_details/widget/dua_details_card.dart';
 import 'package:flutter/material.dart';
 
 class ScheduleDetailsPage extends StatelessWidget {
@@ -14,8 +14,8 @@ class ScheduleDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DuaCardModel duaCardModel = DuaCardModel();
-    final ThemeData theme = Theme.of(context);
+    // final DuaCardModel duaCardModel = DuaCardModel();
+    // final ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: CustomAppBar(
         title: 'Schedule Name',
@@ -39,10 +39,7 @@ class ScheduleDetailsPage extends StatelessWidget {
             physics: NeverScrollableScrollPhysics(),
             itemCount: scheduleDetailsDuaCardModelList.length,
             itemBuilder: (context, index) {
-              return ScheduleDetailsDuaList(
-                theme: theme,
-                duaCardModel: duaCardModel,
-              );
+              return DuaDetailsCard();
             },
           ),
         ),
