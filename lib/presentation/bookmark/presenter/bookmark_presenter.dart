@@ -1,5 +1,4 @@
 import 'package:dua/core/base/base_presenter.dart';
-import 'package:dua/core/base/base_ui_state.dart';
 import 'package:dua/core/di/service_locator.dart';
 import 'package:dua/domain/entities/dua_bookmark_folder_entity.dart';
 import 'package:dua/domain/entities/dua_entity.dart';
@@ -8,90 +7,12 @@ import 'package:dua/domain/repositories/dua_repository.dart';
 import 'package:dua/domain/use_cases/bookmark/create_bookmark_folder_use_case.dart';
 import 'package:dua/domain/use_cases/bookmark/get_all_bookmark_folders_use_case.dart';
 import 'package:dua/domain/use_cases/bookmark/save_bookmarks_to_dua_use_case.dart';
+import 'package:dua/presentation/bookmark/presenter/bookmark_ui_state.dart';
 import 'package:dua/presentation/bookmark/ui/edit_bookmark_bottom_sheet.dart';
 import 'package:dua/presentation/bookmark/ui/create_bookmark_folder_sheet.dart';
 import 'package:dua/presentation/dua_details/ui/dua_details_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-class BookmarkFolder {
-  final String name;
-  final Color color;
-  final int duaCount;
-
-  BookmarkFolder({
-    required this.name,
-    required this.color,
-    required this.duaCount,
-  });
-
-  BookmarkFolder copyWith({
-    String? name,
-    Color? color,
-    int? duaCount,
-  }) {
-    return BookmarkFolder(
-      name: name ?? this.name,
-      color: color ?? this.color,
-      duaCount: duaCount ?? this.duaCount,
-    );
-  }
-}
-
-class BookmarkUiState extends BaseUiState {
-  final List<DuaEntity> bookmarkedDuas;
-  final List<BookmarkFolder> bookmarkFolders;
-  final Set<String> selectedBookmarkFolderNames;
-  final String currentFolderName;
-
-  const BookmarkUiState({
-    required this.bookmarkedDuas,
-    required this.bookmarkFolders,
-    required this.selectedBookmarkFolderNames,
-    required this.currentFolderName,
-    required super.isLoading,
-    required super.userMessage,
-  });
-
-  factory BookmarkUiState.initial() => BookmarkUiState(
-        bookmarkedDuas: [],
-        bookmarkFolders: [],
-        selectedBookmarkFolderNames: {},
-        currentFolderName: '',
-        isLoading: false,
-        userMessage: null,
-      );
-
-  BookmarkUiState copyWith({
-    List<DuaEntity>? bookmarkedDuas,
-    List<BookmarkFolder>? bookmarkFolders,
-    Set<String>? selectedBookmarkFolderNames,
-    String? currentFolderName,
-    bool? isLoading,
-    String? userMessage,
-    bool? isBookmarkChanged,
-  }) {
-    return BookmarkUiState(
-      bookmarkedDuas: bookmarkedDuas ?? this.bookmarkedDuas,
-      bookmarkFolders: bookmarkFolders ?? this.bookmarkFolders,
-      selectedBookmarkFolderNames:
-          selectedBookmarkFolderNames ?? this.selectedBookmarkFolderNames,
-      currentFolderName: currentFolderName ?? this.currentFolderName,
-      isLoading: isLoading ?? this.isLoading,
-      userMessage: userMessage,
-    );
-  }
-
-  @override
-  List<Object?> get props => [
-        bookmarkedDuas,
-        bookmarkFolders,
-        selectedBookmarkFolderNames,
-        currentFolderName,
-        isLoading,
-        userMessage
-      ];
-}
 
 class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
   final _state = BookmarkUiState.initial().obs;
@@ -106,6 +27,11 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
   // Repositories
   late final DuaBookmarkRepository _duaBookmarkRepository;
   late final DuaRepository _duaRepository;
+
+  // Memory caches for better performance
+  static Map<String, List<DuaEntity>> _folderDuasCache = {};
+  static List<DuaEntity>? _allDuasCache;
+  static Map<int, List<BookmarkFolder>> _duaBookmarkFoldersCache = {};
 
   BookmarkUiState get currentUiState => _state.value;
 
@@ -168,8 +94,14 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
   }
 
   Future<List<BookmarkFolder>> getBookmarkFoldersForDua(int duaID) async {
+    // Check cache first
+    if (_duaBookmarkFoldersCache.containsKey(duaID)) {
+      return _duaBookmarkFoldersCache[duaID]!;
+    }
+
     final bookmarks = await _duaBookmarkRepository.getBookmarksByDuaID(duaID);
     if (bookmarks.isEmpty) {
+      _duaBookmarkFoldersCache[duaID] = [];
       return [];
     }
 
@@ -181,6 +113,9 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
     final matchingFolders = _allBookmarkFolders
         .where((folder) => folderNames.contains(folder.name))
         .toList();
+
+    // Cache the result
+    _duaBookmarkFoldersCache[duaID] = matchingFolders;
 
     return matchingFolders;
   }
@@ -204,6 +139,11 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
     _state.value = currentUiState.copyWith(
       bookmarkFolders: updatedFolders,
     );
+
+    // Clear caches after updating folder
+    _folderDuasCache.clear();
+    _duaBookmarkFoldersCache.clear();
+
     update();
   }
 
@@ -232,6 +172,10 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
         _state.value = currentUiState.copyWith(
           selectedBookmarkFolderNames: updatedSelected,
         );
+
+        // Clear caches after creating folder
+        _folderDuasCache.clear();
+        _duaBookmarkFoldersCache.clear();
       },
     );
 
@@ -280,6 +224,10 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
         } else if (!_wasBookmarkJustAdded || folderNamesToUse.length > 1) {
           addUserMessage(bookmarkSavedMessage);
         }
+
+        // Clear caches after saving bookmarks
+        _folderDuasCache.clear();
+        _duaBookmarkFoldersCache.remove(duaID);
       },
       showMessage: false,
     );
@@ -336,11 +284,22 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
     await toggleLoading(loading: true);
 
     try {
+      // Check cache first
+      if (_folderDuasCache.containsKey(folderName)) {
+        _state.value = currentUiState.copyWith(
+          bookmarkedDuas: _folderDuasCache[folderName],
+          currentFolderName: folderName,
+        );
+        await toggleLoading(loading: false);
+        return;
+      }
+
       // Get bookmarks for this folder
       final bookmarks = await (_duaBookmarkRepository as dynamic)
           .getBookmarksByFolderName(folderName);
 
       if (bookmarks.isEmpty) {
+        _folderDuasCache[folderName] = [];
         _state.value = currentUiState.copyWith(
           bookmarkedDuas: [],
           currentFolderName: folderName,
@@ -349,8 +308,14 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
         return;
       }
 
-      // Get all duas
-      final allDuas = await _duaRepository.getAllDua();
+      // Get all duas (use cache if available)
+      final List<DuaEntity> allDuas;
+      if (_allDuasCache != null) {
+        allDuas = _allDuasCache!;
+      } else {
+        allDuas = await _duaRepository.getAllDua();
+        _allDuasCache = allDuas;
+      }
 
       // Filter duas that match the bookmarked dua IDs and ensure no duplicates
       final bookmarkedDuaIds = bookmarks.map((b) => b.duaID).toSet();
@@ -365,6 +330,9 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
       }
 
       final bookmarkedDuas = uniqueDuas.values.toList();
+
+      // Cache the results
+      _folderDuasCache[folderName] = bookmarkedDuas;
 
       _state.value = currentUiState.copyWith(
         bookmarkedDuas: bookmarkedDuas,
@@ -423,6 +391,10 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
 
         await _duaBookmarkRepository.deleteBookmarkFolder(folder: folderEntity);
 
+        // Clear caches after deleting folder
+        _folderDuasCache.remove(folder.name);
+        _duaBookmarkFoldersCache.clear();
+
         // Refresh folders
         await loadBookmarkFolders();
 
@@ -451,5 +423,12 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
       bookmarkedDuas: [],
     );
     update();
+  }
+
+  // Clear all in-memory caches (call this when memory needs to be freed)
+  void clearMemoryCaches() {
+    _folderDuasCache.clear();
+    _allDuasCache = null;
+    _duaBookmarkFoldersCache.clear();
   }
 }

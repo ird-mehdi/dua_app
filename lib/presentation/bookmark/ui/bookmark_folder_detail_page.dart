@@ -2,6 +2,7 @@ import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/di/service_locator.dart';
 import 'package:dua/domain/entities/dua_entity.dart';
 import 'package:dua/presentation/bookmark/presenter/bookmark_presenter.dart';
+import 'package:dua/presentation/bookmark/presenter/bookmark_ui_state.dart';
 import 'package:flutter/material.dart';
 
 class BookmarkFolderDetailPage extends StatefulWidget {
@@ -194,132 +195,128 @@ class _BookmarkFolderDetailPageState extends State<BookmarkFolderDetailPage> {
         borderRadius: BorderRadius.circular(twelvePx),
         side: BorderSide(color: Colors.grey.shade200),
       ),
-      child: InkWell(
-        onTap: () => presenter.navigateToDuaDetails(context, dua),
-        borderRadius: BorderRadius.circular(twelvePx),
-        child: Padding(
-          padding: EdgeInsets.all(sixteenPx),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Title with number
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 36,
-                    height: 36,
-                    decoration: BoxDecoration(
-                      color: Colors.green.shade700,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Center(
-                      child: Text(
-                        '${dua.id}',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
+      child: Padding(
+        padding: EdgeInsets.all(sixteenPx),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Title with number
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 36,
+                  height: 36,
+                  decoration: BoxDecoration(
+                    color: Colors.green.shade700,
+                    shape: BoxShape.circle,
                   ),
-                  SizedBox(width: twelvePx),
-                  Expanded(
+                  child: Center(
                     child: Text(
-                      dua.name,
+                      '${dua.id}',
                       style: TextStyle(
-                        fontSize: sixteenPx,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.green.shade800,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                ],
-              ),
-
-              SizedBox(height: sixteenPx),
-
-              // Arabic text
-              if (dua.indopak.isNotEmpty)
-                Padding(
-                  padding: EdgeInsets.only(bottom: twelvePx),
-                  child: Text(
-                    dua.indopak,
-                    style: TextStyle(
-                      fontFamily: 'KFGQ',
-                      fontSize: twentyFourPx,
-                      height: 1.5,
-                    ),
-                    textAlign: TextAlign.right,
-                    textDirection: TextDirection.rtl,
                   ),
                 ),
-
-              // Transliteration
-              if (dua.transliteration.isNotEmpty)
-                Padding(
-                  padding: EdgeInsets.only(bottom: twelvePx),
+                SizedBox(width: twelvePx),
+                Expanded(
                   child: Text(
-                    dua.transliteration,
+                    dua.name,
                     style: TextStyle(
-                      fontSize: fourteenPx,
-                      fontStyle: FontStyle.italic,
+                      fontSize: sixteenPx,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.green.shade800,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+
+            SizedBox(height: sixteenPx),
+
+            // Arabic text
+            if (dua.indopak.isNotEmpty)
+              Padding(
+                padding: EdgeInsets.only(bottom: twelvePx),
+                child: Text(
+                  dua.indopak,
+                  style: TextStyle(
+                    fontFamily: 'KFGQ',
+                    fontSize: twentyFourPx,
+                    height: 1.5,
+                  ),
+                  textAlign: TextAlign.right,
+                  textDirection: TextDirection.rtl,
+                ),
+              ),
+
+            // Transliteration
+            if (dua.transliteration.isNotEmpty)
+              Padding(
+                padding: EdgeInsets.only(bottom: twelvePx),
+                child: Text(
+                  dua.transliteration,
+                  style: TextStyle(
+                    fontSize: fourteenPx,
+                    fontStyle: FontStyle.italic,
+                    color: Colors.grey.shade700,
+                  ),
+                ),
+              ),
+
+            // Translation
+            if (dua.translation.isNotEmpty)
+              Padding(
+                padding: EdgeInsets.only(bottom: twelvePx),
+                child: Text(
+                  dua.translation,
+                  style: TextStyle(
+                    fontSize: fourteenPx,
+                    color: Colors.grey.shade900,
+                  ),
+                ),
+              ),
+
+            // Reference
+            if (dua.reference.isNotEmpty)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Reference:',
+                    style: TextStyle(
+                      fontSize: twelvePx,
+                      fontWeight: FontWeight.w600,
                       color: Colors.grey.shade700,
                     ),
                   ),
-                ),
-
-              // Translation
-              if (dua.translation.isNotEmpty)
-                Padding(
-                  padding: EdgeInsets.only(bottom: twelvePx),
-                  child: Text(
-                    dua.translation,
+                  SizedBox(height: fourPx),
+                  Text(
+                    dua.reference,
                     style: TextStyle(
-                      fontSize: fourteenPx,
-                      color: Colors.grey.shade900,
+                      fontSize: twelvePx,
+                      color: Colors.grey.shade600,
                     ),
                   ),
-                ),
-
-              // Reference
-              if (dua.reference.isNotEmpty)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Reference:',
-                      style: TextStyle(
-                        fontSize: twelvePx,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.grey.shade700,
-                      ),
-                    ),
-                    SizedBox(height: fourPx),
-                    Text(
-                      dua.reference,
-                      style: TextStyle(
-                        fontSize: twelvePx,
-                        color: Colors.grey.shade600,
-                      ),
-                    ),
-                  ],
-                ),
-
-              // Action buttons
-              SizedBox(height: sixteenPx),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  _buildActionButton(Icons.bookmark, 'Bookmark'),
-                  _buildActionButton(Icons.lightbulb_outline, 'Memorize'),
-                  _buildActionButton(Icons.play_arrow, 'Play'),
-                  _buildActionButton(Icons.calendar_today, 'Schedule'),
-                  _buildActionButton(Icons.more_horiz, 'More'),
                 ],
               ),
-            ],
-          ),
+
+            // Action buttons
+            SizedBox(height: sixteenPx),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _buildActionButton(Icons.bookmark, 'Bookmark'),
+                _buildActionButton(Icons.lightbulb_outline, 'Memorize'),
+                _buildActionButton(Icons.play_arrow, 'Play'),
+                _buildActionButton(Icons.calendar_today, 'Schedule'),
+                _buildActionButton(Icons.more_horiz, 'More'),
+              ],
+            ),
+          ],
         ),
       ),
     );

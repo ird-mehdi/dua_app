@@ -3,6 +3,7 @@
 import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/di/service_locator.dart';
 import 'package:dua/presentation/bookmark/presenter/bookmark_presenter.dart';
+import 'package:dua/presentation/bookmark/presenter/bookmark_ui_state.dart';
 import 'package:flutter/material.dart';
 
 enum CollectionType { bookmark }

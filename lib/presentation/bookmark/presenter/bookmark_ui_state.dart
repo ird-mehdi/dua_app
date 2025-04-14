@@ -1,4 +1,5 @@
 import 'package:dua/core/base/base_ui_state.dart';
+import 'package:dua/domain/entities/dua_entity.dart';
 import 'package:flutter/material.dart';
 
 class BookmarkFolder {
@@ -26,49 +27,56 @@ class BookmarkFolder {
 }
 
 class BookmarkUiState extends BaseUiState {
-  final List<String> bookmarkedDuas;
+  final List<DuaEntity> bookmarkedDuas;
   final List<BookmarkFolder> bookmarkFolders;
+  final Set<String> selectedBookmarkFolderNames;
+  final String currentFolderName;
 
   const BookmarkUiState({
     required this.bookmarkedDuas,
     required this.bookmarkFolders,
+    required this.selectedBookmarkFolderNames,
+    required this.currentFolderName,
     required super.isLoading,
     required super.userMessage,
   });
 
   factory BookmarkUiState.initial() => BookmarkUiState(
         bookmarkedDuas: [],
-        bookmarkFolders: [
-          BookmarkFolder(
-            name: 'Bookmark Name',
-            color: Colors.blue,
-            duaCount: 12,
-          ),
-          BookmarkFolder(
-            name: 'Another Bookmark',
-            color: Colors.green,
-            duaCount: 5,
-          ),
-        ],
+        bookmarkFolders: [],
+        selectedBookmarkFolderNames: {},
+        currentFolderName: '',
         isLoading: false,
         userMessage: null,
       );
 
   BookmarkUiState copyWith({
-    List<String>? bookmarkedDuas,
+    List<DuaEntity>? bookmarkedDuas,
     List<BookmarkFolder>? bookmarkFolders,
+    Set<String>? selectedBookmarkFolderNames,
+    String? currentFolderName,
     bool? isLoading,
     String? userMessage,
+    bool? isBookmarkChanged,
   }) {
     return BookmarkUiState(
       bookmarkedDuas: bookmarkedDuas ?? this.bookmarkedDuas,
       bookmarkFolders: bookmarkFolders ?? this.bookmarkFolders,
+      selectedBookmarkFolderNames:
+          selectedBookmarkFolderNames ?? this.selectedBookmarkFolderNames,
+      currentFolderName: currentFolderName ?? this.currentFolderName,
       isLoading: isLoading ?? this.isLoading,
       userMessage: userMessage,
     );
   }
 
   @override
-  List<Object?> get props =>
-      [bookmarkedDuas, bookmarkFolders, isLoading, userMessage];
+  List<Object?> get props => [
+        bookmarkedDuas,
+        bookmarkFolders,
+        selectedBookmarkFolderNames,
+        currentFolderName,
+        isLoading,
+        userMessage
+      ];
 }

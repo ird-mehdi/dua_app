@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize service locator
   await ServiceLocator.setUp();
+
+  // Run the app - data preloading now happens in SplashScreen
   runApp(const DuaApp());
 }

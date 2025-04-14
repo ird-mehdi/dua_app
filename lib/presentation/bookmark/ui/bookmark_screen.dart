@@ -14,7 +14,7 @@ class BookmarkScreen extends StatefulWidget {
   const BookmarkScreen({super.key});
 
   @override
-  _BookmarkScreenState createState() => _BookmarkScreenState();
+  State<BookmarkScreen> createState() => _BookmarkScreenState();
 }
 
 class _BookmarkScreenState extends State<BookmarkScreen> {
@@ -38,9 +38,14 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Bookmarks'),
-        centerTitle: true,
+      appBar: CustomAppBar(
+        title: 'Bookmark',
+        icon: AppImages.icCategory2,
+        titleSpacing: eightPx,
+        titleFontSize: eighteenPx,
+        onLeadingPressed: () {
+          presenter.loadBookmarkFolders();
+        },
       ),
       body: AnimatedBuilder(
         animation: presenter,
@@ -49,22 +54,6 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
               ? const Center(child: CircularProgressIndicator())
               : _buildContent();
         },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final isCreated = await presenter.showCreateBookmarkFolderSheet(
-            context,
-            duaID:
-                -1, // No specific dua ID for folder creation from bookmarks screen
-          );
-
-          if (isCreated) {
-            // Refresh the folder list
-            presenter.loadBookmarkFolders();
-          }
-        },
-        backgroundColor: const Color(0xFF386A20),
-        child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }
@@ -76,20 +65,6 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
       padding: EdgeInsets.all(eightPx),
       child: Column(
         children: [
-          CustomAppBar(
-            paddingLeft: 0,
-            title: 'Bookmark',
-            icon: AppImages.icCategory2,
-            titleSpacing: eightPx,
-            titleFontSize: eighteenPx,
-            onLeadingPressed:
-                presenter.currentUiState.currentFolderName.isNotEmpty
-                    ? () {
-                        // Go back to folder list
-                        presenter.loadBookmarkFolders();
-                      }
-                    : null,
-          ),
           CustomSearchBar(
             hintText: 'Search bookmarked duas',
           ),
@@ -153,7 +128,7 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
           Icon(
             Icons.bookmark_outline,
             size: 64,
-            color: Colors.grey.withOpacity(0.5),
+            color: Colors.grey.withOpacityInt(0.5),
           ),
           const SizedBox(height: 16),
           const Text(
@@ -190,7 +165,7 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
             Icon(
               Icons.folder_open,
               size: 64,
-              color: Colors.grey.withOpacity(0.5),
+              color: Colors.grey.withOpacityInt(0.5),
             ),
             const SizedBox(height: 16),
             Text(
@@ -239,7 +214,7 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
           width: 40,
           height: 40,
           decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor.withOpacity(0.1),
+            color: Theme.of(context).primaryColor.withOpacityInt(0.05),
             shape: BoxShape.circle,
           ),
           child: Center(

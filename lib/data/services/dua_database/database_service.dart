@@ -17,6 +17,11 @@ class DuaDatabase extends _$DuaDatabase {
   bool _isInitialized = false;
   static const _queryTimeout = Duration(seconds: 5);
 
+  // Memory cache for database queries
+  static final Map<String, List<Dua>> _queryCache = {};
+  static final Map<int, Dua> _duaByIdCache = {};
+  static List<Dua>? _allDuasCache;
+
   DuaDatabase({QueryExecutor? executor}) : super(executor ?? loadDatabase()) {
     // Initialize in a more optimized way without blocking
     _initializeDatabase();
@@ -46,86 +51,63 @@ class DuaDatabase extends _$DuaDatabase {
       final dbFolder = await getApplicationDocumentsDirectory();
       final file = File(p.join(dbFolder.path, AppConstant.dbName));
 
-      if (!file.existsSync()) {
-        print(
-            'verifyDatabase: ERROR - Database file does not exist at ${file.path}');
-        await _manualCopyDatabaseFromAssets(file.path);
-      } else {
-        final fileSize = await file.length();
-        print(
-            'verifyDatabase: Database file exists at ${file.path}, size: $fileSize bytes');
-
-        if (fileSize == 0) {
-          print('verifyDatabase: WARNING - Database file exists but is empty!');
-          await _manualCopyDatabaseFromAssets(file.path);
-        }
+      // If we have cached data, we can skip verification
+      if (_allDuasCache != null && _allDuasCache!.isNotEmpty) {
+        return true;
       }
+
+      if (!file.existsSync()) {
+        print('verifyDatabase: Database file does not exist!');
+        await _copyDatabaseFromAssets(file);
+        return false;
+      }
+
+      final size = await file.length();
+      if (size == 0) {
+        print('verifyDatabase: Database file exists but is empty!');
+        await _copyDatabaseFromAssets(file);
+        return false;
+      }
+
+      print('verifyDatabase: Database file exists with size $size bytes');
       return true;
-    } catch (e, stackTrace) {
-      print('verifyDatabase: ERROR checking database: $e');
-      print('verifyDatabase: Stack trace: $stackTrace');
+    } catch (e) {
+      print('verifyDatabase: Error verifying database: $e');
       return false;
     }
   }
 
-  Future<void> _manualCopyDatabaseFromAssets(String targetPath) async {
-    print(
-        '_manualCopyDatabaseFromAssets: Manually copying database from assets...');
+  Future<void> _copyDatabaseFromAssets(File file) async {
     try {
-      final File targetFile = File(targetPath);
+      // Create parent directory if it doesn't exist
+      file.parent.createSync(recursive: true);
 
-      if (!targetFile.parent.existsSync()) {
-        targetFile.parent.createSync(recursive: true);
-      }
+      final ByteData data = await rootBundle.load(AppConstant.dbAssetPath);
+      final List<int> bytes =
+          data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+      await file.writeAsBytes(bytes);
+      print('_copyDatabaseFromAssets: Database copied from assets');
+    } catch (e) {
+      print('_copyDatabaseFromAssets: Error copying database: $e');
+      await _manualCopyDatabaseFromAssets(file.path);
+    }
+  }
 
-      if (targetFile.existsSync()) {
-        targetFile.deleteSync();
-      }
-
-      try {
-        final ByteData data = await rootBundle.load(AppConstant.dbAssetPath);
-        final List<int> bytes =
-            data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-        await targetFile.writeAsBytes(bytes);
-        print(
-            '_manualCopyDatabaseFromAssets: Successfully copied database, size: ${await targetFile.length()} bytes');
-      } catch (e) {
-        print('_manualCopyDatabaseFromAssets: Failed to copy database: $e');
-        // Try alternative paths
-        try {
-          final ByteData data =
-              await rootBundle.load('assets/databases/database.sqlite');
-          final List<int> bytes =
-              data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-          await targetFile.writeAsBytes(bytes);
-          print(
-              '_manualCopyDatabaseFromAssets: Successfully copied database using alternative path');
-        } catch (e) {
-          print(
-              '_manualCopyDatabaseFromAssets: Failed to copy database using alternative path: $e');
-        }
-      }
-    } catch (e, stackTrace) {
-      print('_manualCopyDatabaseFromAssets: Exception: $e');
-      print('_manualCopyDatabaseFromAssets: Stack trace: $stackTrace');
+  Future<void> _manualCopyDatabaseFromAssets(String path) async {
+    try {
+      final ByteData data = await rootBundle.load(AppConstant.dbAssetPath);
+      final List<int> bytes =
+          data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+      await File(path).writeAsBytes(bytes);
+      print('_manualCopyDatabaseFromAssets: Manual copy successful');
+    } catch (e) {
+      print('_manualCopyDatabaseFromAssets: Error copying database: $e');
     }
   }
 
   Future<bool> _initDatabase() async {
-    print('_initDatabase: Checking database initialization...');
+    print('_initDatabase: Initializing database...');
     try {
-      final dbFolder = await getApplicationDocumentsDirectory();
-      final file = File(p.join(dbFolder.path, AppConstant.dbName));
-      print('_initDatabase: Database file path: ${file.path}');
-      print('_initDatabase: Database file exists: ${file.existsSync()}');
-      if (file.existsSync()) {
-        print(
-            '_initDatabase: Database file size: ${await file.length()} bytes');
-      } else {
-        print('_initDatabase: Database file not found!');
-        return false;
-      }
-
       // Use a shorter timeout to prevent UI blocking
       final count = await (select(duas)..limit(1)).get().timeout(
         _queryTimeout,
@@ -153,6 +135,12 @@ class DuaDatabase extends _$DuaDatabase {
   Future<List<Dua>> getAllDuas() async {
     print('getAllDuas: Getting all duas from database');
     try {
+      // Return from memory cache if available
+      if (_allDuasCache != null && _allDuasCache!.isNotEmpty) {
+        print('getAllDuas: Returning ${_allDuasCache!.length} duas from cache');
+        return _allDuasCache!;
+      }
+
       // If database is not initialized, try to initialize it
       if (!_isInitialized) {
         print(
@@ -175,6 +163,15 @@ class DuaDatabase extends _$DuaDatabase {
       );
 
       print('getAllDuas: Found ${results.length} duas in database');
+
+      // Cache the results in memory
+      _allDuasCache = results;
+
+      // Also cache individual duas for faster retrieval by ID
+      for (final dua in results) {
+        _duaByIdCache[dua.id] = dua;
+      }
+
       return results;
     } catch (e, stackTrace) {
       print('getAllDuas: Error fetching duas: $e');
@@ -186,6 +183,11 @@ class DuaDatabase extends _$DuaDatabase {
   Future<bool> validateDatabase() async {
     print('validateDatabase: Checking database schema...');
     try {
+      // If we have cached data, we can skip validation
+      if (_allDuasCache != null && _allDuasCache!.isNotEmpty) {
+        return true;
+      }
+
       // Try a simple count query first to see if the database is accessible
       final count = await (select(duas)..limit(1)).get().timeout(
         _queryTimeout,
@@ -235,7 +237,13 @@ class DuaDatabase extends _$DuaDatabase {
 
   Future<List<Dua>> getDuasByCategory(int categoryId) async {
     try {
-      return await (select(duas)
+      // Check cache first
+      final cacheKey = 'category_$categoryId';
+      if (_queryCache.containsKey(cacheKey)) {
+        return _queryCache[cacheKey]!;
+      }
+
+      final results = await (select(duas)
             ..where((t) => t.categoryId.equals(categoryId))
             ..orderBy([(t) => OrderingTerm(expression: t.id)]))
           .get()
@@ -246,6 +254,11 @@ class DuaDatabase extends _$DuaDatabase {
           return [];
         },
       );
+
+      // Cache the results
+      _queryCache[cacheKey] = results;
+
+      return results;
     } catch (e) {
       print('getDuasByCategory: Error: $e');
       return [];
@@ -254,6 +267,11 @@ class DuaDatabase extends _$DuaDatabase {
 
   Future<Dua?> getDuaById(int id) async {
     try {
+      // Check cache first
+      if (_duaByIdCache.containsKey(id)) {
+        return _duaByIdCache[id];
+      }
+
       final results =
           await (select(duas)..where((t) => t.id.equals(id))).get().timeout(
         _queryTimeout,
@@ -263,10 +281,25 @@ class DuaDatabase extends _$DuaDatabase {
         },
       );
 
-      return results.isNotEmpty ? results.first : null;
+      final dua = results.isNotEmpty ? results.first : null;
+
+      // Cache the dua if found
+      if (dua != null) {
+        _duaByIdCache[id] = dua;
+      }
+
+      return dua;
     } catch (e) {
       print('getDuaById: Error: $e');
       return null;
     }
+  }
+
+  // Clear cache method for when data changes or memory needs to be freed
+  void clearCache() {
+    _allDuasCache = null;
+    _queryCache.clear();
+    _duaByIdCache.clear();
+    print('Cache cleared from database service');
   }
 }
