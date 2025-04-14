@@ -1,6 +1,8 @@
 import 'package:dua/core/config/app_images.dart';
 import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/di/service_locator.dart';
+import 'package:dua/core/static/svg_path.dart';
+import 'package:dua/core/static/ui_const.dart';
 import 'package:dua/core/utility/utility.dart';
 import 'package:dua/domain/entities/dua_entity.dart';
 import 'package:dua/presentation/bookmark/presenter/bookmark_presenter.dart';
@@ -8,6 +10,7 @@ import 'package:dua/presentation/bookmark/presenter/bookmark_ui_state.dart';
 import 'package:dua/presentation/bookmark/ui/bookmark_folder_detail_page.dart';
 import 'package:dua/presentation/common/widgets/custom_app_bar.dart';
 import 'package:dua/presentation/common/widgets/custom_search_bar.dart';
+import 'package:dua/presentation/common/widgets/svg_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -44,6 +47,22 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
         icon: AppImages.icCategory2,
         titleSpacing: eightPx,
         titleFontSize: eighteenPx,
+        actions: [
+          Padding(
+            padding: EdgeInsets.all(tenPx),
+            child: Row(
+              children: [
+                SvgImage(
+                  assetName: SvgPath.icFolderFavorate,
+                ),
+                gapW20,
+                SvgImage(
+                  assetName: SvgPath.icLogin,
+                ),
+              ],
+            ),
+          ),
+        ],
         onLeadingPressed: () {
           presenter.loadBookmarkFolders();
         },
