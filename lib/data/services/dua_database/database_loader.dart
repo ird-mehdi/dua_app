@@ -27,10 +27,9 @@ LazyDatabase loadDatabase() {
     final isolate = await _createDriftIsolate(file.path);
     final connection = await isolate.connect();
 
-    // Add a cleanup handler
-    connection.close().then((_) {
-      isolate.shutdownAll();
-    });
+    // IMPORTANT: Don't add a cleanup handler here that could close the connection
+    // This was causing the "connection was closed" error
+    // The connection will be closed when the database is disposed
 
     return connection;
   });

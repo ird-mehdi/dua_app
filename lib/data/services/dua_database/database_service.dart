@@ -302,4 +302,16 @@ class DuaDatabase extends _$DuaDatabase {
     _duaByIdCache.clear();
     print('Cache cleared from database service');
   }
+
+  // Properly close the database connection
+  @override
+  Future<void> close() async {
+    clearCache();
+    try {
+      await super.close();
+      print('Database connection closed successfully');
+    } catch (e) {
+      print('Error closing database connection: $e');
+    }
+  }
 }
