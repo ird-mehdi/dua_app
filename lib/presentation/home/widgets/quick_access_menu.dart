@@ -31,6 +31,7 @@ class QuickAccessMenu extends StatelessWidget {
           label: quickAccessItems[index].label,
           color: quickAccessItems[index].color,
           page: quickAccessItems[index].widget,
+          showToast: quickAccessItems[index].showToast,
         );
       },
     );
@@ -42,6 +43,7 @@ class QuickAccessMenu extends StatelessWidget {
     required Color color,
     required BuildContext context,
     required Widget page,
+    bool showToast = false,
   }) {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -51,7 +53,16 @@ class QuickAccessMenu extends StatelessWidget {
           shape: const CircleBorder(),
           child: InkWell(
             borderRadius: radius50, // Circular ripple effect
-            onTap: () => context.navigatorPush(page),
+            onTap: () {
+              if (showToast) {
+                showMessage(
+                  message: "Coming soon!",
+                  context: context,
+                );
+              } else {
+                context.navigatorPush(page);
+              }
+            },
             child: Container(
               padding: padding14, // Reduced padding
               decoration: ShapeDecoration(
@@ -91,12 +102,14 @@ class QuickAccessItem {
   final String label;
   final Color color;
   final Widget widget;
+  final bool showToast;
 
   const QuickAccessItem({
     required this.icon,
     required this.label,
     required this.color,
     required this.widget,
+    this.showToast = false,
   });
 }
 
@@ -112,30 +125,35 @@ final List<QuickAccessItem> quickAccessItems = [
     label: 'Challanges',
     color: DuaColor.quickAccessColorLight2,
     widget: ComingSoon(),
+    showToast: true,
   ),
   QuickAccessItem(
     icon: AppImages.icBolt,
     label: 'Self Ruqyah',
     color: DuaColor.quickAccessColorLight3,
     widget: ComingSoon(),
+    showToast: true,
   ),
   QuickAccessItem(
     icon: AppImages.icBook,
     label: "Dua's Books",
     color: DuaColor.quickAccessColorLight4,
     widget: ComingSoon(),
+    showToast: true,
   ),
   QuickAccessItem(
     icon: AppImages.icPerson,
     label: 'Dhikr',
     color: DuaColor.quickAccessColorLight5,
     widget: ComingSoon(),
+    showToast: true,
   ),
   QuickAccessItem(
     icon: AppImages.icMosque,
     label: 'Prayer Time',
     color: DuaColor.quickAccessColorLight6,
     widget: ComingSoon(),
+    showToast: true,
   ),
   QuickAccessItem(
     icon: AppImages.icApps,
