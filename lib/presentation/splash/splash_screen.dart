@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> _loadData() async {
     try {
       final repository = locate<DuaRepository>();
-      await repository.getAllDua();
+      await repository.getDuasGroupedBySubcategory();
 
       if (mounted) {
         setState(() {

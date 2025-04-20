@@ -481,7 +481,37 @@ class BookmarkPresenter extends BasePresenter<BookmarkUiState> {
         if (_allDuasCache != null) {
           allDuas = _allDuasCache!;
         } else {
-          allDuas = await _duaRepository.getAllDua();
+          // Get bookmarked duas individually with light data
+          final List<DuaEntity> fetchedDuas = [];
+
+          // For each bookmarked dua ID, fetch light data and convert to DuaEntity
+          for (final bookmark in bookmarks) {
+            final duaId = bookmark.duaID;
+            final lightDua = await _duaRepository.getDuaLightById(duaId);
+
+            if (lightDua != null) {
+              // Convert light dua to DuaEntity
+              fetchedDuas.add(DuaEntity(
+                id: lightDua['id'] as int,
+                languageId: '',
+                groups: '[]',
+                name: lightDua['title'] as String? ?? '',
+                context: '',
+                source: '',
+                indopak: '',
+                clean: lightDua['arabic_text'] as String? ?? '',
+                transliteration: '',
+                translation: '',
+                note: '',
+                reference: '',
+                audio: 0,
+                categoryId: 0,
+                subcategoryId: 0,
+              ));
+            }
+          }
+
+          allDuas = fetchedDuas;
           _allDuasCache = allDuas;
         }
 

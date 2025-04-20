@@ -1,6 +1,6 @@
 import 'package:dua/data/datasource/local_data_source.dart';
-import 'package:dua/data/mappers/dua_mapper.dart';
 import 'package:dua/data/mappers/subcategory_mapper.dart';
+import 'package:dua/data/services/dua_database/database_service.dart';
 import 'package:dua/domain/entities/subcategory_entity.dart';
 import 'package:dua/domain/repositories/subcategory_repository.dart';
 
@@ -127,22 +127,34 @@ class SubcategoryRepositoryImpl extends SubcategoryRepository {
         return _duaNamesBySubcategoryId;
       }
 
-      final duas = await localDataSource.getDuas();
+      // Get all categories and subcategories
+      final categories = await localDataSource.getCategories();
+      final subcategories = await localDataSource.getSubcategories();
 
-      // Get all subcategories if not already in memory
-      final allSubcategories = DuaMapper.fromDtoList(duas);
-
-      // Group subcategories by category_id
+      // Create result map
       final Map<int, List<String>> result = {};
 
-      for (var subcategory in allSubcategories) {
-        print(subcategory);
-        print(subcategory.subcategoryId);
-
-        if (!result.containsKey(subcategory.subcategoryId)) {
-          result[subcategory.categoryId] = [];
+      // For each subcategory
+      for (var subcategory in subcategories) {
+        final subcategoryId = subcategory.id;
+        if (!result.containsKey(subcategoryId)) {
+          result[subcategoryId] = [];
         }
-        result[subcategory.categoryId]!.add(subcategory.name);
+
+        // Find category for this subcategory
+        categories.firstWhere(
+          (cat) => cat.id == subcategory.categoryId,
+          orElse: () => Category(
+            id: 0,
+            name: 'Unknown',
+            languageId: '',
+            slug: '',
+            icon: '',
+          ),
+        );
+
+        // Add subcategory name (or category name if needed)
+        result[subcategoryId]!.add(subcategory.name);
       }
 
       // Cache the result

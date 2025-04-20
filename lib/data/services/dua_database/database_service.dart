@@ -10,7 +10,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:dua/core/constants/app_constant.dart';
 import 'package:path/path.dart' as p;
 import 'dart:io';
-import 'package:flutter/services.dart';
 
 part 'database_service.g.dart';
 
@@ -21,12 +20,14 @@ class DuaDatabase extends _$DuaDatabase {
 
   // Memory cache for database queries
   static final Map<String, List<Dua>> _queryCache = {};
-  static final Map<int, Dua> _duaByIdCache = {};
   static List<Dua>? _allDuasCache;
   static List<Category>? _allCategoriesCache;
   static List<Subcategory>? _allSubcategoriesCache;
   static final Map<int, Category> _categoryByIdCache = {};
   static final Map<int, List<Subcategory>> _subcategoriesByCategoryCache = {};
+
+  // Cache for specific dua fetching with required fields only
+  static final Map<int, Map<String, dynamic>> _duaLightCache = {};
 
   DuaDatabase({QueryExecutor? executor}) : super(executor ?? loadDatabase()) {
     // Initialize in a more optimized way without blocking
@@ -64,15 +65,15 @@ class DuaDatabase extends _$DuaDatabase {
 
       if (!file.existsSync()) {
         print('verifyDatabase: Database file does not exist!');
-        await _copyDatabaseFromAssets(file);
-        return false;
+        // Let database_loader handle creating the file
+        return isDatabaseFileFound();
       }
 
       final size = await file.length();
       if (size == 0) {
         print('verifyDatabase: Database file exists but is empty!');
-        await _copyDatabaseFromAssets(file);
-        return false;
+        // Let database_loader handle creating the file
+        return isDatabaseFileFound();
       }
 
       print('verifyDatabase: Database file exists with size $size bytes');
@@ -80,34 +81,6 @@ class DuaDatabase extends _$DuaDatabase {
     } catch (e) {
       print('verifyDatabase: Error verifying database: $e');
       return false;
-    }
-  }
-
-  Future<void> _copyDatabaseFromAssets(File file) async {
-    try {
-      // Create parent directory if it doesn't exist
-      file.parent.createSync(recursive: true);
-
-      final ByteData data = await rootBundle.load(AppConstant.dbAssetPath);
-      final List<int> bytes =
-          data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-      await file.writeAsBytes(bytes);
-      print('_copyDatabaseFromAssets: Database copied from assets');
-    } catch (e) {
-      print('_copyDatabaseFromAssets: Error copying database: $e');
-      await _manualCopyDatabaseFromAssets(file.path);
-    }
-  }
-
-  Future<void> _manualCopyDatabaseFromAssets(String path) async {
-    try {
-      final ByteData data = await rootBundle.load(AppConstant.dbAssetPath);
-      final List<int> bytes =
-          data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-      await File(path).writeAsBytes(bytes);
-      print('_manualCopyDatabaseFromAssets: Manual copy successful');
-    } catch (e) {
-      print('_manualCopyDatabaseFromAssets: Error copying database: $e');
     }
   }
 
@@ -154,13 +127,22 @@ class DuaDatabase extends _$DuaDatabase {
         await _initializeDatabase();
       }
 
-      final query = select(duas)
+      // Only select approved columns - avoid SELECT *
+      final query = selectOnly(duas)
+        ..addColumns([
+          duas.id,
+          duas.name,
+          duas.clean,
+          duas.categoryId,
+          duas.subcategoryId,
+          duas.groups,
+        ])
         ..orderBy([
-          (t) => OrderingTerm(expression: t.id),
+          OrderingTerm(expression: duas.id),
         ]);
 
       // Execute query with timeout
-      final results = await query.get().timeout(
+      final rows = await query.get().timeout(
         _queryTimeout,
         onTimeout: () {
           print('getAllDuas: Query timed out, returning empty list');
@@ -168,136 +150,32 @@ class DuaDatabase extends _$DuaDatabase {
         },
       );
 
-      print('getAllDuas: Found ${results.length} duas in database');
+      print('getAllDuas: Found ${rows.length} duas in database');
+
+      // Convert rows to Dua objects
+      final results = <Dua>[];
+      for (final row in rows) {
+        final id = row.read(duas.id);
+        if (id != null) {
+          results.add(Dua(
+            id: id,
+            groups: row.read(duas.groups) ?? '[]',
+            name: row.read(duas.name),
+            clean: row.read(duas.clean),
+            categoryId: row.read(duas.categoryId),
+            subcategoryId: row.read(duas.subcategoryId),
+          ));
+        }
+      }
 
       // Cache the results in memory
       _allDuasCache = results;
-
-      // Also cache individual duas for faster retrieval by ID
-      for (final dua in results) {
-        _duaByIdCache[dua.id] = dua;
-      }
 
       return results;
     } catch (e, stackTrace) {
       print('getAllDuas: Error fetching duas: $e');
       print('getAllDuas: Stack trace: $stackTrace');
       return [];
-    }
-  }
-
-  Future<bool> validateDatabase() async {
-    print('validateDatabase: Checking database schema...');
-    try {
-      // If we have cached data, we can skip validation
-      if (_allDuasCache != null && _allDuasCache!.isNotEmpty) {
-        return true;
-      }
-
-      // Try a simple count query first to see if the database is accessible
-      final count = await (select(duas)..limit(1)).get().timeout(
-        _queryTimeout,
-        onTimeout: () {
-          print('validateDatabase: Query timed out');
-          return [];
-        },
-      );
-
-      print(
-          'validateDatabase: Successfully queried database, found ${count.length} records');
-      return true; // Return true even if empty to prevent blocking data flow
-    } catch (e, stackTrace) {
-      print('validateDatabase: Database validation error: $e');
-      print('validateDatabase: Stack trace: $stackTrace');
-
-      // Check if the database file exists and has content
-      try {
-        final dbFolder = await getApplicationDocumentsDirectory();
-        final file = File(p.join(dbFolder.path, AppConstant.dbName));
-
-        if (!file.existsSync()) {
-          print('validateDatabase: Database file does not exist!');
-          return false;
-        }
-
-        final size = await file.length();
-        if (size == 0) {
-          print('validateDatabase: Database file exists but is empty!');
-          return false;
-        }
-
-        print(
-            'validateDatabase: Database file exists with size $size bytes, but still cannot query it.');
-        print(
-            'validateDatabase: This suggests a schema mismatch between the app and the database file.');
-
-        // Try to recreate the database from the asset file
-        await _manualCopyDatabaseFromAssets(file.path);
-        return false;
-      } catch (e2) {
-        print('validateDatabase: Error checking database file: $e2');
-        return false;
-      }
-    }
-  }
-
-  Future<List<Dua>> getDuasByCategory(int categoryId) async {
-    try {
-      // Check cache first
-      final cacheKey = 'category_$categoryId';
-      if (_queryCache.containsKey(cacheKey)) {
-        return _queryCache[cacheKey]!;
-      }
-
-      final results = await (select(duas)
-            ..where((t) => t.categoryId.equals(categoryId))
-            ..orderBy([(t) => OrderingTerm(expression: t.id)]))
-          .get()
-          .timeout(
-        _queryTimeout,
-        onTimeout: () {
-          print('getDuasByCategory: Query timed out');
-          return [];
-        },
-      );
-
-      // Cache the results
-      _queryCache[cacheKey] = results;
-
-      return results;
-    } catch (e) {
-      print('getDuasByCategory: Error: $e');
-      return [];
-    }
-  }
-
-  Future<Dua?> getDuaById(int id) async {
-    try {
-      // Check cache first
-      if (_duaByIdCache.containsKey(id)) {
-        return _duaByIdCache[id];
-      }
-
-      final results =
-          await (select(duas)..where((t) => t.id.equals(id))).get().timeout(
-        _queryTimeout,
-        onTimeout: () {
-          print('getDuaById: Query timed out');
-          return [];
-        },
-      );
-
-      final dua = results.isNotEmpty ? results.first : null;
-
-      // Cache the dua if found
-      if (dua != null) {
-        _duaByIdCache[id] = dua;
-      }
-
-      return dua;
-    } catch (e) {
-      print('getDuaById: Error: $e');
-      return null;
     }
   }
 
@@ -457,9 +335,9 @@ class DuaDatabase extends _$DuaDatabase {
     _allCategoriesCache = null;
     _allSubcategoriesCache = null;
     _queryCache.clear();
-    _duaByIdCache.clear();
     _categoryByIdCache.clear();
     _subcategoriesByCategoryCache.clear();
+    _duaLightCache.clear();
     print('Cache cleared from database service');
   }
 
@@ -472,6 +350,254 @@ class DuaDatabase extends _$DuaDatabase {
       print('Database connection closed successfully');
     } catch (e) {
       print('Error closing database connection: $e');
+    }
+  }
+
+  // Get specific dua by ID with only required fields
+  Future<Map<String, dynamic>?> getDuaLightById(int id,
+      {bool forceRefresh = false}) async {
+    print(
+        'getDuaLightById: Getting dua with ID $id (forceRefresh: $forceRefresh)');
+    try {
+      // Return from cache if available and not forcing refresh
+      if (!forceRefresh && _duaLightCache.containsKey(id)) {
+        print('getDuaLightById: Returning dua $id from cache');
+        return _duaLightCache[id];
+      }
+
+      // If database is not initialized, try to initialize it
+      if (!_isInitialized) {
+        print(
+            'getDuaLightById: Database not yet fully initialized, initializing...');
+        await _initializeDatabase();
+      }
+
+      // Only select approved columns (id, name/title, clean/arabic_text)
+      final query = selectOnly(duas)
+        ..addColumns([
+          duas.id,
+          duas.name,
+          duas.clean,
+        ])
+        ..where(duas.id.equals(id));
+
+      // Execute query with timeout
+      final row = await query.getSingleOrNull().timeout(
+        _queryTimeout,
+        onTimeout: () {
+          print('getDuaLightById: Query timed out, returning null');
+          return null;
+        },
+      );
+
+      if (row == null) {
+        print('getDuaLightById: Dua with ID $id not found');
+        return null;
+      }
+
+      // Map the result to a simplified dua object with only approved fields
+      final Map<String, dynamic> dua = {
+        'id': row.read(duas.id),
+        'title': row.read(duas.name),
+        'arabic_text': row.read(duas.clean),
+      };
+
+      // Cache the result
+      _duaLightCache[id] = dua;
+
+      print('getDuaLightById: Successfully fetched dua $id');
+      return dua;
+    } catch (e, stackTrace) {
+      print('getDuaLightById: Error fetching dua: $e');
+      print('getDuaLightById: Stack trace: $stackTrace');
+      return null;
+    }
+  }
+
+  // Get duas by category ID with only required fields
+  Future<List<Map<String, dynamic>>> getDuasLightByCategory(int categoryId,
+      {bool forceRefresh = false}) async {
+    print(
+        'getDuasLightByCategory: Getting duas for category $categoryId (forceRefresh: $forceRefresh)');
+    try {
+      // Create a cache key for this query
+      final String cacheKey = 'category_light_$categoryId';
+
+      // Return from cache if available and not forcing refresh
+      if (!forceRefresh && _queryCache.containsKey(cacheKey)) {
+        final List<Dua> cachedDuas = _queryCache[cacheKey]!;
+        print(
+            'getDuasLightByCategory: Returning ${cachedDuas.length} duas from cache for category $categoryId');
+
+        // Convert to lightweight format with only approved columns
+        return cachedDuas
+            .map((dua) => {
+                  'id': dua.id,
+                  'title': dua.name,
+                  'arabic_text': dua.clean,
+                })
+            .toList();
+      }
+
+      // If database is not initialized, try to initialize it
+      if (!_isInitialized) {
+        print(
+            'getDuasLightByCategory: Database not yet fully initialized, initializing...');
+        await _initializeDatabase();
+      }
+
+      // Only select approved columns and filter by category
+      final query = selectOnly(duas)
+        ..addColumns([
+          duas.id,
+          duas.name,
+          duas.clean,
+        ])
+        ..where(duas.categoryId.equals(categoryId))
+        ..orderBy([
+          OrderingTerm(expression: duas.id),
+        ]);
+
+      // Execute query with timeout
+      final rows = await query.get().timeout(
+        _queryTimeout,
+        onTimeout: () {
+          print(
+              'getDuasLightByCategory: Query timed out, returning empty list');
+          return [];
+        },
+      );
+
+      print(
+          'getDuasLightByCategory: Found ${rows.length} duas for category $categoryId');
+
+      // Convert to lightweight format
+      final results = <Map<String, dynamic>>[];
+      for (final row in rows) {
+        final id = row.read(duas.id);
+        if (id != null) {
+          results.add({
+            'id': id,
+            'title': row.read(duas.name),
+            'arabic_text': row.read(duas.clean),
+          });
+        }
+      }
+
+      // Cache the results
+      final cachedDuas = <Dua>[];
+      for (final item in results) {
+        final id = item['id'] as int;
+        cachedDuas.add(Dua(
+          id: id,
+          groups: '[]',
+        ));
+      }
+      _queryCache[cacheKey] = cachedDuas;
+
+      return results;
+    } catch (e, stackTrace) {
+      print('getDuasLightByCategory: Error fetching duas: $e');
+      print('getDuasLightByCategory: Stack trace: $stackTrace');
+      return [];
+    }
+  }
+
+  // Clear specific dua cache (for use when forcing refresh)
+  void clearDuaLightCache(int id) {
+    _duaLightCache.remove(id);
+  }
+
+  // Clear category duas cache
+  void clearCategoryDuasLightCache(int categoryId) {
+    _queryCache.remove('category_light_$categoryId');
+  }
+
+  // Search duas with only approved columns
+  Future<List<Map<String, dynamic>>> searchDuasLight(String query,
+      {bool forceRefresh = false}) async {
+    print('searchDuasLight: Searching duas with query "$query"');
+    try {
+      // Create a cache key for this search
+      final String cacheKey = 'search_light_$query';
+
+      // Return from cache if available and not forcing refresh
+      if (!forceRefresh && _queryCache.containsKey(cacheKey)) {
+        final List<Dua> cachedDuas = _queryCache[cacheKey]!;
+        print(
+            'searchDuasLight: Returning ${cachedDuas.length} duas from cache for query "$query"');
+
+        // Convert to lightweight format with only approved columns
+        return cachedDuas
+            .map((dua) => {
+                  'id': dua.id,
+                  'title': dua.name,
+                  'arabic_text': dua.clean,
+                })
+            .toList();
+      }
+
+      // If database is not initialized, try to initialize it
+      if (!_isInitialized) {
+        print(
+            'searchDuasLight: Database not yet fully initialized, initializing...');
+        await _initializeDatabase();
+      }
+
+      // Only select approved columns and filter by search term
+      final searchTerm = '%$query%'; // Add wildcards for LIKE query
+      final queryObj = selectOnly(duas)
+        ..addColumns([
+          duas.id,
+          duas.name,
+          duas.clean,
+        ])
+        ..where(duas.name.like(searchTerm) | duas.clean.like(searchTerm))
+        ..orderBy([
+          OrderingTerm(expression: duas.id),
+        ]);
+
+      // Execute query with timeout
+      final rows = await queryObj.get().timeout(
+        _queryTimeout,
+        onTimeout: () {
+          print('searchDuasLight: Query timed out, returning empty list');
+          return [];
+        },
+      );
+
+      print(
+          'searchDuasLight: Found ${rows.length} duas matching query "$query"');
+
+      // Convert to lightweight format
+      final results = <Map<String, dynamic>>[];
+      for (final row in rows) {
+        final id = row.read(duas.id);
+        if (id != null) {
+          results.add({
+            'id': id,
+            'title': row.read(duas.name),
+            'arabic_text': row.read(duas.clean),
+          });
+        }
+      }
+
+      // Cache the results
+      final cachedDuas = <Dua>[];
+      for (final item in results) {
+        final id = item['id'] as int;
+        cachedDuas.add(Dua(
+          id: id,
+          groups: '[]',
+        ));
+      }
+      _queryCache[cacheKey] = cachedDuas;
+
+      return results;
+    } catch (e, stackTrace) {
+      print('searchDuasLight: Error searching duas: $e');
+      print('searchDuasLight: Stack trace: $stackTrace');
+      return [];
     }
   }
 }

@@ -9,11 +9,18 @@ class GetAllDuaUseCase {
 
   Future<Either<String, List<DuaEntity>>> call() async {
     try {
-      final dua = await duaRepository.getAllDua();
-      return right(dua);
+      // Get all subcategories data in a map
+      final map = await duaRepository.getDuasGroupedBySubcategory();
+
+      // Flatten the map to a list
+      final List<DuaEntity> allDuas = [];
+      for (final subcategoryDuas in map.values) {
+        allDuas.addAll(subcategoryDuas);
+      }
+
+      return right(allDuas);
     } catch (e) {
       return left(e.toString());
     }
   }
 }
-

@@ -23,6 +23,9 @@ import 'package:dua/domain/use_cases/category/get_categories_by_language.dart';
 import 'package:dua/domain/use_cases/category/get_category_by_id.dart';
 import 'package:dua/domain/use_cases/dua/get_all_dua.dart';
 import 'package:dua/domain/use_cases/dua/get_duas_grouped_by_subcategory.dart';
+import 'package:dua/domain/use_cases/dua/get_dua_light_by_id.dart';
+import 'package:dua/domain/use_cases/dua/get_duas_light_by_category.dart';
+import 'package:dua/domain/use_cases/dua/search_duas_light.dart';
 import 'package:dua/domain/use_cases/subcategory/get_all_subcategories.dart';
 import 'package:dua/domain/use_cases/subcategory/get_dua_names_by_subcategory_id.dart';
 import 'package:dua/domain/use_cases/subcategory/get_subcategories_by_category.dart';
@@ -138,6 +141,18 @@ class ServiceLocator {
     // Register dua grouping use case
     _serviceLocator.registerLazySingleton(
         () => GetDuasGroupedBySubcategoryUseCase(duaRepository: locate()));
+
+    // Register dua search use case
+    _serviceLocator.registerLazySingleton(
+        () => SearchDuasLightUseCase(duaRepository: locate()));
+
+    // Register get single dua light use case
+    _serviceLocator.registerLazySingleton(
+        () => GetDuaLightByIdUseCase(duaRepository: locate()));
+
+    // Register get duas by category light use case
+    _serviceLocator.registerLazySingleton(
+        () => GetDuasLightByCategoryUseCase(duaRepository: locate()));
 
     // Register bookmark use cases
     _serviceLocator.registerLazySingleton(
