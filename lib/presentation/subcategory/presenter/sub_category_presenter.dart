@@ -1,16 +1,21 @@
 import 'package:dua/core/base/base_presenter.dart';
 import 'package:dua/core/utility/utility.dart';
+import 'package:dua/domain/entities/dua_entity.dart';
+import 'package:dua/domain/use_cases/dua/get_duas_grouped_by_subcategory.dart';
 import 'package:dua/domain/use_cases/subcategory/get_dua_names_by_subcategory_id.dart';
 import 'package:dua/domain/use_cases/subcategory/get_subcategory_names_by_category_id.dart';
-import 'package:dua/presentation/subcategory/presenter/sub_category_presenter_uistate.dart';
+import 'package:dua/presentation/subcategory/presenter/sub_category_uistate.dart';
 
 class SubCategoryPresenter extends BasePresenter<SubCategoryUiState> {
   final GetSubcategoryNamesByCategoryIdUseCase
       getSubcategoryNamesByCategoryIdUseCase;
   final GetDuaNamesBySubcategoryIdUseCase getDuaNamesBySubcategoryIdUseCase;
+  final GetDuasGroupedBySubcategoryUseCase getDuasGroupedBySubcategoryUseCase;
+
   SubCategoryPresenter({
     required this.getSubcategoryNamesByCategoryIdUseCase,
     required this.getDuaNamesBySubcategoryIdUseCase,
+    required this.getDuasGroupedBySubcategoryUseCase,
   });
   final Obs<SubCategoryUiState> uiState = Obs(SubCategoryUiState.empty());
 
@@ -21,6 +26,7 @@ class SubCategoryPresenter extends BasePresenter<SubCategoryUiState> {
     super.onInit();
     await fetchSubcategoryNamesByCategoryId();
     await fetchDuaNamesBySubcategoryId();
+    await fetchDuasGroupedBySubcategory();
   }
 
   void toggleExpansion(int index) {
@@ -62,6 +68,40 @@ class SubCategoryPresenter extends BasePresenter<SubCategoryUiState> {
         (r) => r,
       ),
     );
+  }
+
+  Future<void> fetchDuasGroupedBySubcategory() async {
+    uiState.value = currentUiState.copyWith(isLoading: true);
+
+    final result = await getDuasGroupedBySubcategoryUseCase();
+
+    result.fold(
+      (error) {
+        uiState.value = currentUiState.copyWith(
+          isLoading: false,
+          userMessage: error,
+        );
+      },
+      (data) {
+        uiState.value = currentUiState.copyWith(
+          isLoading: false,
+          groupedDuas: data,
+        );
+      },
+    );
+  }
+
+  int get subcategoryCount => currentUiState.groupedDuas?.keys.length ?? 0;
+
+  List<int> get subcategoryIds =>
+      currentUiState.groupedDuas?.keys.toList() ?? [];
+
+  List<DuaEntity>? getDuasBySubcategoryId(int subcategoryId) {
+    return currentUiState.groupedDuas?[subcategoryId];
+  }
+
+  int getDuaCountBySubcategoryId(int subcategoryId) {
+    return currentUiState.groupedDuas?[subcategoryId]?.length ?? 0;
   }
 
   void searchSubcategories(String query) {

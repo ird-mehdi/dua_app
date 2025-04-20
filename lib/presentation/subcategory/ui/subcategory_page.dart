@@ -10,10 +10,12 @@ import 'package:flutter/material.dart';
 
 class SubCategory extends StatelessWidget {
   final int categoryId;
+  final String categoryName;
 
   const SubCategory({
     super.key,
     required this.categoryId,
+    required this.categoryName,
   });
 
   @override
@@ -24,7 +26,7 @@ class SubCategory extends StatelessWidget {
 
     return Scaffold(
       appBar: CustomAppBar(
-        title: 'Dua Importance',
+        title: categoryName,
         titleSpacing: eightPx,
         titleFontSize: eighteenPx,
         onLeadingPressed: () => Navigator.pop(context),
@@ -53,14 +55,15 @@ class SubCategory extends StatelessWidget {
                       itemCount: subcategories.length,
                       itemBuilder: (context, index) {
                         final subcategoryName = subcategories[index];
+                        final duaCount =
+                            presenter.getDuaCountBySubcategoryId(index + 1);
                         return subcategoryName.isEmpty
                             ? CircularProgressIndicator()
                             : DuaListTile(
                                 index: index,
                                 presenter: presenter,
                                 title: subcategoryName,
-                                totalDuas: presenter
-                                    .getDuaCountForSubcategory(subcategoryName),
+                                totalDuas: duaCount,
                                 subcategories: presenter
                                     .getNestedSubcategories(subcategoryName),
                               );

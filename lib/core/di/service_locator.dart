@@ -22,6 +22,7 @@ import 'package:dua/domain/use_cases/category/get_all_categories.dart';
 import 'package:dua/domain/use_cases/category/get_categories_by_language.dart';
 import 'package:dua/domain/use_cases/category/get_category_by_id.dart';
 import 'package:dua/domain/use_cases/dua/get_all_dua.dart';
+import 'package:dua/domain/use_cases/dua/get_duas_grouped_by_subcategory.dart';
 import 'package:dua/domain/use_cases/subcategory/get_all_subcategories.dart';
 import 'package:dua/domain/use_cases/subcategory/get_dua_names_by_subcategory_id.dart';
 import 'package:dua/domain/use_cases/subcategory/get_subcategories_by_category.dart';
@@ -31,6 +32,7 @@ import 'package:dua/presentation/bookmark/presenter/bookmark_presenter.dart';
 import 'package:dua/presentation/home/presenter/home_presenter.dart';
 import 'package:dua/presentation/scheduale/presenter/schedule_presenter.dart';
 import 'package:dua/presentation/settings/presenter/settings_presenter.dart';
+import 'package:dua/presentation/subcategory/presenter/dua_subcategory_list_presenter.dart';
 import 'package:dua/presentation/subcategory/presenter/sub_category_presenter.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -109,6 +111,7 @@ class ServiceLocator {
         .registerLazySingleton(() => loadPresenter(SubCategoryPresenter(
               getSubcategoryNamesByCategoryIdUseCase: locate(),
               getDuaNamesBySubcategoryIdUseCase: locate(),
+              getDuasGroupedBySubcategoryUseCase: locate(),
             )));
     _serviceLocator
         .registerLazySingleton(() => loadPresenter(SchedulePresenter()));
@@ -116,9 +119,14 @@ class ServiceLocator {
         () => loadPresenter(AllDuasPresenter(locate(), locate())));
     _serviceLocator
         .registerLazySingleton(() => loadPresenter(BookmarkPresenter()));
-
     _serviceLocator
         .registerLazySingleton(() => loadPresenter(SettingsPresenter()));
+
+    // Register DuaSubcategoryListPresenter
+    _serviceLocator
+        .registerLazySingleton(() => loadPresenter(DuaSubcategoryListPresenter(
+              getDuasGroupedBySubcategoryUseCase: locate(),
+            )));
   }
 
   Future<void> _setUpUseCase() async {
@@ -126,6 +134,10 @@ class ServiceLocator {
     //     .registerFactory(() => GetSettingsStateUseCase(locate(), locate()));
     _serviceLocator
         .registerLazySingleton(() => GetAllDuaUseCase(duaRepository: locate()));
+
+    // Register dua grouping use case
+    _serviceLocator.registerLazySingleton(
+        () => GetDuasGroupedBySubcategoryUseCase(duaRepository: locate()));
 
     // Register bookmark use cases
     _serviceLocator.registerLazySingleton(

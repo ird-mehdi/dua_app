@@ -11,6 +11,7 @@ class DuaRepositoryImpl extends DuaRepository {
 
   // In-memory cache for faster repeat access
   static List<DuaEntity>? _inMemoryDuas;
+  static Map<int, List<DuaEntity>>? _duasBySubcategoryCache;
 
   DuaRepositoryImpl({required this.localDataSource}) {
     _cacheService = locate<DuaCacheService>();
@@ -52,6 +53,40 @@ class DuaRepositoryImpl extends DuaRepository {
         return _inMemoryDuas!;
       }
       return [];
+    }
+  }
+
+  @override
+  Future<Map<int, List<DuaEntity>>> getDuasGroupedBySubcategory() async {
+    try {
+      // Check if we already have the data in memory cache
+      if (_duasBySubcategoryCache != null) {
+        return _duasBySubcategoryCache!;
+      }
+
+      // First get all duas
+      final allDuas = await getAllDua();
+
+      // Group duas by subcategory ID
+      final Map<int, List<DuaEntity>> groupedDuas = {};
+
+      for (final dua in allDuas) {
+        final subcategoryId = dua.subcategoryId;
+
+        if (!groupedDuas.containsKey(subcategoryId)) {
+          groupedDuas[subcategoryId] = [];
+        }
+
+        groupedDuas[subcategoryId]!.add(dua);
+      }
+
+      // Cache the result for faster future access
+      _duasBySubcategoryCache = groupedDuas;
+
+      return groupedDuas;
+    } catch (e) {
+      // Return empty map on error
+      return {};
     }
   }
 }

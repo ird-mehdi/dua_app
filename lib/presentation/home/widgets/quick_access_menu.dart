@@ -7,6 +7,7 @@ import 'package:dua/core/static/ui_const.dart';
 import 'package:dua/core/utility/utility.dart';
 import 'package:dua/core/external_libs/flutter_toast/toast_utility.dart';
 import 'package:dua/presentation/coming_soon.dart';
+import 'package:dua/presentation/common/widgets/dua_subcategory_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -123,7 +124,7 @@ final List<QuickAccessItem> quickAccessItems = [
     icon: AppImages.icTimer,
     label: 'Last Read',
     color: DuaColor.quickAccessColorLight1,
-    widget: ComingSoon(),
+    widget: DuaSubcategoryList(),
   ),
   QuickAccessItem(
     icon: AppImages.icCup,

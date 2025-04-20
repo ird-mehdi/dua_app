@@ -1,4 +1,5 @@
 import 'package:dua/core/base/base_ui_state.dart';
+import 'package:dua/domain/entities/dua_entity.dart';
 import 'package:flutter/material.dart';
 
 class SubCategoryUiState extends BaseUiState {
@@ -10,6 +11,7 @@ class SubCategoryUiState extends BaseUiState {
     this.subcategoryNamesByCategoryId,
     this.searchQuery = '',
     this.subcategories,
+    this.groupedDuas,
   });
 
   factory SubCategoryUiState.empty() {
@@ -20,6 +22,7 @@ class SubCategoryUiState extends BaseUiState {
       expandedIndices: {},
       subcategoryNamesByCategoryId: {},
       subcategories: {},
+      groupedDuas: {},
     );
   }
 
@@ -28,6 +31,7 @@ class SubCategoryUiState extends BaseUiState {
   final Map<int, List<String>>? subcategoryNamesByCategoryId;
   final String searchQuery;
   final Map<int, List<String>>? subcategories;
+  final Map<int, List<DuaEntity>>? groupedDuas;
 
   @override
   List<Object?> get props => [
@@ -38,6 +42,7 @@ class SubCategoryUiState extends BaseUiState {
         subcategoryNamesByCategoryId,
         searchQuery,
         subcategories,
+        groupedDuas,
       ];
 
   SubCategoryUiState copyWith({
@@ -48,6 +53,7 @@ class SubCategoryUiState extends BaseUiState {
     Map<int, List<String>>? subcategoryNamesByCategoryId,
     String? searchQuery,
     Map<int, List<String>>? subcategories,
+    Map<int, List<DuaEntity>>? groupedDuas,
   }) {
     return SubCategoryUiState(
       isLoading: isLoading ?? this.isLoading,
@@ -58,6 +64,7 @@ class SubCategoryUiState extends BaseUiState {
           subcategoryNamesByCategoryId ?? this.subcategoryNamesByCategoryId,
       searchQuery: searchQuery ?? this.searchQuery,
       subcategories: subcategories ?? this.subcategories,
+      groupedDuas: groupedDuas ?? this.groupedDuas,
     );
   }
 }

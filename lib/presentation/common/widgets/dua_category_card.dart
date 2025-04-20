@@ -1,7 +1,7 @@
 import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/static/ui_const.dart';
 import 'package:dua/core/utility/utility.dart';
-import 'package:dua/presentation/subcategory/ui/subcategory.dart';
+import 'package:dua/presentation/subcategory/ui/subcategory_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:dua/core/config/dua_custom_text_theme.dart';
@@ -35,6 +35,7 @@ class DuaCategoryCard extends StatelessWidget {
           MaterialPageRoute(
             builder: (context) => SubCategory(
               categoryId: categoryId,
+              categoryName: categoryName,
             ),
           ),
         );
