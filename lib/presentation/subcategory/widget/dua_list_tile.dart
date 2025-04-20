@@ -10,11 +10,17 @@ import 'package:flutter/material.dart';
 class DuaListTile extends StatelessWidget {
   final int index;
   final SubCategoryPresenter presenter;
+  final String title;
+  final int totalDuas;
+  final List<String>? subcategories;
 
   const DuaListTile({
     super.key,
     required this.index,
     required this.presenter,
+    required this.title,
+    required this.totalDuas,
+    this.subcategories,
   });
 
   @override
@@ -31,14 +37,15 @@ class DuaListTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(twentyPx),
               side: BorderSide.none,
             ),
-            leading: CircleNumberWidget(presenter: presenter, index: index, theme: theme),
+            leading: CircleNumberWidget(
+                presenter: presenter, index: index, theme: theme),
             showTrailingIcon: false,
             title: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'The most important thing to ask Allah for',
+                  title,
                   style: theme.textTheme.titleMedium?.copyWith(
                       fontSize:
                           presenter.isExpanded(index) ? fifteenPx : fourteenPx,
@@ -47,7 +54,7 @@ class DuaListTile extends StatelessWidget {
                 ),
                 gapH8,
                 Text(
-                  'Total 15 Duas',
+                  'Total $totalDuas Duas',
                   style: theme.textTheme.titleSmall?.copyWith(
                     fontSize: twelvePx,
                     color: context.color.subtitleColor,
@@ -71,25 +78,37 @@ class DuaListTile extends StatelessWidget {
                       ),
                     ),
                     gapH10,
-                    IconTextRow(
-                        theme: theme,
-                        iconPath: SvgPath.icMainComponent,
-                        text: 'Sincerity'),
-                    gapH10,
-                    IconTextRow(
-                        theme: theme,
-                        iconPath: SvgPath.icMainComponent,
-                        text: 'Eating Lawful Food'),
-                    gapH10,
-                    IconTextRow(
-                        theme: theme,
-                        iconPath: SvgPath.icMainComponent,
-                        text: "The Consciousness of One's Heart"),
-                    gapH10,
-                    IconTextRow(
-                        theme: theme,
-                        iconPath: SvgPath.icMainComponent,
-                        text: 'Supplicate for Good Only')
+                    if (subcategories != null) ...[
+                      for (final subcategory in subcategories!)
+                        Padding(
+                          padding: EdgeInsets.only(bottom: tenPx),
+                          child: IconTextRow(
+                            theme: theme,
+                            iconPath: SvgPath.icMainComponent,
+                            text: subcategory,
+                          ),
+                        ),
+                    ] else ...[
+                      IconTextRow(
+                          theme: theme,
+                          iconPath: SvgPath.icMainComponent,
+                          text: 'Sincerity'),
+                      gapH10,
+                      IconTextRow(
+                          theme: theme,
+                          iconPath: SvgPath.icMainComponent,
+                          text: 'Eating Lawful Food'),
+                      gapH10,
+                      IconTextRow(
+                          theme: theme,
+                          iconPath: SvgPath.icMainComponent,
+                          text: "The Consciousness of One's Heart"),
+                      gapH10,
+                      IconTextRow(
+                          theme: theme,
+                          iconPath: SvgPath.icMainComponent,
+                          text: 'Supplicate for Good Only')
+                    ]
                   ],
                 ),
               )
@@ -124,8 +143,7 @@ class CircleNumberWidget extends StatelessWidget {
             ? context.color.primaryColor100
             : context.color.secondaryColor.withOpacityInt(0.3),
         shape: BoxShape.circle,
-        border:
-            Border.all(color: context.color.iconShadeColor, width: 2),
+        border: Border.all(color: context.color.iconShadeColor, width: 2),
       ),
       child: Center(
         child: Text(

@@ -1,42 +1,64 @@
 import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/static/ui_const.dart';
 import 'package:dua/core/utility/utility.dart';
-import 'package:dua/domain/entities/category_data_entity.dart';
+import 'package:dua/presentation/subcategory/ui/subcategory.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:dua/core/config/dua_custom_text_theme.dart';
 
 class DuaCategoryCard extends StatelessWidget {
-  final CategoryData category;
+  final int categoryId;
+  final String categoryName;
+  final String categoryIcon;
+  final String categorySubtitle;
+  final int categoryDuaCount;
   final bool showDetails;
+  final Color categoryBgColor;
 
   const DuaCategoryCard({
     super.key,
-    required this.category,
+    required this.categoryId,
+    required this.categoryName,
+    required this.categoryIcon,
+    required this.categorySubtitle,
+    required this.categoryDuaCount,
     this.showDetails = true,
+    required this.categoryBgColor,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: eightyEightPx,
-      padding: padding18,
-      margin: EdgeInsets.only(bottom: twelvePx),
-      decoration: BoxDecoration(
-        border: Border.all(width: onePx, color: context.color.primaryColor10),
-        borderRadius: radius20,
-      ),
-      child: Row(
-        children: [
-          _buildCategoryIcon(),
-          gapW16,
-          Expanded(child: _buildCategoryDetails(context)),
-          if (showDetails) ...[
-            _buildVerticalDivider(context),
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SubCategory(
+              categoryId: categoryId,
+            ),
+          ),
+        );
+      },
+      child: Container(
+        height: eightyEightPx,
+        padding: padding18,
+        margin: EdgeInsets.only(bottom: twelvePx),
+        decoration: BoxDecoration(
+          border: Border.all(width: onePx, color: context.color.primaryColor10),
+          borderRadius: radius20,
+        ),
+        child: Row(
+          children: [
+            _buildCategoryIcon(),
             gapW16,
-            _buildDuaCount(context),
+            Expanded(child: _buildCategoryDetails(context)),
+            if (showDetails) ...[
+              _buildVerticalDivider(context),
+              gapW16,
+              _buildDuaCount(context),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }
@@ -47,11 +69,11 @@ class DuaCategoryCard extends StatelessWidget {
       height: fiftyTwoPx,
       padding: padding6,
       decoration: BoxDecoration(
-        color: category.bgColor,
+        color: categoryBgColor,
         borderRadius: radius15,
       ),
       child: SvgPicture.asset(
-        category.icon,
+        categoryIcon,
         height: thirtySevenPx,
         width: thirtyTwoPx,
       ),
@@ -63,13 +85,13 @@ class DuaCategoryCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          category.title,
+          categoryName,
           style:
               Theme.of(context).extension<DuaCustomTextTheme>()?.categoryTitle,
         ),
         gapH4,
         Text(
-          category.subtitle,
+          categorySubtitle,
           style: Theme.of(context)
               .extension<DuaCustomTextTheme>()
               ?.categorySubtitle,
@@ -93,7 +115,7 @@ class DuaCategoryCard extends StatelessWidget {
     return Column(
       children: [
         Text(
-          '${category.duaCount}',
+          '$categoryDuaCount',
           style: Theme.of(context).extension<DuaCustomTextTheme>()?.duaCount,
         ),
         gapH4,

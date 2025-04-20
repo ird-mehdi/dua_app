@@ -4,17 +4,28 @@ import 'package:dua/core/base/base_presenter.dart';
 import 'package:dua/core/services/bookmark_sync_service.dart';
 import 'package:dua/core/services/dua_cache_service.dart';
 import 'package:dua/data/datasource/local_data_source.dart';
+import 'package:dua/data/repositories/category_repository_impl.dart';
 import 'package:dua/data/repositories/dua_bookmark_repository_impl.dart';
 import 'package:dua/data/repositories/dua_repository_impl.dart';
+import 'package:dua/data/repositories/subcategory_repository_impl.dart';
 import 'package:dua/data/services/dua_database/database_service.dart';
 import 'package:dua/data/services/error_message_handler_impl.dart';
+import 'package:dua/domain/repositories/category_repository.dart';
 import 'package:dua/domain/repositories/dua_bookmark_repository.dart';
 import 'package:dua/domain/repositories/dua_repository.dart';
+import 'package:dua/domain/repositories/subcategory_repository.dart';
 import 'package:dua/domain/service/error_message_handler.dart';
 import 'package:dua/domain/use_cases/bookmark/create_bookmark_folder_use_case.dart';
 import 'package:dua/domain/use_cases/bookmark/get_all_bookmark_folders_use_case.dart';
 import 'package:dua/domain/use_cases/bookmark/save_bookmarks_to_dua_use_case.dart';
+import 'package:dua/domain/use_cases/category/get_all_categories.dart';
+import 'package:dua/domain/use_cases/category/get_categories_by_language.dart';
+import 'package:dua/domain/use_cases/category/get_category_by_id.dart';
 import 'package:dua/domain/use_cases/dua/get_all_dua.dart';
+import 'package:dua/domain/use_cases/subcategory/get_all_subcategories.dart';
+import 'package:dua/domain/use_cases/subcategory/get_dua_names_by_subcategory_id.dart';
+import 'package:dua/domain/use_cases/subcategory/get_subcategories_by_category.dart';
+import 'package:dua/domain/use_cases/subcategory/get_subcategory_names_by_category_id.dart';
 import 'package:dua/presentation/all_dua/presenter/all_dua_presenter.dart';
 import 'package:dua/presentation/bookmark/presenter/bookmark_presenter.dart';
 import 'package:dua/presentation/home/presenter/home_presenter.dart';
@@ -52,6 +63,13 @@ class ServiceLocator {
     // Register bookmark repository
     _serviceLocator.registerLazySingleton<DuaBookmarkRepository>(
         () => DuaBookmarkRepositoryImpl());
+
+    // Register category and subcategory repositories
+    _serviceLocator.registerLazySingleton<CategoryRepository>(
+        () => CategoryRepositoryImpl(localDataSource: locate()));
+
+    _serviceLocator.registerLazySingleton<SubcategoryRepository>(
+        () => SubcategoryRepositoryImpl(localDataSource: locate()));
   }
 
   Future<void> _setUpServices() async {
@@ -80,9 +98,18 @@ class ServiceLocator {
   }
 
   Future<void> _setUpPresenters() async {
-    _serviceLocator.registerLazySingleton(() => loadPresenter(HomePresenter()));
+    _serviceLocator.registerLazySingleton(() => loadPresenter(HomePresenter(
+          getAllCategoriesUseCase: locate(),
+          getCategoriesByLanguageUseCase: locate(),
+          getAllSubcategoriesUseCase: locate(),
+          getSubcategoriesByCategoryUseCase: locate(),
+          getSubcategoryNamesByCategoryIdUseCase: locate(),
+        )));
     _serviceLocator
-        .registerLazySingleton(() => loadPresenter(SubCategoryPresenter()));
+        .registerLazySingleton(() => loadPresenter(SubCategoryPresenter(
+              getSubcategoryNamesByCategoryIdUseCase: locate(),
+              getDuaNamesBySubcategoryIdUseCase: locate(),
+            )));
     _serviceLocator
         .registerLazySingleton(() => loadPresenter(SchedulePresenter()));
     _serviceLocator.registerLazySingleton(
@@ -107,5 +134,22 @@ class ServiceLocator {
         () => CreateBookmarkFolderUseCase(locate(), locate()));
     _serviceLocator.registerLazySingleton(
         () => GetAllBookmarkFoldersUseCase(locate(), locate()));
+
+    // Register category and subcategory use cases
+    _serviceLocator.registerLazySingleton(
+        () => GetAllCategoriesUseCase(categoryRepository: locate()));
+    _serviceLocator.registerLazySingleton(
+        () => GetCategoryByIdUseCase(categoryRepository: locate()));
+    _serviceLocator.registerLazySingleton(
+        () => GetCategoriesByLanguageUseCase(categoryRepository: locate()));
+    _serviceLocator.registerLazySingleton(
+        () => GetAllSubcategoriesUseCase(subcategoryRepository: locate()));
+    _serviceLocator.registerLazySingleton(() =>
+        GetSubcategoriesByCategoryUseCase(subcategoryRepository: locate()));
+    _serviceLocator.registerLazySingleton(() =>
+        GetSubcategoryNamesByCategoryIdUseCase(
+            subcategoryRepository: locate()));
+    _serviceLocator.registerLazySingleton(() =>
+        GetDuaNamesBySubcategoryIdUseCase(subcategoryRepository: locate()));
   }
 }

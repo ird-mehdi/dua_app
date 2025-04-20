@@ -7,6 +7,9 @@ class SubCategoryUiState extends BaseUiState {
     required super.userMessage,
     required this.expandedIndices,
     this.context,
+    this.subcategoryNamesByCategoryId,
+    this.searchQuery = '',
+    this.subcategories,
   });
 
   factory SubCategoryUiState.empty() {
@@ -15,11 +18,16 @@ class SubCategoryUiState extends BaseUiState {
       userMessage: '',
       context: null,
       expandedIndices: {},
+      subcategoryNamesByCategoryId: {},
+      subcategories: {},
     );
   }
 
   final BuildContext? context;
   final Set<int> expandedIndices;
+  final Map<int, List<String>>? subcategoryNamesByCategoryId;
+  final String searchQuery;
+  final Map<int, List<String>>? subcategories;
 
   @override
   List<Object?> get props => [
@@ -27,6 +35,9 @@ class SubCategoryUiState extends BaseUiState {
         userMessage,
         context,
         expandedIndices,
+        subcategoryNamesByCategoryId,
+        searchQuery,
+        subcategories,
       ];
 
   SubCategoryUiState copyWith({
@@ -34,12 +45,19 @@ class SubCategoryUiState extends BaseUiState {
     String? userMessage,
     BuildContext? context,
     Set<int>? expandedIndices,
+    Map<int, List<String>>? subcategoryNamesByCategoryId,
+    String? searchQuery,
+    Map<int, List<String>>? subcategories,
   }) {
     return SubCategoryUiState(
       isLoading: isLoading ?? this.isLoading,
       userMessage: userMessage ?? this.userMessage,
       context: context ?? this.context,
       expandedIndices: expandedIndices ?? this.expandedIndices,
+      subcategoryNamesByCategoryId:
+          subcategoryNamesByCategoryId ?? this.subcategoryNamesByCategoryId,
+      searchQuery: searchQuery ?? this.searchQuery,
+      subcategories: subcategories ?? this.subcategories,
     );
   }
 }

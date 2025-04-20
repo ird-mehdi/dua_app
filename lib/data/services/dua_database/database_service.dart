@@ -4,6 +4,8 @@ import 'package:drift/drift.dart';
 import 'package:dua/data/mappers/dua_groups_mapper.dart';
 import 'package:dua/data/services/dua_database/database_loader.dart';
 import 'package:dua/data/services/dua_database/table/dua_database_table.dart';
+import 'package:dua/data/services/dua_database/table/categories_table.dart';
+import 'package:dua/data/services/dua_database/table/subcategories_table.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:dua/core/constants/app_constant.dart';
 import 'package:path/path.dart' as p;
@@ -12,7 +14,7 @@ import 'package:flutter/services.dart';
 
 part 'database_service.g.dart';
 
-@DriftDatabase(tables: [Duas])
+@DriftDatabase(tables: [Duas, Categories, Subcategories])
 class DuaDatabase extends _$DuaDatabase {
   bool _isInitialized = false;
   static const _queryTimeout = Duration(seconds: 5);
@@ -21,6 +23,10 @@ class DuaDatabase extends _$DuaDatabase {
   static final Map<String, List<Dua>> _queryCache = {};
   static final Map<int, Dua> _duaByIdCache = {};
   static List<Dua>? _allDuasCache;
+  static List<Category>? _allCategoriesCache;
+  static List<Subcategory>? _allSubcategoriesCache;
+  static final Map<int, Category> _categoryByIdCache = {};
+  static final Map<int, List<Subcategory>> _subcategoriesByCategoryCache = {};
 
   DuaDatabase({QueryExecutor? executor}) : super(executor ?? loadDatabase()) {
     // Initialize in a more optimized way without blocking
@@ -295,11 +301,165 @@ class DuaDatabase extends _$DuaDatabase {
     }
   }
 
-  // Clear cache method for when data changes or memory needs to be freed
+  // Methods for Categories
+  Future<List<Category>> getAllCategories() async {
+    print('getAllCategories: Getting all categories from database');
+    try {
+      // Return from memory cache if available
+      if (_allCategoriesCache != null && _allCategoriesCache!.isNotEmpty) {
+        print(
+            'getAllCategories: Returning ${_allCategoriesCache!.length} categories from cache');
+        return _allCategoriesCache!;
+      }
+
+      // If database is not initialized, try to initialize it
+      if (!_isInitialized) {
+        print(
+            'getAllCategories: Database not yet fully initialized, initializing...');
+        await _initializeDatabase();
+      }
+
+      final query = select(categories);
+
+      // Execute query with timeout
+      final results = await query.get().timeout(
+        _queryTimeout,
+        onTimeout: () {
+          print('getAllCategories: Query timed out, returning empty list');
+          return [];
+        },
+      );
+
+      print('getAllCategories: Found ${results.length} categories in database');
+
+      // Cache the results in memory
+      _allCategoriesCache = results;
+
+      // Also cache individual categories for faster retrieval by ID
+      for (final category in results) {
+        _categoryByIdCache[category.id] = category;
+      }
+
+      return results;
+    } catch (e, stackTrace) {
+      print('getAllCategories: Error fetching categories: $e');
+      print('getAllCategories: Stack trace: $stackTrace');
+      return [];
+    }
+  }
+
+  Future<Category?> getCategoryById(int id) async {
+    try {
+      // Check cache first
+      if (_categoryByIdCache.containsKey(id)) {
+        return _categoryByIdCache[id];
+      }
+
+      final results = await (select(categories)..where((t) => t.id.equals(id)))
+          .get()
+          .timeout(
+        _queryTimeout,
+        onTimeout: () {
+          print('getCategoryById: Query timed out');
+          return [];
+        },
+      );
+
+      if (results.isEmpty) return null;
+
+      final category = results.first;
+
+      // Cache the category if found
+      _categoryByIdCache[id] = category;
+
+      return category;
+    } catch (e) {
+      print('getCategoryById: Error: $e');
+      return null;
+    }
+  }
+
+  // Methods for Subcategories
+  Future<List<Subcategory>> getAllSubcategories() async {
+    print('getAllSubcategories: Getting all subcategories from database');
+    try {
+      // Return from memory cache if available
+      if (_allSubcategoriesCache != null &&
+          _allSubcategoriesCache!.isNotEmpty) {
+        print(
+            'getAllSubcategories: Returning ${_allSubcategoriesCache!.length} subcategories from cache');
+        return _allSubcategoriesCache!;
+      }
+
+      // If database is not initialized, try to initialize it
+      if (!_isInitialized) {
+        print(
+            'getAllSubcategories: Database not yet fully initialized, initializing...');
+        await _initializeDatabase();
+      }
+
+      final query = select(subcategories);
+
+      // Execute query with timeout
+      final results = await query.get().timeout(
+        _queryTimeout,
+        onTimeout: () {
+          print('getAllSubcategories: Query timed out, returning empty list');
+          return [];
+        },
+      );
+
+      print(
+          'getAllSubcategories: Found ${results.length} subcategories in database');
+
+      // Cache the results in memory
+      _allSubcategoriesCache = results;
+
+      return results;
+    } catch (e, stackTrace) {
+      print('getAllSubcategories: Error fetching subcategories: $e');
+      print('getAllSubcategories: Stack trace: $stackTrace');
+      return [];
+    }
+  }
+
+  Future<List<Subcategory>> getSubcategoriesByCategory(int categoryId) async {
+    try {
+      // Check cache first
+      if (_subcategoriesByCategoryCache.containsKey(categoryId)) {
+        return _subcategoriesByCategoryCache[categoryId]!;
+      }
+
+      final results = await (select(subcategories)
+            ..where((t) => t.categoryId.equals(categoryId)))
+          .get()
+          .timeout(
+        _queryTimeout,
+        onTimeout: () {
+          print('getSubcategoriesByCategory: Query timed out');
+          return [];
+        },
+      );
+
+      // Cache the results
+      _subcategoriesByCategoryCache[categoryId] = results;
+
+      return results;
+    } catch (e) {
+      print('getSubcategoriesByCategory: Error: $e');
+      return [];
+    }
+  }
+
+  // Update the clear cache method to include new caches
   void clearCache() {
     _allDuasCache = null;
+    _allCategoriesCache = null;
+    _allSubcategoriesCache = null;
     _queryCache.clear();
     _duaByIdCache.clear();
+    _categoryByIdCache.clear();
+    _subcategoriesByCategoryCache.clear();
     print('Cache cleared from database service');
   }
 

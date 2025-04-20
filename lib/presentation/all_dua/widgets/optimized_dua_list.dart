@@ -3,7 +3,6 @@ import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/domain/entities/dua_entity.dart';
 import 'package:dua/presentation/dua_details/ui/dua_details_page.dart';
 import 'package:flutter/material.dart';
-import 'package:characters/characters.dart';
 
 // Helper class to represent sections in the list
 class _ListSection {

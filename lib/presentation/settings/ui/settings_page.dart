@@ -395,7 +395,7 @@ class SettingSwitchTile extends StatelessWidget {
                 inactiveTrackColor: DuaColor.subtitleColorLight,
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 trackOutlineWidth:
-                    MaterialStateProperty.resolveWith<double?>((_) => 0),
+                    WidgetStateProperty.resolveWith<double?>((_) => 0),
               ),
             ),
           ),

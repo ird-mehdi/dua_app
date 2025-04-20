@@ -155,7 +155,7 @@ class AllDuasPresenter extends BasePresenter<AllDuasUiState> {
       _retryCount++;
       uiState.value = currentUiState.copyWith(
         isLoading: false,
-        userMessage: () => '$error Retrying (${_retryCount}/${_maxRetries})...',
+        userMessage: () => '$error Retrying ($_retryCount/$_maxRetries)...',
       );
       Future.delayed(const Duration(seconds: 2), _fetchAllDuas);
       _isLoading = true;
