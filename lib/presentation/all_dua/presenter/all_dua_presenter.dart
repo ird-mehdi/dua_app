@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:dua/core/external_libs/scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:dua/core/utility/ui_helper.dart';
+import 'dart:async';
 
 // Static class for filter parameters
 class _FilterParams {
@@ -41,6 +42,12 @@ class AllDuasPresenter extends BasePresenter<AllDuasUiState> {
   final Map<String, List<DuaEntity>> _filteredCache = {};
   // Cache for letter indices (index of the header in _groupedData)
   final Map<String, int> _letterIndices = {};
+  // Cache for processed data to avoid reprocessing the same data
+  static final Map<String, _ProcessResult> _processResultCache = {};
+
+  // Debounce timer for search to prevent excessive processing
+  Timer? _searchDebounceTimer;
+  static const _debounceTime = Duration(milliseconds: 300);
 
   AllDuasPresenter(this.getAllDuas, this._cacheService);
 
@@ -55,6 +62,7 @@ class AllDuasPresenter extends BasePresenter<AllDuasUiState> {
 
   @override
   void onClose() {
+    _searchDebounceTimer?.cancel();
     itemPositionsListener.itemPositions
         .removeListener(_updateSelectedCharacterFromScroll);
     _clearCaches();
@@ -104,6 +112,10 @@ class AllDuasPresenter extends BasePresenter<AllDuasUiState> {
     _letterIndices.clear();
     _filteredCache.clear();
     _groupedData.clear();
+    // Only clear process cache if it's getting too large (over 10 entries)
+    if (_processResultCache.length > 10) {
+      _processResultCache.clear();
+    }
   }
 
   Future<void> _fetchAllDuas() async {
@@ -182,7 +194,18 @@ class AllDuasPresenter extends BasePresenter<AllDuasUiState> {
       return;
     }
 
-    final result = await compute(_computeGroupedDataAndAlphabet, duas);
+    // Create a cache key based on the dua IDs to avoid reprocessing
+    final cacheKey = duas.map((d) => d.id).join('_');
+    _ProcessResult result;
+
+    if (_processResultCache.containsKey(cacheKey)) {
+      // Use cached result if available
+      result = _processResultCache[cacheKey]!;
+    } else {
+      // Process data in isolate and cache the result
+      result = await compute(_computeGroupedDataAndAlphabet, duas);
+      _processResultCache[cacheKey] = result;
+    }
 
     _groupedData = result.groupedData;
     _letterIndices.clear();
@@ -200,9 +223,19 @@ class AllDuasPresenter extends BasePresenter<AllDuasUiState> {
   }
 
   static _ProcessResult _computeGroupedDataAndAlphabet(List<DuaEntity> duas) {
-    final Map<String, List<DuaEntity>> groupedDuasMap = {};
-    final availableLetters = <String>{};
+    // Early return for empty lists to avoid unnecessary processing
+    if (duas.isEmpty) {
+      return _ProcessResult(
+        groupedData: [],
+        letters: [],
+        letterIndices: {},
+      );
+    }
 
+    final Map<String, List<DuaEntity>> groupedDuasMap = {};
+    final Set<String> availableLetters = {};
+
+    // Single pass through the data
     for (var dua in duas) {
       if (dua.name.isNotEmpty) {
         final firstLetter = dua.name[0].toUpperCase();
@@ -215,12 +248,16 @@ class AllDuasPresenter extends BasePresenter<AllDuasUiState> {
     final List<_ListSection> groupedDataList = [];
     final Map<String, int> letterIndices = {};
 
+    // Populate the sections
     for (final letter in sortedLetters) {
       letterIndices[letter] = groupedDataList.length;
       groupedDataList.add(_ListSection(letter: letter, isHeader: true));
 
-      for (final dua in groupedDuasMap[letter]!) {
-        groupedDataList.add(_ListSection(dua: dua, isHeader: false));
+      final duasForLetter = groupedDuasMap[letter];
+      if (duasForLetter != null) {
+        for (final dua in duasForLetter) {
+          groupedDataList.add(_ListSection(dua: dua, isHeader: false));
+        }
       }
     }
 
@@ -293,8 +330,14 @@ class AllDuasPresenter extends BasePresenter<AllDuasUiState> {
   }
 
   void updateSearchQuery(String query) {
-    uiState.value = currentUiState.copyWith(searchQuery: query);
-    _applyFilters();
+    // Cancel previous timer if it exists
+    _searchDebounceTimer?.cancel();
+
+    // Debounce search to prevent excessive processing for each keystroke
+    _searchDebounceTimer = Timer(_debounceTime, () {
+      uiState.value = currentUiState.copyWith(searchQuery: query);
+      _applyFilters();
+    });
   }
 
   @override

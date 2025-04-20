@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dua/core/base/base_presenter.dart';
 import 'package:dua/core/services/bookmark_sync_service.dart';
 import 'package:dua/core/services/dua_cache_service.dart';
+import 'package:dua/core/utility/isolate_utility.dart';
 import 'package:dua/data/datasource/local_data_source.dart';
 import 'package:dua/data/repositories/category_repository_impl.dart';
 import 'package:dua/data/repositories/dua_bookmark_repository_impl.dart';
@@ -44,7 +45,11 @@ final GetIt _serviceLocator = GetIt.instance;
 
 T locate<T extends Object>() => _serviceLocator.get<T>();
 
-void dislocate<T extends BasePresenter>() => unloadPresenterManually<T>();
+void dislocate<T extends BasePresenter>() {
+  unloadPresenterManually<T>();
+  // Also close all isolates when a presenter is unloaded
+  IsolateUtility.closeAllIsolatesWhenThreadCompletes();
+}
 
 class ServiceLocator {
   ServiceLocator._();

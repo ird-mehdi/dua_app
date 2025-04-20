@@ -10,6 +10,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:dua/core/constants/app_constant.dart';
 import 'package:path/path.dart' as p;
 import 'dart:io';
+import 'package:drift/isolate.dart';
+import 'dart:isolate';
 
 part 'database_service.g.dart';
 
@@ -17,6 +19,10 @@ part 'database_service.g.dart';
 class DuaDatabase extends _$DuaDatabase {
   bool _isInitialized = false;
   static const _queryTimeout = Duration(seconds: 5);
+
+  // Track active isolate connections
+  static final Map<String, DriftIsolate> _activeIsolates = {};
+  static final Map<String, ReceivePort> _activeReceivePorts = {};
 
   // Memory cache for database queries
   static final Map<String, List<Dua>> _queryCache = {};
@@ -29,15 +35,20 @@ class DuaDatabase extends _$DuaDatabase {
   // Cache for specific dua fetching with required fields only
   static final Map<int, Map<String, dynamic>> _duaLightCache = {};
 
+  // Track the current database connection
+
   DuaDatabase({QueryExecutor? executor}) : super(executor ?? loadDatabase()) {
     // Initialize in a more optimized way without blocking
     _initializeDatabase();
+    // Generate a unique ID for this connection
   }
 
   @override
   int get schemaVersion => 1;
 
   Future<void> _initializeDatabase() async {
+    if (_isInitialized) return;
+
     try {
       // Run verification and initialization in parallel
       final results = await Future.wait([verifyDatabase(), _initDatabase()],
@@ -45,10 +56,16 @@ class DuaDatabase extends _$DuaDatabase {
       // If both succeeded, mark as initialized
       if (results[0] == true && results[1] == true) {
         _isInitialized = true;
+        print('Database initialized successfully');
+      } else {
+        print(
+            'Database initialization incomplete: ${results[0]}, ${results[1]}');
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
       print('Database initialization failed: $e');
+      print('Stack trace: $stackTrace');
       // If there's an error, we'll try again when data is requested
+      _isInitialized = false;
     }
   }
 
@@ -66,20 +83,29 @@ class DuaDatabase extends _$DuaDatabase {
       if (!file.existsSync()) {
         print('verifyDatabase: Database file does not exist!');
         // Let database_loader handle creating the file
-        return isDatabaseFileFound();
+        final isFound = await isDatabaseFileFound();
+        if (!isFound) {
+          print('verifyDatabase: Failed to find or create database file');
+        }
+        return isFound;
       }
 
       final size = await file.length();
       if (size == 0) {
         print('verifyDatabase: Database file exists but is empty!');
         // Let database_loader handle creating the file
-        return isDatabaseFileFound();
+        final isFound = await isDatabaseFileFound();
+        if (!isFound) {
+          print('verifyDatabase: Failed to populate empty database file');
+        }
+        return isFound;
       }
 
       print('verifyDatabase: Database file exists with size $size bytes');
       return true;
-    } catch (e) {
+    } catch (e, stackTrace) {
       print('verifyDatabase: Error verifying database: $e');
+      print('Stack trace: $stackTrace');
       return false;
     }
   }
@@ -350,6 +376,79 @@ class DuaDatabase extends _$DuaDatabase {
       print('Database connection closed successfully');
     } catch (e) {
       print('Error closing database connection: $e');
+    }
+  }
+
+  // Method to track an active isolate connection
+  static void trackIsolate(String id, DriftIsolate isolate,
+      [ReceivePort? port]) {
+    // Clean up any existing isolate with the same ID first
+    if (_activeIsolates.containsKey(id)) {
+      try {
+        _activeIsolates[id]?.shutdownAll();
+        _activeReceivePorts[id]?.close();
+      } catch (e) {
+        print('Error closing existing isolate with ID $id: $e');
+      }
+    }
+
+    _activeIsolates[id] = isolate;
+    if (port != null) {
+      _activeReceivePorts[id] = port;
+    }
+    print('Tracked isolate with ID: $id');
+  }
+
+  // Method to close all isolates when thread work is complete
+  static Future<void> closeAllIsolates() async {
+    print('Closing all active isolates: ${_activeIsolates.length}');
+
+    try {
+      // Close all active isolate connections
+      for (final entry in _activeIsolates.entries.toList()) {
+        final id = entry.key;
+        final isolate = entry.value;
+
+        try {
+          // Shutdown the drift isolate
+          await isolate.shutdownAll();
+          print('Successfully closed isolate with ID: $id');
+        } catch (e) {
+          print('Error closing isolate with ID: $id - $e');
+        } finally {
+          // Always close the receive port if it exists
+          _activeReceivePorts[id]?.close();
+
+          // Remove these entries regardless of success/failure
+          _activeIsolates.remove(id);
+          _activeReceivePorts.remove(id);
+        }
+      }
+
+      print('All isolates closed successfully');
+    } catch (e) {
+      print('Error while closing all isolates: $e');
+    }
+  }
+
+  // Explicitly close a specific isolate
+  static Future<void> closeIsolate(String id) async {
+    print('Closing isolate with ID: $id');
+    try {
+      final isolate = _activeIsolates[id];
+      if (isolate != null) {
+        await isolate.shutdownAll();
+        _activeIsolates.remove(id);
+        print('Successfully closed isolate with ID: $id');
+      }
+
+      final port = _activeReceivePorts[id];
+      if (port != null) {
+        port.close();
+        _activeReceivePorts.remove(id);
+      }
+    } catch (e) {
+      print('Error closing isolate with ID: $id - $e');
     }
   }
 

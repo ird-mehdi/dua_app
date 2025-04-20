@@ -8,6 +8,7 @@ import 'package:drift/isolate.dart';
 import 'package:drift/native.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
+import 'package:dua/data/services/dua_database/database_service.dart';
 
 // Using DriftIsolate to run database operations in a background isolate
 LazyDatabase loadDatabase() {
@@ -38,13 +39,20 @@ LazyDatabase loadDatabase() {
 // Create a DriftIsolate that will run database operations in a background isolate
 Future<DriftIsolate> _createDriftIsolate(String path) async {
   final receivePort = ReceivePort();
+  final id = 'db_isolate_${DateTime.now().millisecondsSinceEpoch}';
+
   await Isolate.spawn(
     _startBackground,
     _IsolateStartRequest(receivePort.sendPort, path),
   );
 
   // Wait for the isolate to send us the DriftIsolate
-  return await receivePort.first as DriftIsolate;
+  final isolate = await receivePort.first as DriftIsolate;
+
+  // Track this isolate for proper cleanup
+  DuaDatabase.trackIsolate(id, isolate, receivePort);
+
+  return isolate;
 }
 
 // The background isolate entry point
