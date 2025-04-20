@@ -23,6 +23,7 @@ class ToastUtility {
         builder: (context) => CustomToast(
           message: message,
           duration: duration,
+          textColor: textColor,
           xOffset: xOffset,
           yOffset: yOffset,
         ),

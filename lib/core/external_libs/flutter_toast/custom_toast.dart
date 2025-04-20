@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class CustomToast extends StatefulWidget {
   final String message;
   final Duration duration;
-
+  final Color textColor;
   final double xOffset;
   final double yOffset;
 
@@ -13,6 +13,7 @@ class CustomToast extends StatefulWidget {
     super.key,
     required this.message,
     this.duration = const Duration(seconds: 2),
+    this.textColor = Colors.white,
     this.xOffset = 0.0,
     this.yOffset = 50.0,
   });
@@ -105,7 +106,7 @@ class CustomToastState extends State<CustomToast>
                 child: Text(
                   widget.message,
                   style: TextStyle(
-                    color: Colors.white,
+                    color: widget.textColor,
                   ),
                 ),
               ),

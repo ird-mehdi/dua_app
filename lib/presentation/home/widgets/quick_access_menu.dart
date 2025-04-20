@@ -5,6 +5,7 @@ import 'package:dua/core/config/dua_color.dart';
 import 'package:dua/core/config/dua_screen.dart';
 import 'package:dua/core/static/ui_const.dart';
 import 'package:dua/core/utility/utility.dart';
+import 'package:dua/core/external_libs/flutter_toast/toast_utility.dart';
 import 'package:dua/presentation/coming_soon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -55,9 +56,13 @@ class QuickAccessMenu extends StatelessWidget {
             borderRadius: radius50, // Circular ripple effect
             onTap: () {
               if (showToast) {
-                showMessage(
-                  message: "Coming soon!",
+                // Use ToastUtility directly to specify text color
+                ToastUtility.showCustomToast(
                   context: context,
+                  message: "Coming soon!",
+                  textColor: Colors.black,
+                  yOffset: 100.0,
+                  duration: const Duration(milliseconds: 1500),
                 );
               } else {
                 context.navigatorPush(page);

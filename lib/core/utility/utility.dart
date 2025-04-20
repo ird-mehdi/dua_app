@@ -93,11 +93,11 @@ Future<void> showMessage({
 }) async {
   if (message == null || message.isEmpty) return;
   ToastUtility.showCustomToast(
-    context: context ?? DuaApp.globalContext,
-    message: message,
-    yOffset: 100.0,
-    duration: const Duration(milliseconds: 1500),
-  );
+      context: context ?? DuaApp.globalContext,
+      message: message,
+      yOffset: 100.0,
+      duration: const Duration(milliseconds: 1500),
+      textColor: Colors.black);
 }
 
 /// Helper extension that allows to use a color like:
@@ -113,6 +113,7 @@ extension ThemeTextStyleExtension on BuildContext {
     return Theme.of(this).extension<DuaCustomTextTheme>()!;
   }
 }
+
 /// Helper extension that allows to use color with opacity like:
 /// `context.color.primary.withOpacityInt(0.1)`
 extension ColorOpacityExtension on Color {
