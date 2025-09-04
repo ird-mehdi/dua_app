@@ -1,6 +1,12 @@
+import 'package:dua/core/di/service_locator.dart';
 import 'package:dua/presentation/dua_app.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize service locator
+  await ServiceLocator.setUp();
+
   runApp(const DuaApp());
 }

@@ -1,0 +1,176 @@
+import 'package:dua/core/config/app_images.dart';
+import 'package:dua/core/static/ui_const.dart';
+import 'package:dua/presentation/home/widgets/date_info.dart';
+import 'package:dua/presentation/home/widgets/next_prayer_info.dart';
+import 'package:flutter/material.dart';
+import 'package:dua/core/config/dua_screen.dart';
+
+class PrayerCard extends StatelessWidget {
+  final ThemeData theme;
+  const PrayerCard({super.key, required this.theme});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(18),
+      //decoration: _buildDecoration(),
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(AppImages.banner),
+          fit: BoxFit.cover,
+        ),
+        borderRadius: radius30,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildLocationRow(context: context, theme: theme),
+          gapH22,
+          _buildPrayerTimeInfo(),
+          gapH8,
+          _buildProgressBar(context),
+          gapH4,
+          _buildRemainingTime(),
+          const SizedBox(height: 22),
+          _buildBottomRow(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLocationRow({
+    required BuildContext context,
+    required ThemeData theme,
+  }) {
+    return Row(
+      children: [
+        const Icon(Icons.location_on, size: 18, color: Color(0xFF282E29)),
+        const SizedBox(width: 8),
+        Text(
+          'Khilgaon, Dhaka',
+          // style: TextStyle(
+          //   fontSize: twelvePx,
+          //   color: context.color.headingTextColor,
+          //   fontWeight: FontWeight.w400,
+          // ),
+
+          style: theme.textTheme.bodyMedium,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPrayerTimeInfo() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Dhuhr',
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF282E29),
+          ),
+        ),
+        const SizedBox(height: 8),
+        RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: '12:27 ',
+                style: TextStyle(
+                  fontSize: twentyEightPx,
+                  height: 1,
+                  fontWeight: FontWeight.w800,
+                  color: const Color(0xFF6E833F),
+                ),
+              ),
+              TextSpan(
+                text: 'Pm ',
+                style: TextStyle(
+                  fontSize: thirteenPx,
+                  fontWeight: FontWeight.w800,
+                  color: const Color(0xFF6E833F),
+                ),
+              ),
+              TextSpan(
+                text: ' to ',
+                style: TextStyle(
+                  fontSize: twelvePx,
+                  color: const Color(0xFF282E29),
+                ),
+              ),
+              TextSpan(
+                text: ' 3:54pm',
+                style: TextStyle(
+                  fontSize: twelvePx,
+                  fontWeight: FontWeight.w800,
+                  color: const Color(0xFF282E29),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildProgressBar(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          height: 6,
+          decoration: BoxDecoration(
+            color: const Color(0xFFB0C18C),
+            borderRadius: BorderRadius.circular(3),
+          ),
+        ),
+        AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          height: 6,
+          width: MediaQuery.of(context).size.width * 0.57,
+          decoration: BoxDecoration(
+            color: const Color(0xFF6E833F),
+            borderRadius: BorderRadius.circular(3),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRemainingTime() {
+    return RichText(
+      text: TextSpan(
+        style: TextStyle(
+          fontSize: 12,
+          color: Color(0xFF282E29),
+        ),
+        children: [
+          TextSpan(text: 'Remaining: '),
+          TextSpan(
+            text: '00:50:00 mins',
+            style: TextStyle(fontSize: twelvePx, fontWeight: FontWeight.w800),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBottomRow() {
+    return Row(
+      children: [
+        const NextPrayerInfo(
+          icon: AppImages.icTime,
+          title: 'Magrib',
+          time: '3:54pm',
+        ),
+        SizedBox(width: twentyFourPx),
+        const DateInfo(
+          icon: AppImages.icDate,
+          title: 'Date',
+          date: 'Dhuʻl-Hijjah 26, 1445 AH',
+        ),
+      ],
+    );
+  }
+}
